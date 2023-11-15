@@ -138,6 +138,10 @@ export default {
             type: Boolean,
             default: null
         },
+        selectAllCallback: {
+            type: Function,
+            default: (frozenValue, processedData) => (frozenValue ? [...frozenValue, ...processedData] : processedData)
+        },
         rowHover: {
             type: Boolean,
             default: false

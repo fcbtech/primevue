@@ -1011,6 +1011,7 @@ export default {
             }
         },
         toggleRowWithCheckbox(event) {
+            console.log('faizal2 coming here');
             const rowData = event.data;
 
             if (this.isSelected(rowData)) {
@@ -1027,15 +1028,22 @@ export default {
                 this.$emit('row-select', { originalEvent: event.originalEvent, data: rowData, index: event.index, type: 'checkbox' });
             }
         },
+
         toggleRowsWithCheckbox(event) {
+            console.log('faizal here');
+
             if (this.selectAll !== null) {
                 this.$emit('select-all-change', event);
             } else {
                 const { originalEvent, checked } = event;
+
+                console.log(_selection);
                 let _selection = [];
 
                 if (checked) {
-                    _selection = this.frozenValue ? [...this.frozenValue, ...this.processedData] : this.processedData;
+                    console.log('selectAllCallback running', this.selectAllCallback);
+                    _selection = this.selectAllCallback(this.frozenValue ? this.frozenValue : [], this.processedData);
+
                     this.$emit('row-select-all', { originalEvent, data: _selection });
                 } else {
                     this.$emit('row-unselect-all', { originalEvent });
