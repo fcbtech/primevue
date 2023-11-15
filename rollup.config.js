@@ -450,7 +450,7 @@ function addPackageJson() {
     "name": "@fcbtech/primevue",
     "version": "${pkg.version}",
     "private": false,
-    "author": "PrimeTek Informatics",
+    "author": "Faizal Mahmood",
     "description": "PrimeVue is an open source UI library for Vue featuring a rich set of 80+ components, a theme designer, various theme alternatives such as Material, Bootstrap, Tailwind, premium templates and professional support. In addition, it integrates with PrimeBlock, which has 370+ ready to use UI blocks to build spectacular applications in no time.",
     "homepage": "https://primevue.org/",
     "repository": {
