@@ -1,6 +1,6 @@
 <script>
-import AccordionTabStyle from 'primevue/accordiontab/style';
-import BaseComponent from 'primevue/basecomponent';
+import AccordionTabStyle from '@fcbtech/primevue/accordiontab/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
 
 export default {
     name: 'BaseAccordionTab',

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import PrimeVue from 'primevue/config';
+import PrimeVue from '@fcbtech/primevue/config';
 import { describe, expect, it } from 'vitest';
 import DomHandler from '../utils/DomHandler';
 import Sidebar from './Sidebar.vue';

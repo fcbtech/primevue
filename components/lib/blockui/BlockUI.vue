@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { DomHandler, ZIndexUtils } from 'primevue/utils';
+import { DomHandler, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseBlockUI from './BaseBlockUI.vue';
 
 export default {

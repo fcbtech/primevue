@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import InputMaskStyle from 'primevue/inputmask/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import InputMaskStyle from '@fcbtech/primevue/inputmask/style';
 
 export default {
     name: 'BaseInputMask',

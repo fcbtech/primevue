@@ -1,5 +1,5 @@
-import BaseDirective from 'primevue/basedirective';
-import FocusTrapStyle from 'primevue/focustrap/style';
+import BaseDirective from '@fcbtech/primevue/basedirective';
+import FocusTrapStyle from '@fcbtech/primevue/focustrap/style';
 
 const BaseFocusTrap = BaseDirective.extend({
     style: FocusTrapStyle

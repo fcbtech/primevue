@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import OrderListStyle from 'primevue/orderlist/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import OrderListStyle from '@fcbtech/primevue/orderlist/style';
 
 export default {
     name: 'BaseOrderList',

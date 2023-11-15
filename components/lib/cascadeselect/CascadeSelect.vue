@@ -76,12 +76,12 @@
 </template>
 
 <script>
-import AngleRightIcon from 'primevue/icons/angleright';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import SpinnerIcon from 'primevue/icons/spinner';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
+import AngleRightIcon from '@fcbtech/primevue/icons/angleright';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import SpinnerIcon from '@fcbtech/primevue/icons/spinner';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseCascadeSelect from './BaseCascadeSelect.vue';
 import CascadeSelectSub from './CascadeSelectSub.vue';
 

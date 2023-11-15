@@ -54,10 +54,10 @@
 </template>
 
 <script>
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronRightIcon from 'primevue/icons/chevronright';
-import Ripple from 'primevue/ripple';
-import { DomHandler, UniqueComponentId } from 'primevue/utils';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, UniqueComponentId } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import BaseAccordion from './BaseAccordion.vue';
 

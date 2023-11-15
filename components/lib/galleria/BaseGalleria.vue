@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import GalleriaStyle from 'primevue/galleria/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import GalleriaStyle from '@fcbtech/primevue/galleria/style';
 
 export default {
     name: 'BaseGalleria',

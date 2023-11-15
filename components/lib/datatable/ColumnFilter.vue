@@ -166,18 +166,18 @@
 </template>
 
 <script>
-import { FilterOperator } from 'primevue/api';
-import BaseComponent from 'primevue/basecomponent';
-import Button from 'primevue/button';
-import Dropdown from 'primevue/dropdown';
-import FocusTrap from 'primevue/focustrap';
-import FilterIcon from 'primevue/icons/filter';
-import FilterSlashIcon from 'primevue/icons/filterslash';
-import PlusIcon from 'primevue/icons/plus';
-import TrashIcon from 'primevue/icons/trash';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import { ConnectedOverlayScrollHandler, DomHandler, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
+import { FilterOperator } from '@fcbtech/primevue/api';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import Button from '@fcbtech/primevue/button';
+import Dropdown from '@fcbtech/primevue/dropdown';
+import FocusTrap from '@fcbtech/primevue/focustrap';
+import FilterIcon from '@fcbtech/primevue/icons/filter';
+import FilterSlashIcon from '@fcbtech/primevue/icons/filterslash';
+import PlusIcon from '@fcbtech/primevue/icons/plus';
+import TrashIcon from '@fcbtech/primevue/icons/trash';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import { ConnectedOverlayScrollHandler, DomHandler, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 
 export default {

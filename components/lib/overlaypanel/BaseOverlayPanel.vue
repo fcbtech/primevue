@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import OverlayPanelStyle from 'primevue/overlaypanel/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import OverlayPanelStyle from '@fcbtech/primevue/overlaypanel/style';
 
 export default {
     name: 'BaseOverlayPanel',

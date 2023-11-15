@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import PasswordStyle from 'primevue/password/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import PasswordStyle from '@fcbtech/primevue/password/style';
 
 export default {
     name: 'BasePassword',

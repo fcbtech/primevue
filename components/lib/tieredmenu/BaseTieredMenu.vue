@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import TieredMenuStyle from 'primevue/tieredmenu/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import TieredMenuStyle from '@fcbtech/primevue/tieredmenu/style';
 
 export default {
     name: 'BaseTieredMenu',

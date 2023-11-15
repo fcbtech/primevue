@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import InputNumber from 'primevue/inputnumber';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import InputNumber from '@fcbtech/primevue/inputnumber';
 
 export default {
     name: 'JumpToPageInput',

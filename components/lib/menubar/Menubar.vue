@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import BarsIcon from 'primevue/icons/bars';
-import { DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
+import BarsIcon from '@fcbtech/primevue/icons/bars';
+import { DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseMenubar from './BaseMenubar.vue';
 import MenubarSub from './MenubarSub.vue';
 

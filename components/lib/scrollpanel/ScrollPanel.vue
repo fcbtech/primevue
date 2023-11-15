@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { DomHandler, UniqueComponentId } from 'primevue/utils';
+import { DomHandler, UniqueComponentId } from '@fcbtech/primevue/utils';
 import BaseScrollPanel from './BaseScrollPanel.vue';
 
 export default {

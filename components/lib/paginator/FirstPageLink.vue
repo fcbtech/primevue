@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import AngleDoubleLeftIcon from 'primevue/icons/angledoubleleft';
-import Ripple from 'primevue/ripple';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import AngleDoubleLeftIcon from '@fcbtech/primevue/icons/angledoubleleft';
+import Ripple from '@fcbtech/primevue/ripple';
 
 export default {
     name: 'FirstPageLink',

@@ -82,11 +82,11 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import SortAltIcon from 'primevue/icons/sortalt';
-import SortAmountDownIcon from 'primevue/icons/sortamountdown';
-import SortAmountUpAltIcon from 'primevue/icons/sortamountupalt';
-import { DomHandler, ObjectUtils } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import SortAltIcon from '@fcbtech/primevue/icons/sortalt';
+import SortAmountDownIcon from '@fcbtech/primevue/icons/sortamountdown';
+import SortAmountUpAltIcon from '@fcbtech/primevue/icons/sortamountupalt';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import ColumnFilter from './ColumnFilter.vue';
 import HeaderCheckbox from './HeaderCheckbox.vue';

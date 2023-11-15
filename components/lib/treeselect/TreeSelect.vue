@@ -85,12 +85,12 @@
 </template>
 
 <script>
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import Ripple from 'primevue/ripple';
-import Tree from 'primevue/tree';
-import { ConnectedOverlayScrollHandler, DomHandler, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import Ripple from '@fcbtech/primevue/ripple';
+import Tree from '@fcbtech/primevue/tree';
+import { ConnectedOverlayScrollHandler, DomHandler, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseTreeSelect from './BaseTreeSelect.vue';
 
 export default {

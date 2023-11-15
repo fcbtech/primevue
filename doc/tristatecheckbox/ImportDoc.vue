@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import TriStateCheckbox from 'primevue/tristatecheckbox';
+import TriStateCheckbox from '@fcbtech/primevue/tristatecheckbox';
 `
             }
         };

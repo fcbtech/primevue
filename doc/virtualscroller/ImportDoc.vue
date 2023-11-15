@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import VirtualScroller from 'primevue/virtualscroller';
+import VirtualScroller from '@fcbtech/primevue/virtualscroller';
 `
             }
         };

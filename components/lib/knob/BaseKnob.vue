@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import KnobStyle from 'primevue/knob/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import KnobStyle from '@fcbtech/primevue/knob/style';
 
 export default {
     name: 'BaseKnob',

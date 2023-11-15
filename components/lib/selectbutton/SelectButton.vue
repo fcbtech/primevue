@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import Ripple from 'primevue/ripple';
-import { DomHandler, ObjectUtils } from 'primevue/utils';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseSelectButton from './BaseSelectButton.vue';
 
 export default {

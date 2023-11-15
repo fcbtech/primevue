@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import { DomHandler } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 
 export default {

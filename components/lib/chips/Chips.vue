@@ -57,8 +57,8 @@
 </template>
 
 <script>
-import TimesCircleIcon from 'primevue/icons/timescircle';
-import { UniqueComponentId } from 'primevue/utils';
+import TimesCircleIcon from '@fcbtech/primevue/icons/timescircle';
+import { UniqueComponentId } from '@fcbtech/primevue/utils';
 import BaseChips from './BaseChips.vue';
 
 export default {

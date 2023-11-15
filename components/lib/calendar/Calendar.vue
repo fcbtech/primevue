@@ -498,16 +498,16 @@
 </template>
 
 <script>
-import Button from 'primevue/button';
-import CalendarIcon from 'primevue/icons/calendar';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronLeftIcon from 'primevue/icons/chevronleft';
-import ChevronRightIcon from 'primevue/icons/chevronright';
-import ChevronUpIcon from 'primevue/icons/chevronup';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import Ripple from 'primevue/ripple';
-import { ConnectedOverlayScrollHandler, DomHandler, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
+import Button from '@fcbtech/primevue/button';
+import CalendarIcon from '@fcbtech/primevue/icons/calendar';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import ChevronLeftIcon from '@fcbtech/primevue/icons/chevronleft';
+import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
+import ChevronUpIcon from '@fcbtech/primevue/icons/chevronup';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import Ripple from '@fcbtech/primevue/ripple';
+import { ConnectedOverlayScrollHandler, DomHandler, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseCalendar from './BaseCalendar.vue';
 
 export default {

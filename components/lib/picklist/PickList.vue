@@ -183,17 +183,17 @@
 </template>
 
 <script>
-import Button from 'primevue/button';
-import AngleDoubleDownIcon from 'primevue/icons/angledoubledown';
-import AngleDoubleLeftIcon from 'primevue/icons/angledoubleleft';
-import AngleDoubleRightIcon from 'primevue/icons/angledoubleright';
-import AngleDoubleUpIcon from 'primevue/icons/angledoubleup';
-import AngleDownIcon from 'primevue/icons/angledown';
-import AngleLeftIcon from 'primevue/icons/angleleft';
-import AngleRightIcon from 'primevue/icons/angleright';
-import AngleUpIcon from 'primevue/icons/angleup';
-import Ripple from 'primevue/ripple';
-import { DomHandler, ObjectUtils, UniqueComponentId } from 'primevue/utils';
+import Button from '@fcbtech/primevue/button';
+import AngleDoubleDownIcon from '@fcbtech/primevue/icons/angledoubledown';
+import AngleDoubleLeftIcon from '@fcbtech/primevue/icons/angledoubleleft';
+import AngleDoubleRightIcon from '@fcbtech/primevue/icons/angledoubleright';
+import AngleDoubleUpIcon from '@fcbtech/primevue/icons/angledoubleup';
+import AngleDownIcon from '@fcbtech/primevue/icons/angledown';
+import AngleLeftIcon from '@fcbtech/primevue/icons/angleleft';
+import AngleRightIcon from '@fcbtech/primevue/icons/angleright';
+import AngleUpIcon from '@fcbtech/primevue/icons/angleup';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, ObjectUtils, UniqueComponentId } from '@fcbtech/primevue/utils';
 import BasePickList from './BasePickList.vue';
 
 export default {

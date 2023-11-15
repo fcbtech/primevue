@@ -1,6 +1,6 @@
 <script>
-import AvatarStyle from 'primevue/avatar/style';
-import BaseComponent from 'primevue/basecomponent';
+import AvatarStyle from '@fcbtech/primevue/avatar/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
 
 export default {
     name: 'BaseAvatar',

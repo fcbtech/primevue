@@ -1,4 +1,4 @@
-import { DomHandler, UniqueComponentId } from 'primevue/utils';
+import { DomHandler, UniqueComponentId } from '@fcbtech/primevue/utils';
 import BaseBadgeDirective from './BaseBadgeDirective';
 
 const BadgeDirective = BaseBadgeDirective.extend('badge', {

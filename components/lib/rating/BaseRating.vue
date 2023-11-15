@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import RatingStyle from 'primevue/rating/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import RatingStyle from '@fcbtech/primevue/rating/style';
 
 export default {
     name: 'BaseRating',

@@ -82,7 +82,7 @@
 
 <script>
 import { CustomerService } from '@/service/CustomerService';
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from '@fcbtech/primevue/api';
 
 export default {
     data() {
@@ -260,7 +260,7 @@ export default {
 </template>
 
 <script>
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from '@fcbtech/primevue/api';
 import { CustomerService } from '@/service/CustomerService';
 
 export default {
@@ -415,7 +415,7 @@ export default {
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from '@fcbtech/primevue/api';
 import { CustomerService } from '@/service/CustomerService';
 
 const customers = ref();

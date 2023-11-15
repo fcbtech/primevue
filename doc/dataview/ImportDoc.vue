@@ -9,8 +9,8 @@ export default {
         return {
             code: {
                 basic: `
-import DataView from 'primevue/dataview';
-import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'   // optional
+import DataView from '@fcbtech/primevue/dataview';
+import DataViewLayoutOptions from '@fcbtech/primevue/dataviewlayoutoptions'   // optional
 `
             }
         };

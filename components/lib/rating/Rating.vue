@@ -49,10 +49,10 @@
 </template>
 
 <script>
-import BanIcon from 'primevue/icons/ban';
-import StarIcon from 'primevue/icons/star';
-import StarFillIcon from 'primevue/icons/starfill';
-import { DomHandler, UniqueComponentId } from 'primevue/utils';
+import BanIcon from '@fcbtech/primevue/icons/ban';
+import StarIcon from '@fcbtech/primevue/icons/star';
+import StarFillIcon from '@fcbtech/primevue/icons/starfill';
+import { DomHandler, UniqueComponentId } from '@fcbtech/primevue/utils';
 import BaseRating from './BaseRating.vue';
 
 export default {

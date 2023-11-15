@@ -1,5 +1,5 @@
 import { config } from '@vue/test-utils';
-import { defaultOptions } from 'primevue/config';
+import { defaultOptions } from '@fcbtech/primevue/config';
 
 config.global.mocks['$primevue'] = {
     config: defaultOptions

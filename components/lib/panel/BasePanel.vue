@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import PanelStyle from 'primevue/panel/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import PanelStyle from '@fcbtech/primevue/panel/style';
 
 export default {
     name: 'BasePanel',

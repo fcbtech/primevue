@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import Sidebar from 'primevue/sidebar';
+import Sidebar from '@fcbtech/primevue/sidebar';
 `
             }
         };

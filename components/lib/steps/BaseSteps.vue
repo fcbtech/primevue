@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import StepsStyle from 'primevue/steps/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import StepsStyle from '@fcbtech/primevue/steps/style';
 
 export default {
     name: 'BaseSteps',

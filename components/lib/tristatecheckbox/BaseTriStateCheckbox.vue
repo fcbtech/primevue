@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import TriStateCheckboxStyle from 'primevue/tristatecheckbox/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import TriStateCheckboxStyle from '@fcbtech/primevue/tristatecheckbox/style';
 
 export default {
     name: 'BaseTriStateCheckbox',

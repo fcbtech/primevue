@@ -55,12 +55,12 @@
 </template>
 
 <script>
-import Button from 'primevue/button';
-import ConfirmationEventBus from 'primevue/confirmationeventbus';
-import FocusTrap from 'primevue/focustrap';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import { ConnectedOverlayScrollHandler, DomHandler, ZIndexUtils } from 'primevue/utils';
+import Button from '@fcbtech/primevue/button';
+import ConfirmationEventBus from '@fcbtech/primevue/confirmationeventbus';
+import FocusTrap from '@fcbtech/primevue/focustrap';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import { ConnectedOverlayScrollHandler, DomHandler, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseConfirmPopup from './BaseConfirmPopup.vue';
 
 export default {

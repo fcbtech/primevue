@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import CarouselStyle from 'primevue/carousel/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import CarouselStyle from '@fcbtech/primevue/carousel/style';
 
 export default {
     name: 'BaseCarousel',

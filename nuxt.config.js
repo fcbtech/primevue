@@ -23,7 +23,7 @@ export default defineNuxtConfig({
         },
         layerOrder: 'primevue',
         resolvePath: function ({ as, from, type }) {
-            const resolvedPath = from.replace('primevue', '@/components/lib');
+            const resolvedPath = from.replace('@fcbtech/primevue', '@/components/lib');
 
             return type === 'component' ? `${resolvedPath}/${as}.vue` : `${resolvedPath}/${as}.js`;
         }

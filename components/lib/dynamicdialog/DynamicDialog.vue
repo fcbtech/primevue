@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import Dialog from 'primevue/dialog';
-import DynamicDialogEventBus from 'primevue/dynamicdialogeventbus';
-import { UniqueComponentId } from 'primevue/utils';
+import Dialog from '@fcbtech/primevue/dialog';
+import DynamicDialogEventBus from '@fcbtech/primevue/dynamicdialogeventbus';
+import { UniqueComponentId } from '@fcbtech/primevue/utils';
 import BaseDynamicDialog from './BaseDynamicDialog.vue';
 
 export default {

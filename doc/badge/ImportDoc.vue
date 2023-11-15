@@ -10,10 +10,10 @@ export default {
             code: {
                 basic: `
 // import as component
-import Badge from 'primevue/badge';
+import Badge from '@fcbtech/primevue/badge';
 
 // import as directive
-import BadgeDirective from 'primevue/badgedirective';
+import BadgeDirective from '@fcbtech/primevue/badgedirective';
 
 app.directive('badge', BadgeDirective);
 `

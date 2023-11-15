@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import InputSwitchStyle from 'primevue/inputswitch/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import InputSwitchStyle from '@fcbtech/primevue/inputswitch/style';
 
 export default {
     name: 'BaseInputSwitch',

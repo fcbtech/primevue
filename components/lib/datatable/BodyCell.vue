@@ -88,16 +88,16 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import BarsIcon from 'primevue/icons/bars';
-import CheckIcon from 'primevue/icons/check';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronRightIcon from 'primevue/icons/chevronright';
-import PencilIcon from 'primevue/icons/pencil';
-import TimesIcon from 'primevue/icons/times';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Ripple from 'primevue/ripple';
-import { DomHandler, ObjectUtils } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import BarsIcon from '@fcbtech/primevue/icons/bars';
+import CheckIcon from '@fcbtech/primevue/icons/check';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
+import PencilIcon from '@fcbtech/primevue/icons/pencil';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import RowCheckbox from './RowCheckbox.vue';
 import RowRadioButton from './RowRadioButton.vue';

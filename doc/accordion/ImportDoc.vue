@@ -9,8 +9,8 @@ export default {
         return {
             code: {
                 basic: `
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
+import Accordion from '@fcbtech/primevue/accordion';
+import AccordionTab from '@fcbtech/primevue/accordiontab';
 `
             }
         };

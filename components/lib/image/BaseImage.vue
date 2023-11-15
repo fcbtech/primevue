@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ImageStyle from 'primevue/image/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ImageStyle from '@fcbtech/primevue/image/style';
 
 export default {
     name: 'BaseImage',

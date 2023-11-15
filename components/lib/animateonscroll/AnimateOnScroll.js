@@ -1,4 +1,4 @@
-import { DomHandler } from 'primevue/utils';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import BaseAnimateOnScroll from './BaseAnimateOnScroll';
 
 const AnimateOnScroll = BaseAnimateOnScroll.extend('animateonscroll', {

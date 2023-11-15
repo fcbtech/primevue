@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Ripple from 'primevue/ripple';
+import Ripple from '@fcbtech/primevue/ripple';
 import BaseToggleButton from './BaseToggleButton.vue';
 
 export default {

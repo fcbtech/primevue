@@ -1,5 +1,5 @@
-import BaseStyle from 'primevue/base/style';
-import { useStyle } from 'primevue/usestyle';
+import BaseStyle from '@fcbtech/primevue/base/style';
+import { useStyle } from '@fcbtech/primevue/usestyle';
 
 const buttonCSS = `
 .p-button {

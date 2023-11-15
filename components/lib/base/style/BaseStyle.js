@@ -1,4 +1,4 @@
-import { useStyle } from 'primevue/usestyle';
+import { useStyle } from '@fcbtech/primevue/usestyle';
 
 const css = `
 .p-hidden-accessible {

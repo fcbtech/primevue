@@ -30,7 +30,7 @@
 
 <script>
 import { CustomerService } from '@/service/CustomerService';
-import { FilterMatchMode, FilterService } from 'primevue/api';
+import { FilterMatchMode, FilterService } from '@fcbtech/primevue/api';
 
 const YOUR_FILTER = 'YOUR FILTER';
 
@@ -100,7 +100,7 @@ export default {
 
 <script>
 import { CustomerService } from '@/service/CustomerService';
-import { FilterMatchMode, FilterService } from 'primevue/api';
+import { FilterMatchMode, FilterService } from '@fcbtech/primevue/api';
 
 const YOUR_FILTER = 'YOUR FILTER';
 
@@ -170,7 +170,7 @@ export default {
 <script setup>
 import { ref, onMounted } from 'vue';
 import { CustomerService } from '@/service/CustomerService';
-import { FilterMatchMode, FilterService } from 'primevue/api';
+import { FilterMatchMode, FilterService } from '@fcbtech/primevue/api';
 
 
 onMounted(() => {

@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import Steps from 'primevue/steps';
+import Steps from '@fcbtech/primevue/steps';
 `
             }
         };

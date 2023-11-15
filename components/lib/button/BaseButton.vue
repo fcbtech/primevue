@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ButtonStyle from 'primevue/button/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ButtonStyle from '@fcbtech/primevue/button/style';
 
 export default {
     name: 'BaseButton',

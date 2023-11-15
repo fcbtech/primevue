@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import DropdownStyle from 'primevue/dropdown/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import DropdownStyle from '@fcbtech/primevue/dropdown/style';
 
 export default {
     name: 'BaseDropdown',

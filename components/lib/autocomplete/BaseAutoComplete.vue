@@ -1,6 +1,6 @@
 <script>
-import AutoCompleteStyle from 'primevue/autocomplete/style';
-import BaseComponent from 'primevue/basecomponent';
+import AutoCompleteStyle from '@fcbtech/primevue/autocomplete/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
 
 export default {
     name: 'BaseAutoComplete',

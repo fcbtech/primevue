@@ -1,5 +1,5 @@
-import DynamicDialogEventBus from 'primevue/dynamicdialogeventbus';
-import { PrimeVueDialogSymbol } from 'primevue/usedialog';
+import DynamicDialogEventBus from '@fcbtech/primevue/dynamicdialogeventbus';
+import { PrimeVueDialogSymbol } from '@fcbtech/primevue/usedialog';
 import { markRaw } from 'vue';
 
 export default {

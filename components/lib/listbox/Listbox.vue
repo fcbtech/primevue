@@ -122,11 +122,11 @@
 </template>
 
 <script>
-import { FilterService } from 'primevue/api';
-import SearchIcon from 'primevue/icons/search';
-import Ripple from 'primevue/ripple';
-import { DomHandler, ObjectUtils, UniqueComponentId } from 'primevue/utils';
-import VirtualScroller from 'primevue/virtualscroller';
+import { FilterService } from '@fcbtech/primevue/api';
+import SearchIcon from '@fcbtech/primevue/icons/search';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, ObjectUtils, UniqueComponentId } from '@fcbtech/primevue/utils';
+import VirtualScroller from '@fcbtech/primevue/virtualscroller';
 import BaseListbox from './BaseListbox.vue';
 
 export default {

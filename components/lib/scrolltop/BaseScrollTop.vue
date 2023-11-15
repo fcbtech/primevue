@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ScrollTopStyle from 'primevue/scrolltop/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ScrollTopStyle from '@fcbtech/primevue/scrolltop/style';
 
 export default {
     name: 'BaseScrollTop',

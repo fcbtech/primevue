@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import Calendar from 'primevue/calendar';
+import Calendar from '@fcbtech/primevue/calendar';
 `
             }
         };

@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import InplaceStyle from 'primevue/inplace/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import InplaceStyle from '@fcbtech/primevue/inplace/style';
 
 export default {
     name: 'BaseInplace',

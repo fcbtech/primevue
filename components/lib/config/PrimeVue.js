@@ -1,4 +1,4 @@
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from '@fcbtech/primevue/api';
 import { inject, reactive } from 'vue';
 
 export const defaultOptions = {

@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import { ConnectedOverlayScrollHandler, DomHandler, ZIndexUtils } from 'primevue/utils';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import { ConnectedOverlayScrollHandler, DomHandler, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseColorPicker from './BaseColorPicker.vue';
 
 export default {

@@ -16,7 +16,7 @@ export default {
             code1: {
                 basic: `
 import {createApp} from 'vue';
-import ToastService from 'primevue/toastservice';
+import ToastService from '@fcbtech/primevue/toastservice';
 
 const app = createApp(App);
 app.use(ToastService);
@@ -24,7 +24,7 @@ app.use(ToastService);
             },
             code2: {
                 basic: `
-import { useToast } from 'primevue/usetoast';
+import { useToast } from '@fcbtech/primevue/usetoast';
 
 const toast = useToast();
 `

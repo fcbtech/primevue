@@ -1,5 +1,5 @@
-import BaseStyle from 'primevue/base/style';
-import { ObjectUtils } from 'primevue/utils';
+import BaseStyle from '@fcbtech/primevue/base/style';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 
 const css = `
 @layer primevue {

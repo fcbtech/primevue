@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ProgressSpinnerStyle from 'primevue/progressspinner/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ProgressSpinnerStyle from '@fcbtech/primevue/progressspinner/style';
 
 export default {
     name: 'BaseProgressSpinner',

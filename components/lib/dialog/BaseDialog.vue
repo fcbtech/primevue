@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import DialogStyle from 'primevue/dialog/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import DialogStyle from '@fcbtech/primevue/dialog/style';
 
 export default {
     name: 'BaseDialog',

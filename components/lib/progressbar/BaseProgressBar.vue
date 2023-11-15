@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ProgressBarStyle from 'primevue/progressbar/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ProgressBarStyle from '@fcbtech/primevue/progressbar/style';
 
 export default {
     name: 'BaseProgressBar',

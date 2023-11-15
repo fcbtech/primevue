@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronUpIcon from 'primevue/icons/chevronup';
-import { DomHandler } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import ChevronUpIcon from '@fcbtech/primevue/icons/chevronup';
+import { DomHandler } from '@fcbtech/primevue/utils';
 
 export default {
     name: 'OrganizationChartNode',

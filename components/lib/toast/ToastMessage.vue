@@ -20,13 +20,13 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import CheckIcon from 'primevue/icons/check';
-import ExclamationTriangleIcon from 'primevue/icons/exclamationtriangle';
-import InfoCircleIcon from 'primevue/icons/infocircle';
-import TimesIcon from 'primevue/icons/times';
-import TimesCircleIcon from 'primevue/icons/timescircle';
-import Ripple from 'primevue/ripple';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import CheckIcon from '@fcbtech/primevue/icons/check';
+import ExclamationTriangleIcon from '@fcbtech/primevue/icons/exclamationtriangle';
+import InfoCircleIcon from '@fcbtech/primevue/icons/infocircle';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import TimesCircleIcon from '@fcbtech/primevue/icons/timescircle';
+import Ripple from '@fcbtech/primevue/ripple';
 
 export default {
     name: 'ToastMessage',

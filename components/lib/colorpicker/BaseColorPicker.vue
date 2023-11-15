@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ColorPickerStyle from 'primevue/colorpicker/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ColorPickerStyle from '@fcbtech/primevue/colorpicker/style';
 
 export default {
     name: 'BaseColorPicker',

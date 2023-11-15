@@ -2,7 +2,7 @@
  * Ported from useStyleTag in @vueuse/core
  * https://github.com/vueuse
  */
-import { DomHandler } from 'primevue/utils';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import { getCurrentInstance, nextTick, onMounted, readonly, ref, watch } from 'vue';
 
 function tryOnMounted(fn, sync = true) {

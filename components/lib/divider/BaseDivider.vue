@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import DividerStyle from 'primevue/divider/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import DividerStyle from '@fcbtech/primevue/divider/style';
 
 export default {
     name: 'BaseDivider',
