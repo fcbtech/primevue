@@ -142,6 +142,10 @@ export default {
             type: Function,
             default: (frozenValue, processedData) => [...frozenValue, ...processedData]
         },
+        unSelectAllCallback: {
+            type: Function,
+            default: (frozenValue, processedData) => []
+        },
         rowHover: {
             type: Boolean,
             default: false

@@ -1041,6 +1041,7 @@ export default {
 
                     this.$emit('row-select-all', { originalEvent, data: _selection });
                 } else {
+                    _selection = this.unSelectAllCallback(this.frozenValue ? this.frozenValue : [], this.processedData);
                     this.$emit('row-unselect-all', { originalEvent });
                 }
 
