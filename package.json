@@ -1,10 +1,13 @@
 {
-    "name": "primevue",
-    "version": "3.40.1",
+    "name": "@fcbtech/primevue",
+    "version": "3.41.1",
     "homepage": "https://primevue.org/",
     "repository": {
         "type": "git",
-        "url": "https://github.com/primefaces/primevue.git"
+        "url": "https://github.com/fcbtech/primevue.git"
+    },
+    "publishConfig": {
+        "@fcbtech:registry": "https://npm.pkg.github.com"
     },
     "license": "MIT",
     "scripts": {
