@@ -55,10 +55,10 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import Ripple from 'primevue/ripple';
-import Tooltip from 'primevue/tooltip';
-import { DomHandler, ObjectUtils, UniqueComponentId } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import Ripple from '@fcbtech/primevue/ripple';
+import Tooltip from '@fcbtech/primevue/tooltip';
+import { DomHandler, ObjectUtils, UniqueComponentId } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 
 export default {

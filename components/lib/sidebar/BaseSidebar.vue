@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import SidebarStyle from 'primevue/sidebar/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import SidebarStyle from '@fcbtech/primevue/sidebar/style';
 
 export default {
     name: 'BaseSidebar',

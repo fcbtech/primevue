@@ -1,4 +1,4 @@
-import BaseDirective from 'primevue/basedirective';
+import BaseDirective from '@fcbtech/primevue/basedirective';
 
 const BaseStyleClass = BaseDirective.extend({});
 

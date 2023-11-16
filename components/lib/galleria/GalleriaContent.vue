@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import TimesIcon from 'primevue/icons/times';
-import Ripple from 'primevue/ripple';
-import { UniqueComponentId } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import Ripple from '@fcbtech/primevue/ripple';
+import { UniqueComponentId } from '@fcbtech/primevue/utils';
 import GalleriaItem from './GalleriaItem.vue';
 import GalleriaThumbnails from './GalleriaThumbnails.vue';
 

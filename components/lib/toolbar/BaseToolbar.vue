@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ToolbarStyle from 'primevue/toolbar/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ToolbarStyle from '@fcbtech/primevue/toolbar/style';
 
 export default {
     name: 'BaseToolbar',

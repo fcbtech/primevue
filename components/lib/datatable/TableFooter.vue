@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import { ObjectUtils } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import FooterCell from './FooterCell.vue';
 

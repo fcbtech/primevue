@@ -53,9 +53,9 @@
 </template>
 
 <script>
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronRightIcon from 'primevue/icons/chevronright';
-import { DomHandler, ObjectUtils, UniqueComponentId } from 'primevue/utils';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
+import { DomHandler, ObjectUtils, UniqueComponentId } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import BasePanelMenu from './BasePanelMenu.vue';
 import PanelMenuList from './PanelMenuList.vue';

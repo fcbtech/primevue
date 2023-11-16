@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { ObjectUtils } from 'primevue/utils';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseTimeline from './BaseTimeline.vue';
 
 export default {

@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import TerminalStyle from 'primevue/terminal/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import TerminalStyle from '@fcbtech/primevue/terminal/style';
 
 export default {
     name: 'BaseTerminal',

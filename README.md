@@ -30,7 +30,7 @@ PrimeVue plugin is required to be installed with the **use** function to set up 
 
 ```javascript
 import { createApp } from 'vue';
-import PrimeVue from 'primevue/config';
+import PrimeVue from '@fcbtech/primevue/config';
 const app = createApp(App);
 
 app.use(PrimeVue);
@@ -46,7 +46,7 @@ Styled mode is based on pre-skinned components with opinionated themes like Mate
 
 ```javascript
 // theme
-import 'primevue/resources/themes/lara-light-teal/theme.css';
+import '@fcbtech/primevue/resources/themes/lara-light-teal/theme.css';
 ```
 
 **Unstyled Mode**
@@ -55,7 +55,7 @@ Unstyled mode is disabled by default for all components. Using the PrimeVue plug
 
 ```javascript
 import { createApp } from 'vue';
-import PrimeVue from 'primevue/config';
+import PrimeVue from '@fcbtech/primevue/config';
 const app = createApp(App);
 
 app.use(PrimeVue, { unstyled: true });
@@ -66,7 +66,7 @@ app.use(PrimeVue, { unstyled: true });
 Each component can be imported individually so that you only bundle what you use. Import path is available in the documentation of the corresponding component.
 
 ```javascript
-import Button from 'primevue/button';
+import Button from '@fcbtech/primevue/button';
 
 const app = createApp(App);
 app.component('Button', Button);
@@ -138,7 +138,7 @@ In styled mode, the theme can be defined at Nuxt configuration with the css prop
 
 ```javascript
 export default defineNuxtConfig({
-    css: ['primevue/resources/themes/lara-dark-teal/theme.css']
+    css: ['@fcbtech/primevue/resources/themes/lara-dark-teal/theme.css']
 });
 ```
 

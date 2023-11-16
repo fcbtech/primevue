@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import BarsIcon from 'primevue/icons/bars';
-import ThLargeIcon from 'primevue/icons/thlarge';
+import BarsIcon from '@fcbtech/primevue/icons/bars';
+import ThLargeIcon from '@fcbtech/primevue/icons/thlarge';
 import BaseDataViewLayoutOptions from './BaseDataViewLayoutOptions.vue';
 
 export default {

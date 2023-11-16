@@ -1,4 +1,4 @@
-import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
+import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseTooltip from './BaseTooltip';
 
 const Tooltip = BaseTooltip.extend('tooltip', {

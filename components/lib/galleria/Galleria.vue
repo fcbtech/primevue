@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import FocusTrap from 'primevue/focustrap';
-import Portal from 'primevue/portal';
-import { DomHandler, ZIndexUtils } from 'primevue/utils';
+import FocusTrap from '@fcbtech/primevue/focustrap';
+import Portal from '@fcbtech/primevue/portal';
+import { DomHandler, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseGalleria from './BaseGalleria.vue';
 import GalleriaContent from './GalleriaContent.vue';
 

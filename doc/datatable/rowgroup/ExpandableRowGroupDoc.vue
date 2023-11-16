@@ -214,7 +214,7 @@ export default {
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useToast } from 'primevue/usetoast';
+import { useToast } from '@fcbtech/primevue/usetoast';
 import { CustomerService } from '@/service/CustomerService';
 
 onMounted(() => {

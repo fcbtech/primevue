@@ -54,15 +54,15 @@
 </template>
 
 <script>
-import FocusTrap from 'primevue/focustrap';
-import EyeIcon from 'primevue/icons/eye';
-import RefreshIcon from 'primevue/icons/refresh';
-import SearchMinusIcon from 'primevue/icons/searchminus';
-import SearchPlusIcon from 'primevue/icons/searchplus';
-import TimesIcon from 'primevue/icons/times';
-import UndoIcon from 'primevue/icons/undo';
-import Portal from 'primevue/portal';
-import { DomHandler, ZIndexUtils } from 'primevue/utils';
+import FocusTrap from '@fcbtech/primevue/focustrap';
+import EyeIcon from '@fcbtech/primevue/icons/eye';
+import RefreshIcon from '@fcbtech/primevue/icons/refresh';
+import SearchMinusIcon from '@fcbtech/primevue/icons/searchminus';
+import SearchPlusIcon from '@fcbtech/primevue/icons/searchplus';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import UndoIcon from '@fcbtech/primevue/icons/undo';
+import Portal from '@fcbtech/primevue/portal';
+import { DomHandler, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseImage from './BaseImage.vue';
 
 export default {

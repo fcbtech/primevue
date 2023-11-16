@@ -1,6 +1,6 @@
 <script>
-import BaseIconStyle from 'primevue/baseicon/style';
-import { ObjectUtils } from 'primevue/utils';
+import BaseIconStyle from '@fcbtech/primevue/baseicon/style';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 
 export default {
     name: 'BaseIcon',

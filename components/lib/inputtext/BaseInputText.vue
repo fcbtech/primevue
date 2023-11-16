@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import InputTextStyle from 'primevue/inputtext/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import InputTextStyle from '@fcbtech/primevue/inputtext/style';
 
 export default {
     name: 'BaseInputText',

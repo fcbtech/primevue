@@ -22,13 +22,13 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import CheckIcon from 'primevue/icons/check';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronRightIcon from 'primevue/icons/chevronright';
-import MinusIcon from 'primevue/icons/minus';
-import Ripple from 'primevue/ripple';
-import { DomHandler, ObjectUtils } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import CheckIcon from '@fcbtech/primevue/icons/check';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
+import MinusIcon from '@fcbtech/primevue/icons/minus';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 
 export default {

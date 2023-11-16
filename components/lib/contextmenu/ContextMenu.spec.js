@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import PrimeVue from 'primevue/config';
+import PrimeVue from '@fcbtech/primevue/config';
 import ContextMenu from './ContextMenu.vue';
 
 describe('ContextMenu.vue', () => {

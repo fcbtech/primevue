@@ -53,14 +53,14 @@
 </template>
 
 <script>
-import Button from 'primevue/button';
-import PlusIcon from 'primevue/icons/plus';
-import TimesIcon from 'primevue/icons/times';
-import UploadIcon from 'primevue/icons/upload';
-import Message from 'primevue/message';
-import ProgressBar from 'primevue/progressbar';
-import Ripple from 'primevue/ripple';
-import { DomHandler } from 'primevue/utils';
+import Button from '@fcbtech/primevue/button';
+import PlusIcon from '@fcbtech/primevue/icons/plus';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import UploadIcon from '@fcbtech/primevue/icons/upload';
+import Message from '@fcbtech/primevue/message';
+import ProgressBar from '@fcbtech/primevue/progressbar';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import BaseFileUpload from './BaseFileUpload.vue';
 import FileContent from './FileContent.vue';
 

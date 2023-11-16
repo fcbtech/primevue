@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ContextMenuStyle from 'primevue/contextmenu/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ContextMenuStyle from '@fcbtech/primevue/contextmenu/style';
 
 export default {
     name: 'BaseContextMenu',

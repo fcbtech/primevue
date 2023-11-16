@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import BaseIcon from 'primevue/baseicon';
-import { UniqueComponentId } from 'primevue/utils';
+import BaseIcon from '@fcbtech/primevue/baseicon';
+import { UniqueComponentId } from '@fcbtech/primevue/utils';
 
 export default {
     name: 'SortAmountDownIcon',

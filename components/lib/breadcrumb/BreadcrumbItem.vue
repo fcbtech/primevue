@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
 import { mergeProps } from 'vue';
 
 export default {

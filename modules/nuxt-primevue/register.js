@@ -99,7 +99,7 @@ function registerStyles(resolvePath, registered, options) {
         {
             name: 'BaseStyle',
             as: 'BaseStyle',
-            from: resolvePath({ name: 'BaseStyle', as: 'BaseStyle', from: 'primevue/base/style', type: 'style' })
+            from: resolvePath({ name: 'BaseStyle', as: 'BaseStyle', from: '@fcbtech/primevue/base/style', type: 'style' })
         }
     ];
 
@@ -108,7 +108,7 @@ function registerStyles(resolvePath, registered, options) {
             styles.push({
                 name: 'BaseComponentStyle',
                 as: 'BaseComponentStyle',
-                from: resolvePath({ name: 'BaseComponentStyle', as: 'BaseComponentStyle', from: 'primevue/basecomponent/style', type: 'style' })
+                from: resolvePath({ name: 'BaseComponentStyle', as: 'BaseComponentStyle', from: '@fcbtech/primevue/basecomponent/style', type: 'style' })
             });
         }
 

@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import AnimateOnScroll from 'primevue/animateonscroll';
+import AnimateOnScroll from '@fcbtech/primevue/animateonscroll';
                 
 app.directive('animateonscroll', AnimateOnScroll);
 `

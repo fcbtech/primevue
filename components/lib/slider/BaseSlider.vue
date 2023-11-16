@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import SliderStyle from 'primevue/slider/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import SliderStyle from '@fcbtech/primevue/slider/style';
 
 export default {
     name: 'BaseSlider',

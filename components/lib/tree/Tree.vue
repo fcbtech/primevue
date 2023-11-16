@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import SearchIcon from 'primevue/icons/search';
-import SpinnerIcon from 'primevue/icons/spinner';
-import { ObjectUtils } from 'primevue/utils';
+import SearchIcon from '@fcbtech/primevue/icons/search';
+import SpinnerIcon from '@fcbtech/primevue/icons/spinner';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseTree from './BaseTree.vue';
 import TreeNode from './TreeNode.vue';
 

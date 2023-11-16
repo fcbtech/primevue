@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import Chips from 'primevue/chips';
+import Chips from '@fcbtech/primevue/chips';
 `
             }
         };

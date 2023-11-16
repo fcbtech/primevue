@@ -167,7 +167,7 @@
 
 <script>
 import { ProductService } from '@/service/ProductService';
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from '@fcbtech/primevue/api';
 
 export default {
     data() {
@@ -397,7 +397,7 @@ export default {
 </template>
 
 <script>
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from '@fcbtech/primevue/api';
 import { ProductService } from '@/service/ProductService';
 
 export default {
@@ -687,8 +687,8 @@ export default {
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { FilterMatchMode } from 'primevue/api';
-import { useToast } from 'primevue/usetoast';
+import { FilterMatchMode } from '@fcbtech/primevue/api';
+import { useToast } from '@fcbtech/primevue/usetoast';
 import { ProductService } from '@/service/ProductService';
 
 onMounted(() => {

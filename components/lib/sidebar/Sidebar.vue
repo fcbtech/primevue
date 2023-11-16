@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import FocusTrap from 'primevue/focustrap';
-import TimesIcon from 'primevue/icons/times';
-import Portal from 'primevue/portal';
-import Ripple from 'primevue/ripple';
-import { DomHandler, ZIndexUtils } from 'primevue/utils';
+import FocusTrap from '@fcbtech/primevue/focustrap';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import Portal from '@fcbtech/primevue/portal';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseSidebar from './BaseSidebar.vue';
 
 export default {

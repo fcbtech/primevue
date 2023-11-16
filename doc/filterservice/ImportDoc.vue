@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import { FilterService } from 'primevue/api';
+import { FilterService } from '@fcbtech/primevue/api';
 `
             }
         };

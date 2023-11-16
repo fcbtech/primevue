@@ -1,4 +1,4 @@
-import { DomHandler, ObjectUtils } from 'primevue/utils';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseFocusTrap from './BaseFocusTrap';
 
 const FocusTrap = BaseFocusTrap.extend('focustrap', {

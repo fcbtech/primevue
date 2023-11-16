@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { useToast } from 'primevue/usetoast';
+import { useToast } from '@fcbtech/primevue/usetoast';
 import { useField, useForm } from 'vee-validate';
 import { NodeService } from '/service/NodeService';
 export default {
@@ -65,7 +65,7 @@ export default {
 </template>
 
 <script>
-import { useToast } from 'primevue/usetoast';
+import { useToast } from '@fcbtech/primevue/usetoast';
 import { useField, useForm } from 'vee-validate';
 import { NodeService } from '@/service/NodeService';
 
@@ -117,7 +117,7 @@ export default {
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useToast } from 'primevue/usetoast';
+import { useToast } from '@fcbtech/primevue/usetoast';
 import { useField, useForm } from 'vee-validate';
 import { NodeService } from '@/service/NodeService';
 

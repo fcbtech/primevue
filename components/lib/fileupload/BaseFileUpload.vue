@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import FileUploadStyle from 'primevue/fileupload/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import FileUploadStyle from '@fcbtech/primevue/fileupload/style';
 
 export default {
     name: 'BaseFileUpload',

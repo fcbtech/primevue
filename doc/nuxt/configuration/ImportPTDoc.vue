@@ -16,7 +16,7 @@ export default {
             code1: {
                 basic: `
 primevue: { 
-    importPT: { as: 'Tailwind', from: 'primevue/passthrough/tailwind' },
+    importPT: { as: 'Tailwind', from: '@fcbtech/primevue/passthrough/tailwind' },
 }
 `
             },

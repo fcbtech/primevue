@@ -1,1 +1,1 @@
-export const composables = [{ name: 'useStyle', as: 'useStyle', from: 'primevue/usestyle' }];
+export const composables = [{ name: 'useStyle', as: 'useStyle', from: '@fcbtech/primevue/usestyle' }];

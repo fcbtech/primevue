@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import CheckIcon from 'primevue/icons/check';
-import { ObjectUtils } from 'primevue/utils';
+import CheckIcon from '@fcbtech/primevue/icons/check';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseCheckbox from './BaseCheckbox.vue';
 
 export default {

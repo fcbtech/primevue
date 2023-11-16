@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import Dropdown from 'primevue/dropdown';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import Dropdown from '@fcbtech/primevue/dropdown';
 
 export default {
     name: 'RowsPerPageDropdown',

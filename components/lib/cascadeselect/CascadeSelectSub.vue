@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import AngleRightIcon from 'primevue/icons/angleright';
-import Ripple from 'primevue/ripple';
-import { DomHandler, ObjectUtils } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import AngleRightIcon from '@fcbtech/primevue/icons/angleright';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 
 export default {
     name: 'CascadeSelectSub',

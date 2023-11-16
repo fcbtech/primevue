@@ -165,10 +165,10 @@
 </template>
 
 <script>
-import { FilterService } from 'primevue/api';
-import SpinnerIcon from 'primevue/icons/spinner';
-import Paginator from 'primevue/paginator';
-import { DomHandler, ObjectUtils } from 'primevue/utils';
+import { FilterService } from '@fcbtech/primevue/api';
+import SpinnerIcon from '@fcbtech/primevue/icons/spinner';
+import Paginator from '@fcbtech/primevue/paginator';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseTreeTable from './BaseTreeTable.vue';
 import FooterCell from './FooterCell.vue';
 import HeaderCell from './HeaderCell.vue';

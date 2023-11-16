@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import SkeletonStyle from 'primevue/skeleton/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import SkeletonStyle from '@fcbtech/primevue/skeleton/style';
 
 export default {
     name: 'BaseSkeleton',

@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import InputGroupAddonStyle from 'primevue/inputgroupaddon/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import InputGroupAddonStyle from '@fcbtech/primevue/inputgroupaddon/style';
 
 export default {
     name: 'BaseInputGroupAddon',

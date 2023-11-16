@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import CheckIcon from 'primevue/icons/check';
-import { DomHandler } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import CheckIcon from '@fcbtech/primevue/icons/check';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 
 export default {

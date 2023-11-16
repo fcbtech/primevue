@@ -98,11 +98,11 @@
 </template>
 
 <script>
-import Button from 'primevue/button';
-import AngleDownIcon from 'primevue/icons/angledown';
-import AngleUpIcon from 'primevue/icons/angleup';
-import InputText from 'primevue/inputtext';
-import { DomHandler } from 'primevue/utils';
+import Button from '@fcbtech/primevue/button';
+import AngleDownIcon from '@fcbtech/primevue/icons/angledown';
+import AngleUpIcon from '@fcbtech/primevue/icons/angleup';
+import InputText from '@fcbtech/primevue/inputtext';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import BaseInputNumber from './BaseInputNumber.vue';
 
 export default {

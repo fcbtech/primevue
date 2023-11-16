@@ -117,10 +117,10 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronRightIcon from 'primevue/icons/chevronright';
-import { DomHandler, ObjectUtils, UniqueComponentId } from 'primevue/utils';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
+import { DomHandler, ObjectUtils, UniqueComponentId } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import BodyCell from './BodyCell.vue';
 

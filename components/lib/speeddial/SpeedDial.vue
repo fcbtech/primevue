@@ -53,11 +53,11 @@
 </template>
 
 <script>
-import Button from 'primevue/button';
-import PlusIcon from 'primevue/icons/plus';
-import Ripple from 'primevue/ripple';
-import Tooltip from 'primevue/tooltip';
-import { DomHandler, UniqueComponentId } from 'primevue/utils';
+import Button from '@fcbtech/primevue/button';
+import PlusIcon from '@fcbtech/primevue/icons/plus';
+import Ripple from '@fcbtech/primevue/ripple';
+import Tooltip from '@fcbtech/primevue/tooltip';
+import { DomHandler, UniqueComponentId } from '@fcbtech/primevue/utils';
 import BaseSpeedDial from './BaseSpeedDial.vue';
 
 export default {

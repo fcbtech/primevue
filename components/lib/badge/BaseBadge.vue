@@ -1,6 +1,6 @@
 <script>
-import BadgeStyle from 'primevue/badge/style';
-import BaseComponent from 'primevue/basecomponent';
+import BadgeStyle from '@fcbtech/primevue/badge/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
 
 export default {
     name: 'BaseBadge',

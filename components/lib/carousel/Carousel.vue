@@ -96,12 +96,12 @@
 </template>
 
 <script>
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import ChevronLeftIcon from 'primevue/icons/chevronleft';
-import ChevronRightIcon from 'primevue/icons/chevronright';
-import ChevronUpIcon from 'primevue/icons/chevronup';
-import Ripple from 'primevue/ripple';
-import { DomHandler, UniqueComponentId, ObjectUtils } from 'primevue/utils';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import ChevronLeftIcon from '@fcbtech/primevue/icons/chevronleft';
+import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
+import ChevronUpIcon from '@fcbtech/primevue/icons/chevronup';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, UniqueComponentId, ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseCarousel from './BaseCarousel.vue';
 
 export default {

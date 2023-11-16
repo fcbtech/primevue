@@ -1,4 +1,4 @@
-import { DomHandler } from 'primevue/utils';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import BaseStyleClass from './BaseStyleClass';
 
 const StyleClass = BaseStyleClass.extend('styleclass', {

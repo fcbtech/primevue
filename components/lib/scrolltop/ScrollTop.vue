@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import ChevronUpIcon from 'primevue/icons/chevronup';
-import { DomHandler, ZIndexUtils } from 'primevue/utils';
+import ChevronUpIcon from '@fcbtech/primevue/icons/chevronup';
+import { DomHandler, ZIndexUtils } from '@fcbtech/primevue/utils';
 import BaseScrollTop from './BaseScrollTop.vue';
 
 export default {

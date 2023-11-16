@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { DomHandler } from 'primevue/utils';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import BaseSlider from './BaseSlider.vue';
 
 export default {

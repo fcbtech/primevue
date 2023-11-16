@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import DataViewStyle from 'primevue/dataview/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import DataViewStyle from '@fcbtech/primevue/dataview/style';
 
 export default {
     name: 'BaseDataView',

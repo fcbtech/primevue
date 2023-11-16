@@ -11,10 +11,10 @@
 
 <script>
 import BaseInlineMessage from './BaseInlineMessage.vue';
-import CheckIcon from 'primevue/icons/check';
-import ExclamationTriangleIcon from 'primevue/icons/exclamationtriangle';
-import InfoCircleIcon from 'primevue/icons/infocircle';
-import TimesCircleIcon from 'primevue/icons/timescircle';
+import CheckIcon from '@fcbtech/primevue/icons/check';
+import ExclamationTriangleIcon from '@fcbtech/primevue/icons/exclamationtriangle';
+import InfoCircleIcon from '@fcbtech/primevue/icons/infocircle';
+import TimesCircleIcon from '@fcbtech/primevue/icons/timescircle';
 
 export default {
     name: 'InlineMessage',

@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import AngleDoubleRightIcon from 'primevue/icons/angledoubleright';
-import Ripple from 'primevue/ripple';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import AngleDoubleRightIcon from '@fcbtech/primevue/icons/angledoubleright';
+import Ripple from '@fcbtech/primevue/ripple';
 
 export default {
     name: 'LastPageLink',

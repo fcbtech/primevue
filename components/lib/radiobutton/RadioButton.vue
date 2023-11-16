@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { ObjectUtils } from 'primevue/utils';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseRadioButton from './BaseRadioButton.vue';
 
 export default {

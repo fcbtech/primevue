@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { DomHandler } from 'primevue/utils';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import BaseSteps from './BaseSteps.vue';
 

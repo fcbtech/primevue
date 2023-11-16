@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import InputSwitch from 'primevue/inputswitch';
+import InputSwitch from '@fcbtech/primevue/inputswitch';
 `
             }
         };

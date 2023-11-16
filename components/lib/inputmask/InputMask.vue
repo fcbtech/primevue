@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { DomHandler } from 'primevue/utils';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import BaseInputMask from './BaseInputMask.vue';
 
 export default {

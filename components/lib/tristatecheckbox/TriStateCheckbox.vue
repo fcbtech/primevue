@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import CheckIcon from 'primevue/icons/check';
-import TimesIcon from 'primevue/icons/times';
+import CheckIcon from '@fcbtech/primevue/icons/check';
+import TimesIcon from '@fcbtech/primevue/icons/times';
 import BaseTriStateCheckbox from './BaseTriStateCheckbox.vue';
 
 export default {

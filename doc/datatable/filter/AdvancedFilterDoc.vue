@@ -117,7 +117,7 @@
 
 <script>
 import { CustomerService } from '@/service/CustomerService';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode, FilterOperator } from '@fcbtech/primevue/api';
 
 export default {
     data() {
@@ -367,7 +367,7 @@ export default {
 
 <script>
 import { CustomerService } from '@/service/CustomerService';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode, FilterOperator } from '@fcbtech/primevue/api';
 
 export default {
     data() {
@@ -573,7 +573,7 @@ export default {
 <script setup>
 import { ref, onMounted } from 'vue';
 import { CustomerService } from '@/service/CustomerService';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode, FilterOperator } from '@fcbtech/primevue/api';
 
 const customers = ref();
 const filters = ref();

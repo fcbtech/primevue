@@ -58,13 +58,13 @@
 </template>
 
 <script>
-import FocusTrap from 'primevue/focustrap';
-import TimesIcon from 'primevue/icons/times';
-import WindowMaximizeIcon from 'primevue/icons/windowmaximize';
-import WindowMinimizeIcon from 'primevue/icons/windowminimize';
-import Portal from 'primevue/portal';
-import Ripple from 'primevue/ripple';
-import { DomHandler, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
+import FocusTrap from '@fcbtech/primevue/focustrap';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import WindowMaximizeIcon from '@fcbtech/primevue/icons/windowmaximize';
+import WindowMinimizeIcon from '@fcbtech/primevue/icons/windowminimize';
+import Portal from '@fcbtech/primevue/portal';
+import Ripple from '@fcbtech/primevue/ripple';
+import { DomHandler, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
 import { computed } from 'vue';
 import BaseDialog from './BaseDialog.vue';
 

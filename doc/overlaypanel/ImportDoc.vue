@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import OverlayPanel from 'primevue/overlaypanel';
+import OverlayPanel from '@fcbtech/primevue/overlaypanel';
 `
             }
         };

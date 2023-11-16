@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ToastStyle from 'primevue/toast/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ToastStyle from '@fcbtech/primevue/toast/style';
 
 export default {
     name: 'BaseToast',

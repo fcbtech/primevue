@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import CalendarStyle from 'primevue/calendar/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import CalendarStyle from '@fcbtech/primevue/calendar/style';
 
 export default {
     name: 'BaseCalendar',

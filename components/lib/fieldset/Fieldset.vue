@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import MinusIcon from 'primevue/icons/minus';
-import PlusIcon from 'primevue/icons/plus';
-import Ripple from 'primevue/ripple';
-import { UniqueComponentId } from 'primevue/utils';
+import MinusIcon from '@fcbtech/primevue/icons/minus';
+import PlusIcon from '@fcbtech/primevue/icons/plus';
+import Ripple from '@fcbtech/primevue/ripple';
+import { UniqueComponentId } from '@fcbtech/primevue/utils';
 import BaseFieldset from './BaseFieldset.vue';
 
 export default {

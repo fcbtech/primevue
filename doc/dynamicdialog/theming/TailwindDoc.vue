@@ -113,9 +113,9 @@ export default {
 
 <script setup>
 import { markRaw, defineAsyncComponent } from 'vue';
-import { useDialog } from 'primevue/usedialog';
-import { useToast } from 'primevue/usetoast';
-import Button from 'primevue/button';
+import { useDialog } from '@fcbtech/primevue/usedialog';
+import { useToast } from '@fcbtech/primevue/usetoast';
+import Button from '@fcbtech/primevue/button';
 const ProductListDemo = defineAsyncComponent(() => import('./components/ProductListDemo.vue'));
 const FooterDemo = defineAsyncComponent(() => import('./components/FooterDemo.vue'));
 

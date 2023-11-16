@@ -37,10 +37,10 @@
 </template>
 
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ChevronLeftIcon from 'primevue/icons/chevronleft';
-import ChevronRightIcon from 'primevue/icons/chevronright';
-import Ripple from 'primevue/ripple';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ChevronLeftIcon from '@fcbtech/primevue/icons/chevronleft';
+import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
+import Ripple from '@fcbtech/primevue/ripple';
 
 export default {
     name: 'GalleriaItem',

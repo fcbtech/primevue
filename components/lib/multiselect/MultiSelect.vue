@@ -190,18 +190,18 @@
 </template>
 
 <script>
-import { FilterService } from 'primevue/api';
-import CheckIcon from 'primevue/icons/check';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import SearchIcon from 'primevue/icons/search';
-import SpinnerIcon from 'primevue/icons/spinner';
-import TimesIcon from 'primevue/icons/times';
-import TimesCircleIcon from 'primevue/icons/timescircle';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import Ripple from 'primevue/ripple';
-import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
-import VirtualScroller from 'primevue/virtualscroller';
+import { FilterService } from '@fcbtech/primevue/api';
+import CheckIcon from '@fcbtech/primevue/icons/check';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import SearchIcon from '@fcbtech/primevue/icons/search';
+import SpinnerIcon from '@fcbtech/primevue/icons/spinner';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import TimesCircleIcon from '@fcbtech/primevue/icons/timescircle';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import Ripple from '@fcbtech/primevue/ripple';
+import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
+import VirtualScroller from '@fcbtech/primevue/virtualscroller';
 import BaseMultiSelect from './BaseMultiSelect.vue';
 
 export default {

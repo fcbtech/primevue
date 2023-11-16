@@ -1,6 +1,6 @@
 <script>
-import BaseStyle from 'primevue/base/style';
-import { ObjectUtils } from 'primevue/utils';
+import BaseStyle from '@fcbtech/primevue/base/style';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import BaseComponentStyle from './style/BaseComponentStyle';
 

@@ -168,16 +168,16 @@
 </template>
 
 <script>
-import { FilterService } from 'primevue/api';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import FilterIcon from 'primevue/icons/filter';
-import SpinnerIcon from 'primevue/icons/spinner';
-import TimesIcon from 'primevue/icons/times';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import Ripple from 'primevue/ripple';
-import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
-import VirtualScroller from 'primevue/virtualscroller';
+import { FilterService } from '@fcbtech/primevue/api';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import FilterIcon from '@fcbtech/primevue/icons/filter';
+import SpinnerIcon from '@fcbtech/primevue/icons/spinner';
+import TimesIcon from '@fcbtech/primevue/icons/times';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import Ripple from '@fcbtech/primevue/ripple';
+import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
+import VirtualScroller from '@fcbtech/primevue/virtualscroller';
 import BaseDropdown from './BaseDropdown.vue';
 
 export default {

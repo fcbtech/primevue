@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import InputText from 'primevue/inputtext';
+import InputText from '@fcbtech/primevue/inputtext';
 import Inplace from './Inplace.vue';
 
 describe('Inplace.vue', () => {

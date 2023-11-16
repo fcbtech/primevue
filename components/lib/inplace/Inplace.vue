@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import Button from 'primevue/button';
-import FocusTrap from 'primevue/focustrap';
-import TimesIcon from 'primevue/icons/times';
+import Button from '@fcbtech/primevue/button';
+import FocusTrap from '@fcbtech/primevue/focustrap';
+import TimesIcon from '@fcbtech/primevue/icons/times';
 import BaseInplace from './BaseInplace.vue';
 
 export default {

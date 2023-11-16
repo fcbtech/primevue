@@ -191,7 +191,7 @@ export default {
 import { ref } from 'vue';
 import { useToast } from "primevue/usetoast";
 import { useRouter } from 'vue-router';
-import Menu from 'primevue/menu';
+import Menu from '@fcbtech/primevue/menu';
 
 const menu = ref(null);
 const toast = useToast();

@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import ChipStyle from 'primevue/chip/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import ChipStyle from '@fcbtech/primevue/chip/style';
 
 export default {
     name: 'BaseChip',

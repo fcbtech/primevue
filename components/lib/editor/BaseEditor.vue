@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import EditorStyle from 'primevue/editor/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import EditorStyle from '@fcbtech/primevue/editor/style';
 
 export default {
     name: 'BaseEditor',

@@ -9,8 +9,8 @@ export default {
         return {
             code: {
                 basic: `
-import TabView from 'primevue/tabview';
-import TabPanel from 'primevue/tabpanel';
+import TabView from '@fcbtech/primevue/tabview';
+import TabPanel from '@fcbtech/primevue/tabpanel';
 `
             }
         };

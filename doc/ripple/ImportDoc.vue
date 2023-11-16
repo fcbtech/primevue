@@ -17,7 +17,7 @@ export default {
             code1: {
                 basic: `
 import { createApp } from 'vue';
-import PrimeVue from 'primevue/config';
+import PrimeVue from '@fcbtech/primevue/config';
 const app = createApp(App);
 
 app.use(PrimeVue, { ripple: true });
@@ -25,7 +25,7 @@ app.use(PrimeVue, { ripple: true });
             },
             code2: {
                 basic: `
-import Ripple from 'primevue/ripple';
+import Ripple from '@fcbtech/primevue/ripple';
 
 app.directive('ripple', Ripple);
 `

@@ -3,7 +3,7 @@ import FilterService from '../FilterService';
 
 const filters = FilterService.filters;
 
-import { ObjectUtils } from 'primevue/utils';
+import { ObjectUtils } from '@fcbtech/primevue/utils';
 
 afterEach(() => {
     vi.restoreAllMocks();

@@ -176,15 +176,15 @@
 </template>
 
 <script>
-import Button from 'primevue/button';
-import ChevronDownIcon from 'primevue/icons/chevrondown';
-import SpinnerIcon from 'primevue/icons/spinner';
-import TimesCircleIcon from 'primevue/icons/timescircle';
-import OverlayEventBus from 'primevue/overlayeventbus';
-import Portal from 'primevue/portal';
-import Ripple from 'primevue/ripple';
-import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from 'primevue/utils';
-import VirtualScroller from 'primevue/virtualscroller';
+import Button from '@fcbtech/primevue/button';
+import ChevronDownIcon from '@fcbtech/primevue/icons/chevrondown';
+import SpinnerIcon from '@fcbtech/primevue/icons/spinner';
+import TimesCircleIcon from '@fcbtech/primevue/icons/timescircle';
+import OverlayEventBus from '@fcbtech/primevue/overlayeventbus';
+import Portal from '@fcbtech/primevue/portal';
+import Ripple from '@fcbtech/primevue/ripple';
+import { ConnectedOverlayScrollHandler, DomHandler, ObjectUtils, UniqueComponentId, ZIndexUtils } from '@fcbtech/primevue/utils';
+import VirtualScroller from '@fcbtech/primevue/virtualscroller';
 import BaseAutoComplete from './BaseAutoComplete.vue';
 
 export default {

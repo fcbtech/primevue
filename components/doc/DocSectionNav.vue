@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { DomHandler, ObjectUtils } from 'primevue/utils';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 
 export default {
     props: ['docs'],

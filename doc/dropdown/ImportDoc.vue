@@ -9,7 +9,7 @@ export default {
         return {
             code: {
                 basic: `
-import Dropdown from 'primevue/dropdown';
+import Dropdown from '@fcbtech/primevue/dropdown';
 `
             }
         };

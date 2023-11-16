@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import SpinnerIcon from 'primevue/icons/spinner';
-import { DomHandler } from 'primevue/utils';
+import SpinnerIcon from '@fcbtech/primevue/icons/spinner';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import BaseVirtualScroller from './BaseVirtualScroller.vue';
 
 export default {

@@ -39,7 +39,7 @@ this.$primevue.changeTheme('md-dark-indigo', 'md-light-indigo', 'theme-link', ()
             code3: {
                 basic: `
 // Composition API
-import { usePrimeVue } from 'primevue/config';
+import { usePrimeVue } from '@fcbtech/primevue/config';
 
 const PrimeVue = usePrimeVue();
 PrimeVue.changeTheme('md-dark-indigo', 'md-light-indigo', 'theme-link', () => {});

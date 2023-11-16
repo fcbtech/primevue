@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import DataTableStyle from 'primevue/datatable/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import DataTableStyle from '@fcbtech/primevue/datatable/style';
 
 export default {
     name: 'BaseDataTable',
@@ -137,6 +137,14 @@ export default {
         selectAll: {
             type: Boolean,
             default: null
+        },
+        selectAllCallback: {
+            type: Function,
+            default: (frozenValue, processedData) => [...frozenValue, ...processedData]
+        },
+        unSelectAllCallback: {
+            type: Function,
+            default: (frozenValue, processedData) => []
         },
         rowHover: {
             type: Boolean,

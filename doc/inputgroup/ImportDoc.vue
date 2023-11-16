@@ -9,8 +9,8 @@ export default {
         return {
             code: {
                 basic: `
-import InputGroup from 'primevue/inputgroup';
-import InputGroupAddon from 'primevue/inputgroupaddon';
+import InputGroup from '@fcbtech/primevue/inputgroup';
+import InputGroupAddon from '@fcbtech/primevue/inputgroupaddon';
 `
             }
         };

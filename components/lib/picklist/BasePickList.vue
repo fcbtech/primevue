@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import PickListStyle from 'primevue/picklist/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import PickListStyle from '@fcbtech/primevue/picklist/style';
 
 export default {
     name: 'BasePickList',

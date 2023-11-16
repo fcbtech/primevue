@@ -91,7 +91,7 @@
 
 <script>
 import { CustomerService } from '@/service/CustomerService';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode, FilterOperator } from '@fcbtech/primevue/api';
 
 export default {
     emits: ['table-theme-change'],

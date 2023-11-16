@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { DomHandler } from 'primevue/utils';
+import { DomHandler } from '@fcbtech/primevue/utils';
 import BaseEditor from './BaseEditor.vue';
 
 const QuillJS = (function () {

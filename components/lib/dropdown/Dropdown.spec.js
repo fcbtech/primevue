@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import PrimeVue from 'primevue/config';
+import PrimeVue from '@fcbtech/primevue/config';
 import { h } from 'vue';
 import Dropdown from './Dropdown.vue';
 

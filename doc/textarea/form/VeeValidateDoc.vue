@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { useToast } from 'primevue/usetoast';
+import { useToast } from '@fcbtech/primevue/usetoast';
 import { useField, useForm } from 'vee-validate';
 export default {
     setup() {
@@ -73,7 +73,7 @@ export default {
 </template>
 
 <script>
-import { useToast } from 'primevue/usetoast';
+import { useToast } from '@fcbtech/primevue/usetoast';
 import { useField, useForm } from 'vee-validate';
 export default {
     setup() {
@@ -117,7 +117,7 @@ export default {
 </template>
 
 <script setup>
-import { useToast } from 'primevue/usetoast';
+import { useToast } from '@fcbtech/primevue/usetoast';
 import { useField, useForm } from 'vee-validate';
 
 const { handleSubmit, resetForm } = useForm();

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import TimesCircleIcon from 'primevue/icons/timescircle';
+import TimesCircleIcon from '@fcbtech/primevue/icons/timescircle';
 import BaseChip from './BaseChip.vue';
 
 export default {
