@@ -7639,6 +7639,14 @@
                             "description": "An array of options for responsive design."
                         },
                         {
+                            "name": "breakpoint",
+                            "optional": true,
+                            "readonly": false,
+                            "type": "string",
+                            "default": "769px",
+                            "description": "The breakpoint to define the maximum width boundary for datepicker panel."
+                        },
+                        {
                             "name": "view",
                             "optional": true,
                             "readonly": false,
@@ -20356,22 +20364,6 @@
                             "description": "Used to pass attributes to the content's DOM element."
                         },
                         {
-                            "name": "grid",
-                            "optional": true,
-                            "readonly": false,
-                            "type": "DataViewPassThroughOptionType",
-                            "default": "",
-                            "description": "Used to pass attributes to the grid's DOM element."
-                        },
-                        {
-                            "name": "column",
-                            "optional": true,
-                            "readonly": false,
-                            "type": "DataViewPassThroughOptionType",
-                            "default": "",
-                            "description": "Used to pass attributes to the column's DOM element."
-                        },
-                        {
                             "name": "emptyMessage",
                             "optional": true,
                             "readonly": false,
@@ -20612,7 +20604,14 @@
                         },
                         {
                             "name": "empty",
-                            "parameters": [],
+                            "parameters": [
+                                {
+                                    "name": "scope",
+                                    "optional": false,
+                                    "type": "{\n  \t <span class=\"ml-3 text-primary-700\">layout</span>: <span class=\"text-primary-500\">string</span>, <span class=\"text-primary-300\">// Layout of the items.</span>\n }",
+                                    "description": "empty slot's params."
+                                }
+                            ],
                             "returnType": "VNode<RendererNode, RendererElement, Object>[]",
                             "description": "Custom empty template."
                         },
@@ -20634,7 +20633,7 @@
                                 {
                                     "name": "scope",
                                     "optional": false,
-                                    "type": "{\n  \t <span class=\"ml-3 text-primary-700\">data</span>: <span class=\"text-primary-500\">any</span>, <span class=\"text-primary-300\">// Value of the component</span>\n  \t <span class=\"ml-3 text-primary-700\">index</span>: <span class=\"text-primary-500\">number</span>, <span class=\"text-primary-300\">// Index of the grid</span>\n }",
+                                    "type": "{\n  \t <span class=\"ml-3 text-primary-700\">items</span>: <span class=\"text-primary-500\">any</span>, <span class=\"text-primary-300\">// Value of the component</span>\n }",
                                     "description": "list slot's params."
                                 }
                             ],
@@ -20647,7 +20646,7 @@
                                 {
                                     "name": "scope",
                                     "optional": false,
-                                    "type": "{\n  \t <span class=\"ml-3 text-primary-700\">data</span>: <span class=\"text-primary-500\">any</span>, <span class=\"text-primary-300\">// Value of the component</span>\n  \t <span class=\"ml-3 text-primary-700\">index</span>: <span class=\"text-primary-500\">number</span>, <span class=\"text-primary-300\">// Index of the grid</span>\n }",
+                                    "type": "{\n  \t <span class=\"ml-3 text-primary-700\">items</span>: <span class=\"text-primary-500\">any</span>, <span class=\"text-primary-300\">// Value of the component</span>\n }",
                                     "description": "list slot's params."
                                 }
                             ],
@@ -22559,6 +22558,14 @@
                             "description": "Inline style of the element."
                         },
                         {
+                            "name": "breakpoint",
+                            "optional": true,
+                            "readonly": false,
+                            "type": "string",
+                            "default": "960px",
+                            "description": "The breakpoint to define the maximum width boundary."
+                        },
+                        {
                             "name": "exact",
                             "optional": true,
                             "readonly": false,
@@ -23951,7 +23958,7 @@
             }
         }
     },
-    "dynamicdialog/style/AccordionStyle": {
+    "dynamicdialog/style/DynamicDialogStyle": {
         "interfaces": {
             "description": "Defines the custom interfaces used by the module.",
             "eventDescription": "Defines the custom events used by the component's emit.",
@@ -31944,6 +31951,14 @@
                             "description": "Used to pass attributes to the separator's DOM element."
                         },
                         {
+                            "name": "menubutton",
+                            "optional": true,
+                            "readonly": false,
+                            "type": "MegaMenuPassThroughOptionType",
+                            "default": "",
+                            "description": "Used to pass attributes to the mobile popup menu button's DOM element."
+                        },
+                        {
                             "name": "start",
                             "optional": true,
                             "readonly": false,
@@ -32158,6 +32173,14 @@
                             "type": "\"horizontal\" | \"vertical\"",
                             "default": "horizontal",
                             "description": "Defines the orientation."
+                        },
+                        {
+                            "name": "breakpoint",
+                            "optional": true,
+                            "readonly": false,
+                            "type": "string",
+                            "default": "960px",
+                            "description": "The breakpoint to define the maximum width boundary."
                         },
                         {
                             "name": "exact",
@@ -33384,6 +33407,14 @@
                             "type": "MenuItem[]",
                             "default": "",
                             "description": "An array of menuitems."
+                        },
+                        {
+                            "name": "breakpoint",
+                            "optional": true,
+                            "readonly": false,
+                            "type": "string",
+                            "default": "960px",
+                            "description": "The breakpoint to define the maximum width boundary."
                         },
                         {
                             "name": "exact",
@@ -37102,6 +37133,19 @@
                             "parameters": [],
                             "returnType": "VNode<RendererNode, RendererElement, Object>[]",
                             "description": "Custom close icon template."
+                        },
+                        {
+                            "name": "container",
+                            "parameters": [
+                                {
+                                    "name": "scope",
+                                    "optional": false,
+                                    "type": "{\n \t <span class=\"ml-3 text-primary-700 line-through\">onClose</span>: <span class=\"text-primary-500 line-through\">() &rArr; void</span>, <span class=\"text-primary-300 line-through\">// Close overlay panel function.</span>\n\t <span class=\"ml-3 text-primary-700 line-through\">onKeydown</span>: <span class=\"text-primary-500 line-through\">(<span class=\"text-primary-700\">event</span>: Event) &rArr; void</span>, <span class=\"text-primary-300 line-through\">// Close button keydown function.</span>\n\t <span class=\"ml-3 text-primary-700\">closeCallback</span>: <span class=\"text-primary-500\">() &rArr; void</span>, <span class=\"text-primary-300\">// Close overlay panel function.</span>\n\t <span class=\"ml-3 text-primary-700\">keydownCallback</span>: <span class=\"text-primary-500\">(<span class=\"text-primary-700\">event</span>: Event) &rArr; void</span>, <span class=\"text-primary-300\">// Close button keydown function.</span>\n}",
+                                    "description": "container slot's params."
+                                }
+                            ],
+                            "returnType": "VNode<RendererNode, RendererElement, Object>[]",
+                            "description": "Custom container slot."
                         }
                     ]
                 },
@@ -37121,19 +37165,6 @@
                             "parameters": [],
                             "returnType": "void",
                             "description": "Callback to invoke when the overlay is hidden."
-                        },
-                        {
-                            "name": "container",
-                            "parameters": [
-                                {
-                                    "name": "scope",
-                                    "optional": false,
-                                    "type": "Object",
-                                    "description": "container slot's params."
-                                }
-                            ],
-                            "returnType": "VNode<RendererNode, RendererElement, Object>[]",
-                            "description": "Custom container slot."
                         }
                     ]
                 }
@@ -38689,6 +38720,14 @@
                             "type": "PanelMenuExpandedKeys",
                             "default": "",
                             "description": "A map of keys to represent the expansion state in controlled mode."
+                        },
+                        {
+                            "name": "multiple",
+                            "optional": true,
+                            "readonly": false,
+                            "type": "boolean",
+                            "default": "false",
+                            "description": "When enabled, multiple root menuitems can be activated at the same time."
                         },
                         {
                             "name": "exact",

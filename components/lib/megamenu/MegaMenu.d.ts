@@ -107,6 +107,10 @@ export interface MegaMenuPassThroughOptions {
      */
     separator?: MegaMenuPassThroughOptionType;
     /**
+     * Used to pass attributes to the mobile popup menu button's DOM element.
+     */
+    menubutton?: MegaMenuPassThroughOptionType;
+    /**
      * Used to pass attributes to the start of the component.
      */
     start?: MegaMenuPassThroughOptionType;
@@ -235,6 +239,11 @@ export interface MegaMenuProps {
      * @defaultValue horizontal
      */
     orientation?: 'horizontal' | 'vertical' | undefined;
+    /**
+     * The breakpoint to define the maximum width boundary.
+     * @defaultValue 960px
+     */
+    breakpoint?: string | undefined;
     /**
      * Whether to apply 'router-link-active-exact' class if route exactly matches the item path.
      * @deprecated since v3.40.0.
