@@ -8,7 +8,7 @@ const FocusTrap = BaseFocusTrap.extend('focustrap', {
         if (!disabled) {
             this.createHiddenFocusableElements(el, binding);
             this.bind(el, binding);
-            this.autoFocus(el, binding);
+            this.autoElementFocus(el, binding);
         }
 
         el.setAttribute('data-pd-focustrap', true);
@@ -40,7 +40,7 @@ const FocusTrap = BaseFocusTrap.extend('focustrap', {
                                     : DomHandler.getFirstFocusableElement(el, this.getComputedSelector(el.$_pfocustrap_focusableselector))
                                 : DomHandler.getFirstFocusableElement(_el);
 
-                            return ObjectUtils.isNotEmpty(focusableElement) ? focusableElement : findNextFocusableElement(_el.nextSibling);
+                            return ObjectUtils.isNotEmpty(focusableElement) ? focusableElement : _el.nextSibling && findNextFocusableElement(_el.nextSibling);
                         };
 
                         DomHandler.focus(findNextFocusableElement(mutation.nextSibling));
@@ -64,7 +64,10 @@ const FocusTrap = BaseFocusTrap.extend('focustrap', {
             el.$_pfocustrap_focusinlistener && el.removeEventListener('focusin', el.$_pfocustrap_focusinlistener) && (el.$_pfocustrap_focusinlistener = null);
             el.$_pfocustrap_focusoutlistener && el.removeEventListener('focusout', el.$_pfocustrap_focusoutlistener) && (el.$_pfocustrap_focusoutlistener = null);
         },
-        autoFocus(el, binding) {
+        autoFocus(options) {
+            this.autoElementFocus(this.$el, { value: { ...options, autoFocus: true } });
+        },
+        autoElementFocus(el, binding) {
             const { autoFocusSelector = '', firstFocusableSelector = '', autoFocus = false } = binding.value || {};
             let focusableElement = DomHandler.getFirstFocusableElement(el, `[autofocus]${this.getComputedSelector(autoFocusSelector)}`);
 

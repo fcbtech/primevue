@@ -26,6 +26,14 @@ export interface SkeletonPassThroughMethodOptions {
      */
     props: SkeletonProps;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -126,8 +134,8 @@ export interface SkeletonEmits {}
  */
 declare class Skeleton extends ClassComponent<SkeletonProps, SkeletonSlots, SkeletonEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Skeleton: GlobalComponentConstructor<Skeleton>;
     }
 }

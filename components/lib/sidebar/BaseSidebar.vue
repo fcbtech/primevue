@@ -14,6 +14,10 @@ export default {
             type: String,
             default: 'left'
         },
+        header: {
+            type: null,
+            default: null
+        },
         baseZIndex: {
             type: Number,
             default: 0
@@ -48,6 +52,15 @@ export default {
         return {
             $parentInstance: this
         };
+    },
+    watch: {
+        dismissable(newValue) {
+            if (newValue) {
+                this.bindOutsideClickListener();
+            } else {
+                this.unbindOutsideClickListener();
+            }
+        }
     }
 };
 </script>

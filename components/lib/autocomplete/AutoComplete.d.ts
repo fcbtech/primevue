@@ -9,9 +9,9 @@
  */
 import { HTMLAttributes, InputHTMLAttributes, TransitionProps, VNode } from 'vue';
 import { ComponentHooks } from '../basecomponent';
-import { ButtonPassThroughOptionType } from '../button';
+import { ButtonPassThroughOptions } from '../button';
 import { PassThroughOptions } from '../passthrough';
-import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, PassThrough, HintedString } from '../ts-helpers';
 import { VirtualScrollerItemOptions, VirtualScrollerPassThroughOptionType, VirtualScrollerProps } from '../virtualscroller';
 
 export declare type AutoCompletePassThroughOptionType = AutoCompletePassThroughAttributes | ((options: AutoCompletePassThroughMethodOptions) => AutoCompletePassThroughAttributes | string) | string | null | undefined;
@@ -39,9 +39,31 @@ export interface AutoCompletePassThroughMethodOptions {
      */
     context: AutoCompleteContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
+}
+
+/**
+ * Custom shared passthrough(pt) option method.
+ */
+export interface AutoCompleteSharedPassThroughMethodOptions {
+    /**
+     * Defines valid properties.
+     */
+    props: AutoCompleteProps;
+    /**
+     * Defines current inline state.
+     */
+    state: AutoCompleteState;
 }
 
 /**
@@ -150,8 +172,9 @@ export interface AutoCompletePassThroughOptions {
     loadingIcon?: AutoCompletePassThroughOptionType;
     /**
      * Used to pass attributes to the Button component.
+     * @see {@link ButtonPassThroughOptions}
      */
-    dropdownButton?: ButtonPassThroughOptionType;
+    dropdownButton?: ButtonPassThroughOptions<AutoCompleteSharedPassThroughMethodOptions>;
     /**
      * Used to pass attributes to the panel's DOM element.
      */
@@ -328,10 +351,20 @@ export interface AutoCompleteProps {
      */
     loading?: boolean | undefined;
     /**
+     * When present, it specifies that the component should have invalid state style.
+     * @defaultValue false
+     */
+    invalid?: boolean | undefined;
+    /**
      * When present, it specifies that the component should be disabled.
      * @defaultValue false
      */
     disabled?: boolean | undefined;
+    /**
+     * Specifies the input variant of the component.
+     * @defaultValue outlined
+     */
+    variant?: 'outlined' | 'filled' | undefined;
     /**
      * A property to uniquely identify an option.
      */
@@ -351,7 +384,7 @@ export interface AutoCompleteProps {
      * Special keywords are 'body' for document body and 'self' for the element itself.
      * @defaultValue body
      */
-    appendTo?: 'body' | 'self' | string | undefined | HTMLElement;
+    appendTo?: HintedString<'body' | 'self'> | undefined | HTMLElement;
     /**
      * When present, autocomplete clears the manual input if it does not match of the suggestions to force only accepting values from the suggestions.
      * @defaultValue false
@@ -416,7 +449,7 @@ export interface AutoCompleteProps {
     virtualScrollerOptions?: VirtualScrollerProps;
     /**
      * Whether to focus on the first visible or selected element when the overlay panel is shown.
-     * @defaultValue true
+     * @defaultValue false
      */
     autoOptionFocus?: boolean | undefined;
     /**
@@ -424,6 +457,11 @@ export interface AutoCompleteProps {
      * @defaultValue false
      */
     selectOnFocus?: boolean | undefined;
+    /**
+     * When enabled, the focus is placed on the hovered option.
+     * @defaultValue true
+     */
+    focusOnHover?: boolean | undefined;
     /**
      * Locale to use in searching. The default locale is the host environment's current locale.
      */
@@ -455,11 +493,11 @@ export interface AutoCompleteProps {
     /**
      * Defines a string value that labels an interactive element.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Identifier of the underlying input element.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {AutoCompletePassThroughOptions}
@@ -731,8 +769,8 @@ export interface AutoCompleteEmits {
  */
 declare class AutoComplete extends ClassComponent<AutoCompleteProps, AutoCompleteSlots, AutoCompleteEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         AutoComplete: GlobalComponentConstructor<AutoComplete>;
     }
 }

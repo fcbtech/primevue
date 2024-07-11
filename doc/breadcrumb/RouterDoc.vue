@@ -17,7 +17,7 @@
             </template>
         </Breadcrumb>
     </div>
-    <DocSectionCode :code="code" hideStackBlitz hideCodeSandbox />
+    <DocSectionCode :code="code" hideStackBlitz />
 </template>
 
 <script>
@@ -26,7 +26,7 @@ export default {
         return {
             home: {
                 icon: 'pi pi-home',
-                route: '/installation'
+                route: '/introduction'
             },
             items: [{ label: 'Components' }, { label: 'Form' }, { label: 'InputText', route: '/inputtext' }],
             code: {
@@ -70,11 +70,11 @@ export default {
         return {
             home: {
                 icon: 'pi pi-home',
-                route: '/installation'
+                route: '/introduction'
             },
             items: [
-                { label: 'Components' }, 
-                { label: 'Form' }, 
+                { label: 'Components' },
+                { label: 'Form' },
                 { label: 'InputText', route: '/inputtext' }
             ]
         }
@@ -106,11 +106,11 @@ import { ref } from "vue";
 
 const home = ref({
     icon: 'pi pi-home',
-    route: '/installation'
+    route: '/introduction'
 });
 const items = ref([
-    { label: 'Components' }, 
-    { label: 'Form' }, 
+    { label: 'Components' },
+    { label: 'Form' },
     { label: 'InputText', route: '/inputtext' }
 ]);
 <\/script>

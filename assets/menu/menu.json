@@ -5,22 +5,52 @@
             "icon": "pi pi-home",
             "children": [
                 {
-                    "name": "Installation",
-                    "to": "/installation"
+                    "name": "Introduction",
+                    "to": "/introduction"
                 },
                 {
-                    "name": "Configuration",
-                    "to": "/configuration"
-                },
-                {
-                    "name": "Nuxt",
-                    "to": "/nuxt",
-                    "badge": "NEW"
+                    "name": "Setup",
+                    "to": "/setup"
                 },
                 {
                     "name": "Playground",
-                    "to": "/playground",
-                    "badge": "NEW"
+                    "to": "/playground"
+                }
+            ]
+        },
+        {
+            "name": "Installation",
+            "icon": "pi pi-cloud-download",
+            "children": [
+                {
+                    "name": "Vite",
+                    "to": "/vite"
+                },
+                {
+                    "name": "Nuxt",
+                    "to": "/nuxt"
+                },
+                {
+                    "name": "CDN",
+                    "to": "/cdn"
+                }
+            ]
+        },
+        {
+            "name": "Configuration",
+            "icon": "pi pi-cog",
+            "children": [
+                {
+                    "name": "Options",
+                    "to": "/configuration"
+                },
+                {
+                    "name": "Auto Import",
+                    "to": "/autoimport"
+                },
+                {
+                    "name": "CSS Layer",
+                    "to": "/csslayer"
                 }
             ]
         },
@@ -64,6 +94,14 @@
                             "to": "/editor"
                         },
                         {
+                            "name": "FloatLabel",
+                            "to": "/floatlabel"
+                        },
+                        {
+                            "name": "IconField",
+                            "to": "/iconfield"
+                        },
+                        {
                             "name": "InputGroup",
                             "to": "/inputgroup"
                         },
@@ -74,6 +112,10 @@
                         {
                             "name": "InputNumber",
                             "to": "/inputnumber"
+                        },
+                        {
+                            "name": "InputOtp",
+                            "to": "/inputotp"
                         },
                         {
                             "name": "InputSwitch",
@@ -229,6 +271,10 @@
                         {
                             "name": "Splitter",
                             "to": "/splitter"
+                        },
+                        {
+                            "name": "Stepper",
+                            "to": "/stepper"
                         },
                         {
                             "name": "TabView",
@@ -398,6 +444,10 @@
                             "to": "/inplace"
                         },
                         {
+                            "name": "MeterGroup",
+                            "to": "/metergroup"
+                        },
+                        {
                             "name": "ScrollTop",
                             "to": "/scrolltop"
                         },
@@ -449,10 +499,6 @@
                             "to": "/theming"
                         },
                         {
-                            "name": "Visual Editor",
-                            "href": "https://designer.primevue.org"
-                        },
-                        {
                             "name": "Colors",
                             "to": "/colors"
                         },
@@ -493,7 +539,8 @@
         {
             "name": "Tailwind",
             "icon": "pi pi-heart",
-            "to": "/tailwind"
+            "href": "https://tailwind.primevue.org/",
+            "badge": "NEW"
         },
         {
             "name": "Figma UI Kit",
@@ -506,7 +553,8 @@
             "children": [
                 {
                     "name": "Prime Icons",
-                    "to": "/icons"
+                    "to": "/icons",
+                    "badge": "UPDATED"
                 },
                 {
                     "name": "Custom Icons",
@@ -525,14 +573,19 @@
             "href": "https://blocks.primevue.org"
         },
         {
-            "name": "PrimeFlex CSS",
-            "icon": "pi pi-table",
-            "href": "https://primeflex.org"
-        },
-        {
-            "name": "Accessibility",
-            "icon": "pi pi-users",
-            "to": "/accessibility"
+            "name": "Guides",
+            "icon": "pi pi-book",
+            "children": [
+                {
+                    "name": "Accessibility",
+                    "to": "/guides/accessibility"
+                },
+                {
+                    "name": "PrimeTV",
+                    "icon": "pi pi-youtube",
+                    "href": "https://www.youtube.com/channel/UCTgmp69aBOlLnPEqlUyetWw"
+                }
+            ]
         },
         {
             "name": "Support",
@@ -551,11 +604,6 @@
                     "to": "/support"
                 }
             ]
-        },
-        {
-            "name": "PrimeTV",
-            "icon": "pi pi-youtube",
-            "href": "https://www.youtube.com/channel/UCTgmp69aBOlLnPEqlUyetWw"
         },
         {
             "name": "Discover",
@@ -592,6 +640,11 @@
                 {
                     "name": "PrimeGear",
                     "href": "https://gear.primefaces.org"
+                },
+                {
+                    "name": "PrimeFlex CSS",
+                    "icon": "pi pi-table",
+                    "href": "https://primeflex.org"
                 }
             ]
         }

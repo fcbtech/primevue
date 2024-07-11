@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" :class="cx('root')" :style="sx('root')" @click="onContainerClick($event)" v-bind="ptm('root')" data-pc-name="cascadeselect">
+    <div ref="container" :class="cx('root')" :style="sx('root')" @click="onContainerClick($event)" v-bind="ptmi('root')">
         <div class="p-hidden-accessible" v-bind="ptm('hiddenInputWrapper')" :data-p-hidden-accessible="true">
             <input
                 ref="focusInput"
@@ -18,6 +18,7 @@
                 :aria-expanded="overlayVisible"
                 :aria-controls="id + '_tree'"
                 :aria-activedescendant="focused ? focusedOptionId : undefined"
+                :aria-invalid="invalid || undefined"
                 @focus="onFocus"
                 @blur="onBlur"
                 @keydown="onKeyDown"
@@ -62,6 +63,7 @@
                             :optionGroupLabel="optionGroupLabel"
                             :optionGroupChildren="optionGroupChildren"
                             @option-change="onOptionChange"
+                            @option-focus-change="onOptionFocusChange"
                             :pt="pt"
                             :unstyled="unstyled"
                         />
@@ -88,6 +90,7 @@ import CascadeSelectSub from './CascadeSelectSub.vue';
 export default {
     name: 'CascadeSelect',
     extends: BaseCascadeSelect,
+    inheritAttrs: false,
     emits: ['update:modelValue', 'change', 'focus', 'blur', 'click', 'group-change', 'before-show', 'before-hide', 'hide', 'show'],
     outsideClickListener: null,
     scrollHandler: null,
@@ -95,10 +98,10 @@ export default {
     overlay: null,
     searchTimeout: null,
     searchValue: null,
-    focusOnHover: false,
     data() {
         return {
             id: this.$attrs.id,
+            clicked: false,
             focused: false,
             focusedOptionInfo: { index: -1, level: 0, parentKey: '' },
             activeOptionPath: [],
@@ -116,7 +119,6 @@ export default {
     },
     mounted() {
         this.id = this.id || UniqueComponentId();
-
         this.autoUpdateModel();
     },
     beforeUnmount() {
@@ -147,18 +149,18 @@ export default {
             return this.optionGroupLabel ? ObjectUtils.resolveFieldData(optionGroup, this.optionGroupLabel) : null;
         },
         getOptionGroupChildren(optionGroup, level) {
-            return ObjectUtils.resolveFieldData(optionGroup, this.optionGroupChildren[level]);
+            return ObjectUtils.isString(this.optionGroupChildren) ? ObjectUtils.resolveFieldData(optionGroup, this.optionGroupChildren) : ObjectUtils.resolveFieldData(optionGroup, this.optionGroupChildren[level]);
         },
         isOptionGroup(option, level) {
             return Object.prototype.hasOwnProperty.call(option, this.optionGroupChildren[level]);
         },
-        getProccessedOptionLabel(processedOption) {
+        getProccessedOptionLabel(processedOption = {}) {
             const grouped = this.isProccessedOptionGroup(processedOption);
 
             return grouped ? this.getOptionGroupLabel(processedOption.option, processedOption.level) : this.getOptionLabel(processedOption.option);
         },
         isProccessedOptionGroup(processedOption) {
-            return ObjectUtils.isNotEmpty(processedOption.children);
+            return ObjectUtils.isNotEmpty(processedOption?.children);
         },
         show(isFocus) {
             this.$emit('before-show');
@@ -168,9 +170,9 @@ export default {
             if (this.hasSelectedOption && ObjectUtils.isNotEmpty(this.activeOptionPath)) {
                 const processedOption = this.activeOptionPath[this.activeOptionPath.length - 1];
 
-                this.focusedOptionInfo = { index: this.autoOptionFocus ? processedOption.index : -1, level: processedOption.level, parentKey: processedOption.parentKey };
+                this.focusedOptionInfo = { index: processedOption.index, level: processedOption.level, parentKey: processedOption.parentKey };
             } else {
-                this.focusedOptionInfo = { index: this.autoOptionFocus ? this.findFirstFocusedOptionIndex() : -1, level: 0, parentKey: '' };
+                this.focusedOptionInfo = { index: this.autoOptionFocus ? this.findFirstFocusedOptionIndex() : this.findSelectedOptionIndex(), level: 0, parentKey: '' };
             }
 
             isFocus && DomHandler.focus(this.$refs.focusInput);
@@ -179,6 +181,7 @@ export default {
             const _hide = () => {
                 this.$emit('before-hide');
                 this.overlayVisible = false;
+                this.clicked = false;
                 this.activeOptionPath = [];
                 this.focusedOptionInfo = { index: -1, level: 0, parentKey: '' };
 
@@ -243,6 +246,7 @@ export default {
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     this.onEnterKey(event);
                     break;
 
@@ -270,6 +274,8 @@ export default {
 
                     break;
             }
+
+            this.clicked = false;
         },
         onOptionChange(event) {
             const { originalEvent, processedOption, isFocus, isHide } = event;
@@ -278,19 +284,39 @@ export default {
 
             const { index, level, parentKey, children } = processedOption;
             const grouped = ObjectUtils.isNotEmpty(children);
+            const root = ObjectUtils.isEmpty(processedOption.parent);
+            const selected = this.isSelected(processedOption);
 
-            const activeOptionPath = this.activeOptionPath.filter((p) => p.parentKey !== parentKey);
+            if (selected) {
+                const { index, key, level, parentKey } = processedOption;
 
-            activeOptionPath.push(processedOption);
+                this.focusedOptionInfo = { index, level, parentKey };
+                this.activeOptionPath = this.activeOptionPath.filter((p) => key !== p.key && key.startsWith(p.key));
 
-            this.focusedOptionInfo = { index, level, parentKey };
-            this.activeOptionPath = activeOptionPath;
+                this.dirty = !root;
+            } else {
+                const activeOptionPath = this.activeOptionPath.filter((p) => p.parentKey !== parentKey);
+
+                activeOptionPath.push(processedOption);
+
+                this.focusedOptionInfo = { index, level, parentKey };
+                this.activeOptionPath = activeOptionPath;
+            }
 
             grouped ? this.onOptionGroupSelect(originalEvent, processedOption) : this.onOptionSelect(originalEvent, processedOption, isHide);
             isFocus && DomHandler.focus(this.$refs.focusInput);
         },
+        onOptionFocusChange(event) {
+            if (this.focusOnHover) {
+                const { originalEvent, processedOption } = event;
+                const { index, level, parentKey } = processedOption;
+
+                this.focusedOptionInfo = { index, level, parentKey };
+                this.changeFocusedOptionIndex(originalEvent, index);
+            }
+        },
         onOptionSelect(event, processedOption, isHide = true) {
-            const value = this.getOptionValue(processedOption.option);
+            const value = this.getOptionValue(processedOption?.option);
 
             this.activeOptionPath.forEach((p) => (p.selected = true));
             this.updateModel(event, value);
@@ -310,6 +336,7 @@ export default {
                 DomHandler.focus(this.$refs.focusInput);
             }
 
+            this.clicked = true;
             this.$emit('click', event);
         },
         onOverlayClick(event) {
@@ -329,11 +356,14 @@ export default {
             }
         },
         onArrowDownKey(event) {
-            const optionIndex = this.focusedOptionInfo.index !== -1 ? this.findNextOptionIndex(this.focusedOptionInfo.index) : this.findFirstFocusedOptionIndex();
+            if (!this.overlayVisible) {
+                this.show();
+            } else {
+                const optionIndex = this.focusedOptionInfo.index !== -1 ? this.findNextOptionIndex(this.focusedOptionInfo.index) : this.clicked ? this.findFirstOptionIndex() : this.findFirstFocusedOptionIndex();
 
-            this.changeFocusedOptionIndex(event, optionIndex);
+                this.changeFocusedOptionIndex(event, optionIndex);
+            }
 
-            !this.overlayVisible && this.show();
             event.preventDefault();
         },
         onArrowUpKey(event) {
@@ -348,7 +378,7 @@ export default {
                 this.overlayVisible && this.hide();
                 event.preventDefault();
             } else {
-                const optionIndex = this.focusedOptionInfo.index !== -1 ? this.findPrevOptionIndex(this.focusedOptionInfo.index) : this.findLastFocusedOptionIndex();
+                const optionIndex = this.focusedOptionInfo.index !== -1 ? this.findPrevOptionIndex(this.focusedOptionInfo.index) : this.clicked ? this.findLastOptionIndex() : this.findLastFocusedOptionIndex();
 
                 this.changeFocusedOptionIndex(event, optionIndex);
 
@@ -359,9 +389,9 @@ export default {
         onArrowLeftKey(event) {
             if (this.overlayVisible) {
                 const processedOption = this.visibleOptions[this.focusedOptionInfo.index];
-                const parentOption = this.activeOptionPath.find((p) => p.key === processedOption.parentKey);
+                const parentOption = this.activeOptionPath.find((p) => p.key === processedOption?.parentKey);
                 const matched = this.focusedOptionInfo.parentKey === '' || (parentOption && parentOption.key === this.focusedOptionInfo.parentKey);
-                const root = ObjectUtils.isEmpty(processedOption.parent);
+                const root = ObjectUtils.isEmpty(processedOption?.parent);
 
                 if (matched) {
                     this.activeOptionPath = this.activeOptionPath.filter((p) => p.parentKey !== this.focusedOptionInfo.parentKey);
@@ -382,10 +412,10 @@ export default {
                 const grouped = this.isProccessedOptionGroup(processedOption);
 
                 if (grouped) {
-                    const matched = this.activeOptionPath.some((p) => processedOption.key === p.key);
+                    const matched = this.activeOptionPath.some((p) => processedOption?.key === p.key);
 
                     if (matched) {
-                        this.focusedOptionInfo = { index: -1, parentKey: processedOption.key };
+                        this.focusedOptionInfo = { index: -1, parentKey: processedOption?.key };
                         this.searchValue = '';
                         this.onArrowDownKey(event);
                     } else {
@@ -410,6 +440,7 @@ export default {
         },
         onEnterKey(event) {
             if (!this.overlayVisible) {
+                this.focusedOptionInfo.index !== -1; // reset
                 this.onArrowDownKey(event);
             } else {
                 if (this.focusedOptionInfo.index !== -1) {
@@ -525,7 +556,7 @@ export default {
             }
         },
         isOptionMatched(processedOption) {
-            return this.isValidOption(processedOption) && this.getProccessedOptionLabel(processedOption).toLocaleLowerCase(this.searchLocale).startsWith(this.searchValue.toLocaleLowerCase(this.searchLocale));
+            return this.isValidOption(processedOption) && this.getProccessedOptionLabel(processedOption)?.toLocaleLowerCase(this.searchLocale).startsWith(this.searchValue.toLocaleLowerCase(this.searchLocale));
         },
         isValidOption(processedOption) {
             return ObjectUtils.isNotEmpty(processedOption) && !this.isOptionDisabled(processedOption.option);
@@ -593,23 +624,25 @@ export default {
             let optionIndex = -1;
             let matched = false;
 
-            if (this.focusedOptionInfo.index !== -1) {
-                optionIndex = this.visibleOptions.slice(this.focusedOptionInfo.index).findIndex((processedOption) => this.isOptionMatched(processedOption));
-                optionIndex = optionIndex === -1 ? this.visibleOptions.slice(0, this.focusedOptionInfo.index).findIndex((processedOption) => this.isOptionMatched(processedOption)) : optionIndex + this.focusedOptionInfo.index;
-            } else {
-                optionIndex = this.visibleOptions.findIndex((processedOption) => this.isOptionMatched(processedOption));
-            }
+            if (ObjectUtils.isNotEmpty(this.searchValue)) {
+                if (this.focusedOptionInfo.index !== -1) {
+                    optionIndex = this.visibleOptions.slice(this.focusedOptionInfo.index).findIndex((processedOption) => this.isOptionMatched(processedOption));
+                    optionIndex = optionIndex === -1 ? this.visibleOptions.slice(0, this.focusedOptionInfo.index).findIndex((processedOption) => this.isOptionMatched(processedOption)) : optionIndex + this.focusedOptionInfo.index;
+                } else {
+                    optionIndex = this.visibleOptions.findIndex((processedOption) => this.isOptionMatched(processedOption));
+                }
 
-            if (optionIndex !== -1) {
-                matched = true;
-            }
+                if (optionIndex !== -1) {
+                    matched = true;
+                }
 
-            if (optionIndex === -1 && this.focusedOptionInfo.index === -1) {
-                optionIndex = this.findFirstFocusedOptionIndex();
-            }
+                if (optionIndex === -1 && this.focusedOptionInfo.index === -1) {
+                    optionIndex = this.findFirstFocusedOptionIndex();
+                }
 
-            if (optionIndex !== -1) {
-                this.changeFocusedOptionIndex(event, optionIndex);
+                if (optionIndex !== -1) {
+                    this.changeFocusedOptionIndex(event, optionIndex);
+                }
             }
 
             if (this.searchTimeout) {
@@ -634,12 +667,14 @@ export default {
             }
         },
         scrollInView(index = -1) {
-            const id = index !== -1 ? `${this.id}_${index}` : this.focusedOptionId;
-            const element = DomHandler.findSingle(this.list, `li[id="${id}"]`);
+            this.$nextTick(() => {
+                const id = index !== -1 ? `${this.id}_${index}` : this.focusedOptionId;
+                const element = DomHandler.findSingle(this.list, `li[id="${id}"]`);
 
-            if (element) {
-                element.scrollIntoView && element.scrollIntoView({ block: 'nearest', inline: 'start' });
-            }
+                if (element) {
+                    element.scrollIntoView && element.scrollIntoView({ block: 'nearest', inline: 'start' });
+                }
+            });
         },
         autoUpdateModel() {
             if (this.selectOnFocus && this.autoOptionFocus && !this.hasSelectedOption) {

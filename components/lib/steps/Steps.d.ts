@@ -32,6 +32,14 @@ export interface StepsPassThroughMethodOptions {
      */
     context: StepsContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -218,8 +226,8 @@ export interface StepsEmits {}
  */
 declare class Steps extends ClassComponent<StepsProps, StepsSlots, StepsEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Steps: GlobalComponentConstructor<Steps>;
     }
 }

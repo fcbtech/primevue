@@ -1,6 +1,6 @@
 {
     "name": "@fcbtech/primevue",
-    "version": "3.41.6",
+    "version": "3.41.7",
     "homepage": "https://primevue.org/",
     "repository": {
         "type": "git",
@@ -69,7 +69,7 @@
         "nuxt": "3.3.2",
         "prettier": "2.7.1",
         "primeflex": "^3.3.1",
-        "primeicons": "^6.0.1",
+        "primeicons": "^7.0.0",
         "quill": "^1.3.7",
         "rollup-plugin-postcss": "^4.0.0",
         "rollup-plugin-terser": "^7.0.2",

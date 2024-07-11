@@ -10,14 +10,14 @@
 import { VNode } from 'vue';
 import { ComponentHooks } from '../basecomponent';
 import { PassThroughOptions } from '../passthrough';
-import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, PassThrough, HintedString } from '../ts-helpers';
 
-export declare type BadgePassThroughOptionType = BadgePassThroughAttributes | ((options: BadgePassThroughMethodOptions) => BadgePassThroughAttributes | string) | string | null | undefined;
+export declare type BadgePassThroughOptionType<T = any> = BadgePassThroughAttributes | ((options: BadgePassThroughMethodOptions<T>) => BadgePassThroughAttributes | string) | string | null | undefined;
 
 /**
  * Custom passthrough(pt) option method.
  */
-export interface BadgePassThroughMethodOptions {
+export interface BadgePassThroughMethodOptions<T> {
     /**
      * Defines instance.
      */
@@ -30,6 +30,10 @@ export interface BadgePassThroughMethodOptions {
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
+    /**
+     * Defines parent instance.
+     */
+    parent: T;
 }
 
 /**
@@ -43,11 +47,11 @@ export interface BadgePassThroughAttributes {
  * Custom passthrough(pt) options.
  * @see {@link BadgeProps.pt}
  */
-export interface BadgePassThroughOptions {
+export interface BadgePassThroughOptions<T = any> {
     /**
      * Used to pass attributes to the root's DOM element.
      */
-    root?: BadgePassThroughOptionType;
+    root?: BadgePassThroughOptionType<T>;
     /**
      * Used to manage all lifecycle hooks.
      * @see {@link BaseComponent.ComponentHooks}
@@ -66,7 +70,7 @@ export interface BadgeProps {
     /**
      * Severity type of the badge.
      */
-    severity?: 'info' | 'success' | 'warning' | 'danger' | string | null | undefined;
+    severity?: HintedString<'secondary' | 'info' | 'success' | 'warning' | 'danger' | 'contrast'> | null | undefined;
     /**
      * Size of the badge, valid options are 'large' and 'xlarge'.
      */
@@ -116,8 +120,8 @@ export interface BadgeEmits {}
  */
 declare class Badge extends ClassComponent<BadgeProps, BadgeSlots, BadgeEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Badge: GlobalComponentConstructor<Badge>;
     }
 }

@@ -124,7 +124,7 @@ export default {
         },
         metaKeySelection: {
             type: Boolean,
-            default: true
+            default: false
         },
         contextMenu: {
             type: Boolean,
@@ -175,7 +175,7 @@ export default {
             default: false
         },
         expandedRows: {
-            type: Array,
+            type: [Array, Object],
             default: null
         },
         expandedRowIcon: {
@@ -219,11 +219,11 @@ export default {
             default: null
         },
         rowClass: {
-            type: null,
+            type: Function,
             default: null
         },
         rowStyle: {
-            type: null,
+            type: Function,
             default: null
         },
         scrollable: {
@@ -258,6 +258,10 @@ export default {
             type: Boolean,
             default: false
         },
+        highlightOnSelect: {
+            type: Boolean,
+            default: false
+        },
         size: {
             type: String,
             default: null
@@ -267,11 +271,11 @@ export default {
             default: null
         },
         tableClass: {
-            type: String,
+            type: [String, Object],
             default: null
         },
         tableProps: {
-            type: null,
+            type: Object,
             default: null
         },
         filterInputProps: {

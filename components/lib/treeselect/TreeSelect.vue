@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" :class="cx('root')" :style="sx('root')" @click="onClick" v-bind="ptm('root')" data-pc-name="treeselect">
+    <div ref="container" :class="cx('root')" :style="sx('root')" @click="onClick" v-bind="ptmi('root')">
         <div class="p-hidden-accessible" v-bind="ptm('hiddenInputWrapper')" :data-p-hidden-accessible="true">
             <input
                 ref="focusInput"
@@ -43,8 +43,19 @@
             </slot>
         </div>
         <Portal :appendTo="appendTo">
-            <transition name="p-connected-overlay" @enter="onOverlayEnter" @leave="onOverlayLeave" @after-leave="onOverlayAfterLeave" v-bind="ptm('transition')">
+            <transition name="p-connected-overlay" @enter="onOverlayEnter" @after-enter="onOverlayAfterEnter" @leave="onOverlayLeave" @after-leave="onOverlayAfterLeave" v-bind="ptm('transition')">
                 <div v-if="overlayVisible" :ref="overlayRef" @click="onOverlayClick" :class="[cx('panel'), panelClass]" @keydown="onOverlayKeydown" v-bind="{ ...panelProps, ...ptm('panel') }">
+                    <span
+                        ref="firstHiddenFocusableElementOnOverlay"
+                        role="presentation"
+                        aria-hidden="true"
+                        class="p-hidden-accessible p-hidden-focusable"
+                        :tabindex="0"
+                        @focus="onFirstHiddenFocus"
+                        v-bind="ptm('hiddenFirstFocusableEl')"
+                        :data-p-hidden-accessible="true"
+                        :data-p-hidden-focusable="true"
+                    ></span>
                     <slot name="header" :value="modelValue" :options="options"></slot>
                     <div :class="cx('wrapper')" :style="{ 'max-height': scrollHeight }" v-bind="ptm('wrapper')">
                         <TSTree
@@ -64,7 +75,6 @@
                             :level="0"
                             :unstyled="unstyled"
                             :pt="ptm('tree')"
-                            data-pc-section="tree"
                         >
                             <template v-if="$slots.itemtogglericon" #togglericon="iconProps">
                                 <slot name="itemtogglericon" :node="iconProps.node" :expanded="iconProps.expanded" :class="iconProps.class" />
@@ -78,6 +88,17 @@
                         </div>
                     </div>
                     <slot name="footer" :value="modelValue" :options="options"></slot>
+                    <span
+                        ref="lastHiddenFocusableElementOnOverlay"
+                        role="presentation"
+                        aria-hidden="true"
+                        class="p-hidden-accessible p-hidden-focusable"
+                        :tabindex="0"
+                        @focus="onLastHiddenFocus"
+                        v-bind="ptm('hiddenLastFocusableEl')"
+                        :data-p-hidden-accessible="true"
+                        :data-p-hidden-focusable="true"
+                    ></span>
                 </div>
             </transition>
         </Portal>
@@ -96,15 +117,20 @@ import BaseTreeSelect from './BaseTreeSelect.vue';
 export default {
     name: 'TreeSelect',
     extends: BaseTreeSelect,
+    inheritAttrs: false,
     emits: ['update:modelValue', 'before-show', 'before-hide', 'change', 'show', 'hide', 'node-select', 'node-unselect', 'node-expand', 'node-collapse', 'focus', 'blur'],
     data() {
         return {
+            id: this.$attrs.id,
             focused: false,
             overlayVisible: false,
             expandedKeys: {}
         };
     },
     watch: {
+        '$attrs.id': function (newValue) {
+            this.id = newValue || UniqueComponentId();
+        },
         modelValue: {
             handler: function () {
                 if (!this.selfChange) {
@@ -140,6 +166,7 @@ export default {
         }
     },
     mounted() {
+        this.id = this.id || UniqueComponentId();
         this.updateTreeState();
     },
     methods: {
@@ -161,11 +188,15 @@ export default {
             this.$emit('blur', event);
         },
         onClick(event) {
+            if (this.disabled) {
+                return;
+            }
+
             if (!this.disabled && (!this.overlay || !this.overlay.contains(event.target))) {
                 if (this.overlayVisible) this.hide();
                 else this.show();
 
-                this.$refs.focusInput.focus();
+                DomHandler.focus(this.$refs.focusInput);
             }
         },
         onSelectionChange(keys) {
@@ -186,6 +217,16 @@ export default {
         onNodeToggle(keys) {
             this.expandedKeys = keys;
         },
+        onFirstHiddenFocus(event) {
+            const focusableEl = event.relatedTarget === this.$refs.focusInput ? DomHandler.getFirstFocusableElement(this.overlay, ':not([data-p-hidden-focusable="true"])') : this.$refs.focusInput;
+
+            DomHandler.focus(focusableEl);
+        },
+        onLastHiddenFocus(event) {
+            const focusableEl = event.relatedTarget === this.$refs.focusInput ? DomHandler.getLastFocusableElement(this.overlay, ':not([data-p-hidden-focusable="true"])') : this.$refs.focusInput;
+
+            DomHandler.focus(focusableEl);
+        },
         onKeyDown(event) {
             switch (event.code) {
                 case 'ArrowDown':
@@ -194,12 +235,16 @@ export default {
 
                 case 'Space':
                 case 'Enter':
+                case 'NumpadEnter':
                     this.onEnterKey(event);
                     break;
 
                 case 'Escape':
                     this.onEscapeKey(event);
+                    break;
 
+                case 'Tab':
+                    this.onTabKey(event);
                     break;
 
                 default:
@@ -235,11 +280,26 @@ export default {
                 event.preventDefault();
             }
         },
+        onTabKey(event, pressedInInputText = false) {
+            if (!pressedInInputText) {
+                if (this.overlayVisible && this.hasFocusableElements()) {
+                    DomHandler.focus(this.$refs.firstHiddenFocusableElementOnOverlay);
+
+                    event.preventDefault();
+                }
+            }
+        },
+        hasFocusableElements() {
+            return DomHandler.getFocusableElements(this.overlay, ':not([data-p-hidden-focusable="true"])').length > 0;
+        },
         onOverlayEnter(el) {
             ZIndexUtils.set('overlay', el, this.$primevue.config.zIndex.overlay);
 
             DomHandler.addStyles(el, { position: 'absolute', top: '0', left: '0' });
             this.alignOverlay();
+            this.focus();
+        },
+        onOverlayAfterEnter() {
             this.bindOutsideClickListener();
             this.bindScrollListener();
             this.bindResizeListener();
@@ -255,6 +315,13 @@ export default {
         },
         onOverlayAfterLeave(el) {
             ZIndexUtils.clear(el);
+        },
+        focus() {
+            let focusableElements = DomHandler.getFocusableElements(this.overlay);
+
+            if (focusableElements && focusableElements.length > 0) {
+                focusableElements[0].focus();
+            }
         },
         alignOverlay() {
             if (this.appendTo === 'self') {
@@ -426,7 +493,7 @@ export default {
             return !this.options || this.options.length === 0;
         },
         listId() {
-            return UniqueComponentId() + '_list';
+            return this.id + '_list';
         }
     },
     components: {

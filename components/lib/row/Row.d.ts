@@ -6,7 +6,6 @@
  * @module row
  */
 import { ComponentHooks } from '../basecomponent';
-import { ColumnGroupPassThroughOptions } from '../columngroup';
 import { ClassComponent, GlobalComponentConstructor } from '../ts-helpers';
 
 export declare type RowPassThroughOptionType = RowPassThroughAttributes | ((options: RowPassThroughMethodOptions) => RowPassThroughAttributes | string) | string | null | undefined;
@@ -24,9 +23,13 @@ export interface RowPassThroughMethodOptions {
      */
     props: RowProps;
     /**
-     * Defines parent instance.
+     * Defines valid attributes.
      */
-    parent: ColumnGroupPassThroughOptions;
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
     /**
      * Defines current options.
      */
@@ -104,8 +107,8 @@ export interface RowEmits {}
  */
 declare class Row extends ClassComponent<RowProps, RowSlots, RowEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Row: GlobalComponentConstructor<Row>;
     }
 }

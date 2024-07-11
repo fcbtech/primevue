@@ -31,6 +31,14 @@ export interface BlockUIPassThroughMethodOptions {
      */
     state: BlockUIState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -152,8 +160,8 @@ export interface BlockUIEmits {
  */
 declare class BlockUI extends ClassComponent<BlockUIProps, BlockUISlots, BlockUIEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         BlockUI: GlobalComponentConstructor<BlockUI>;
     }
 }

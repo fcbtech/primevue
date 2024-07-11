@@ -12,7 +12,29 @@ import { ComponentHooks } from '../basecomponent';
 import { PassThroughOptions } from '../passthrough';
 import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
 
-export declare type CardPassThroughOptionType = CardPassThroughAttributes | null | undefined;
+export declare type CardPassThroughOptionType = CardPassThroughAttributes | ((options: CardPassThroughMethodOptions) => CardPassThroughAttributes | string) | string | null | undefined;
+
+/**
+ * Custom passthrough(pt) option method.
+ */
+export interface CardPassThroughMethodOptions {
+    /**
+     * Defines instance.
+     */
+    instance: any;
+    /**
+     * Defines valid properties.
+     */
+    props: CardProps;
+    /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines passthrough(pt) options in global config.
+     */
+    global: object | undefined;
+}
 
 /**
  * Custom passthrough(pt) options.
@@ -31,6 +53,10 @@ export interface CardPassThroughOptions {
      * Used to pass attributes to the body's DOM element.
      */
     body?: CardPassThroughOptionType;
+    /**
+     * Used to pass attributes to the caption's DOM element.
+     */
+    caption?: CardPassThroughOptionType;
     /**
      * Used to pass attributes to the title's DOM element.
      */
@@ -126,8 +152,8 @@ export interface CardEmits {}
  */
 declare class Card extends ClassComponent<CardProps, CardSlots, CardEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Card: GlobalComponentConstructor<Card>;
     }
 }

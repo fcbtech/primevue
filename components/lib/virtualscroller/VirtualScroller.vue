@@ -1,6 +1,6 @@
 <template>
     <template v-if="!disabled">
-        <div :ref="elementRef" :class="containerClass" :tabindex="tabindex" :style="style" @scroll="onScroll" v-bind="ptm('root')" data-pc-name="virtualscroller">
+        <div :ref="elementRef" :class="containerClass" :tabindex="tabindex" :style="style" @scroll="onScroll" v-bind="ptmi('root')">
             <slot
                 name="content"
                 :styleClass="contentClass"
@@ -51,14 +51,17 @@ import BaseVirtualScroller from './BaseVirtualScroller.vue';
 export default {
     name: 'VirtualScroller',
     extends: BaseVirtualScroller,
+    inheritAttrs: false,
     emits: ['update:numToleratedItems', 'scroll', 'scroll-index-change', 'lazy-load'],
     data() {
+        const both = this.isBoth();
+
         return {
-            first: this.isBoth() ? { rows: 0, cols: 0 } : 0,
-            last: this.isBoth() ? { rows: 0, cols: 0 } : 0,
-            page: this.isBoth() ? { rows: 0, cols: 0 } : 0,
-            numItemsInViewport: this.isBoth() ? { rows: 0, cols: 0 } : 0,
-            lastScrollPos: this.isBoth() ? { top: 0, left: 0 } : 0,
+            first: both ? { rows: 0, cols: 0 } : 0,
+            last: both ? { rows: 0, cols: 0 } : 0,
+            page: both ? { rows: 0, cols: 0 } : 0,
+            numItemsInViewport: both ? { rows: 0, cols: 0 } : 0,
+            lastScrollPos: both ? { top: 0, left: 0 } : 0,
             d_numToleratedItems: this.numToleratedItems,
             d_loading: this.loading,
             loaderArr: [],
@@ -83,8 +86,10 @@ export default {
         numToleratedItems(newValue) {
             this.d_numToleratedItems = newValue;
         },
-        loading(newValue) {
-            this.d_loading = newValue;
+        loading(newValue, oldValue) {
+            if (this.lazy && newValue !== oldValue && newValue !== this.d_loading) {
+                this.d_loading = newValue;
+            }
         },
         items(newValue, oldValue) {
             if (!oldValue || oldValue.length !== (newValue || []).length) {
@@ -127,6 +132,7 @@ export default {
             if (DomHandler.isVisible(this.element)) {
                 this.setContentEl(this.content);
                 this.init();
+                this.calculateAutoSize();
                 this.bindResizeListener();
 
                 this.defaultWidth = DomHandler.getWidth(this.element);
@@ -153,70 +159,82 @@ export default {
             return this.orientation === 'both';
         },
         scrollTo(options) {
-            this.lastScrollPos = this.both ? { top: 0, left: 0 } : 0;
+            //this.lastScrollPos = this.both ? { top: 0, left: 0 } : 0;
             this.element && this.element.scrollTo(options);
         },
         scrollToIndex(index, behavior = 'auto') {
             const both = this.isBoth();
             const horizontal = this.isHorizontal();
-            const first = this.first;
-            const { numToleratedItems } = this.calculateNumItems();
-            const contentPos = this.getContentPosition();
-            const itemSize = this.itemSize;
-            const calculateFirst = (_index = 0, _numT) => (_index <= _numT ? 0 : _index);
-            const calculateCoord = (_first, _size, _cpos) => _first * _size + _cpos;
-            const scrollTo = (left = 0, top = 0) => this.scrollTo({ left, top, behavior });
-            let newFirst = both ? { rows: 0, cols: 0 } : 0;
-            let isRangeChanged = false;
+            const valid = both ? index.every((i) => i > -1) : index > -1;
 
-            if (both) {
-                newFirst = { rows: calculateFirst(index[0], numToleratedItems[0]), cols: calculateFirst(index[1], numToleratedItems[1]) };
-                scrollTo(calculateCoord(newFirst.cols, itemSize[1], contentPos.left), calculateCoord(newFirst.rows, itemSize[0], contentPos.top));
-                isRangeChanged = newFirst.rows !== first.rows || newFirst.cols !== first.cols;
-            } else {
-                newFirst = calculateFirst(index, numToleratedItems);
-                horizontal ? scrollTo(calculateCoord(newFirst, itemSize, contentPos.left), 0) : scrollTo(0, calculateCoord(newFirst, itemSize, contentPos.top));
-                isRangeChanged = newFirst !== first;
+            if (valid) {
+                const first = this.first;
+                const { scrollTop = 0, scrollLeft = 0 } = this.element;
+                const { numToleratedItems } = this.calculateNumItems();
+                const contentPos = this.getContentPosition();
+                const itemSize = this.itemSize;
+                const calculateFirst = (_index = 0, _numT) => (_index <= _numT ? 0 : _index);
+                const calculateCoord = (_first, _size, _cpos) => _first * _size + _cpos;
+                const scrollTo = (left = 0, top = 0) => this.scrollTo({ left, top, behavior });
+                let newFirst = both ? { rows: 0, cols: 0 } : 0;
+                let isRangeChanged = false,
+                    isScrollChanged = false;
+
+                if (both) {
+                    newFirst = { rows: calculateFirst(index[0], numToleratedItems[0]), cols: calculateFirst(index[1], numToleratedItems[1]) };
+                    scrollTo(calculateCoord(newFirst.cols, itemSize[1], contentPos.left), calculateCoord(newFirst.rows, itemSize[0], contentPos.top));
+                    isScrollChanged = this.lastScrollPos.top !== scrollTop || this.lastScrollPos.left !== scrollLeft;
+                    isRangeChanged = newFirst.rows !== first.rows || newFirst.cols !== first.cols;
+                } else {
+                    newFirst = calculateFirst(index, numToleratedItems);
+                    horizontal ? scrollTo(calculateCoord(newFirst, itemSize, contentPos.left), scrollTop) : scrollTo(scrollLeft, calculateCoord(newFirst, itemSize, contentPos.top));
+                    isScrollChanged = this.lastScrollPos !== (horizontal ? scrollLeft : scrollTop);
+                    isRangeChanged = newFirst !== first;
+                }
+
+                this.isRangeChanged = isRangeChanged;
+                isScrollChanged && (this.first = newFirst);
             }
-
-            this.isRangeChanged = isRangeChanged;
-            this.first = newFirst;
         },
         scrollInView(index, to, behavior = 'auto') {
             if (to) {
                 const both = this.isBoth();
                 const horizontal = this.isHorizontal();
-                const { first, viewport } = this.getRenderedRange();
-                const scrollTo = (left = 0, top = 0) => this.scrollTo({ left, top, behavior });
-                const isToStart = to === 'to-start';
-                const isToEnd = to === 'to-end';
+                const valid = both ? index.every((i) => i > -1) : index > -1;
 
-                if (isToStart) {
-                    if (both) {
-                        if (viewport.first.rows - first.rows > index[0]) {
-                            scrollTo(viewport.first.cols * this.itemSize[1], (viewport.first.rows - 1) * this.itemSize[0]);
-                        } else if (viewport.first.cols - first.cols > index[1]) {
-                            scrollTo((viewport.first.cols - 1) * this.itemSize[1], viewport.first.rows * this.itemSize[0]);
-                        }
-                    } else {
-                        if (viewport.first - first > index) {
-                            const pos = (viewport.first - 1) * this.itemSize;
+                if (valid) {
+                    const { first, viewport } = this.getRenderedRange();
+                    const scrollTo = (left = 0, top = 0) => this.scrollTo({ left, top, behavior });
+                    const isToStart = to === 'to-start';
+                    const isToEnd = to === 'to-end';
 
-                            horizontal ? scrollTo(pos, 0) : scrollTo(0, pos);
-                        }
-                    }
-                } else if (isToEnd) {
-                    if (both) {
-                        if (viewport.last.rows - first.rows <= index[0] + 1) {
-                            scrollTo(viewport.first.cols * this.itemSize[1], (viewport.first.rows + 1) * this.itemSize[0]);
-                        } else if (viewport.last.cols - first.cols <= index[1] + 1) {
-                            scrollTo((viewport.first.cols + 1) * this.itemSize[1], viewport.first.rows * this.itemSize[0]);
-                        }
-                    } else {
-                        if (viewport.last - first <= index + 1) {
-                            const pos = (viewport.first + 1) * this.itemSize;
+                    if (isToStart) {
+                        if (both) {
+                            if (viewport.first.rows - first.rows > index[0]) {
+                                scrollTo(viewport.first.cols * this.itemSize[1], (viewport.first.rows - 1) * this.itemSize[0]);
+                            } else if (viewport.first.cols - first.cols > index[1]) {
+                                scrollTo((viewport.first.cols - 1) * this.itemSize[1], viewport.first.rows * this.itemSize[0]);
+                            }
+                        } else {
+                            if (viewport.first - first > index) {
+                                const pos = (viewport.first - 1) * this.itemSize;
 
-                            horizontal ? scrollTo(pos, 0) : scrollTo(0, pos);
+                                horizontal ? scrollTo(pos, 0) : scrollTo(0, pos);
+                            }
+                        }
+                    } else if (isToEnd) {
+                        if (both) {
+                            if (viewport.last.rows - first.rows <= index[0] + 1) {
+                                scrollTo(viewport.first.cols * this.itemSize[1], (viewport.first.rows + 1) * this.itemSize[0]);
+                            } else if (viewport.last.cols - first.cols <= index[1] + 1) {
+                                scrollTo((viewport.first.cols + 1) * this.itemSize[1], viewport.first.rows * this.itemSize[0]);
+                            }
+                        } else {
+                            if (viewport.last - first <= index + 1) {
+                                const pos = (viewport.first + 1) * this.itemSize;
+
+                                horizontal ? scrollTo(pos, 0) : scrollTo(0, pos);
+                            }
                         }
                     }
                 }
@@ -233,7 +251,7 @@ export default {
             if (this.element) {
                 const both = this.isBoth();
                 const horizontal = this.isHorizontal();
-                const { scrollTop, scrollLeft } = this.element.scrollTop;
+                const { scrollTop, scrollLeft } = this.element;
 
                 if (both) {
                     firstInViewport = { rows: calculateFirstInViewport(scrollTop, this.itemSize[0]), cols: calculateFirstInViewport(scrollLeft, this.itemSize[1]) };
@@ -294,7 +312,7 @@ export default {
                 Promise.resolve().then(() => {
                     this.lazyLoadState = {
                         first: this.step ? (both ? { rows: 0, cols: first.cols } : 0) : first,
-                        last: Math.min(this.step ? this.step : last, this.items.length)
+                        last: Math.min(this.step ? this.step : last, this.items?.length || 0)
                     };
 
                     this.$emit('lazy-load', this.lazyLoadState);
@@ -313,10 +331,10 @@ export default {
                         this.content.style.position = 'relative';
                         this.element.style.contain = 'none';
 
-                        const [contentWidth, contentHeight] = [DomHandler.getWidth(this.content), DomHandler.getHeight(this.content)];
+                        /*const [contentWidth, contentHeight] = [DomHandler.getWidth(this.content), DomHandler.getHeight(this.content)];
 
                         contentWidth !== this.defaultContentWidth && (this.element.style.width = '');
-                        contentHeight !== this.defaultContentHeight && (this.element.style.height = '');
+                        contentHeight !== this.defaultContentHeight && (this.element.style.height = '');*/
 
                         const [width, height] = [DomHandler.getWidth(this.element), DomHandler.getHeight(this.element)];
 
@@ -331,7 +349,7 @@ export default {
             }
         },
         getLast(last = 0, isCols) {
-            return this.items ? Math.min(isCols ? (this.columns || this.items[0]).length : this.items.length, last) : 0;
+            return this.items ? Math.min(isCols ? (this.columns || this.items[0])?.length || 0 : this.items?.length || 0, last) : 0;
         },
         getContentPosition() {
             if (this.content) {
@@ -493,8 +511,8 @@ export default {
 
                 if (this.lazy && this.isPageChanged(first)) {
                     const lazyLoadState = {
-                        first: this.step ? Math.min(this.getPageByFirst(first) * this.step, this.items.length - this.step) : first,
-                        last: Math.min(this.step ? (this.getPageByFirst(first) + 1) * this.step : last, this.items.length)
+                        first: this.step ? Math.min(this.getPageByFirst(first) * this.step, (this.items?.length || 0) - this.step) : first,
+                        last: Math.min(this.step ? (this.getPageByFirst(first) + 1) * this.step : last, this.items?.length || 0)
                     };
                     const isLazyStateChanged = this.lazyLoadState.first !== lazyLoadState.first || this.lazyLoadState.last !== lazyLoadState.last;
 
@@ -506,26 +524,28 @@ export default {
         onScroll(event) {
             this.$emit('scroll', event);
 
-            if (this.delay && this.isPageChanged()) {
+            if (this.delay) {
                 if (this.scrollTimeout) {
                     clearTimeout(this.scrollTimeout);
                 }
 
-                if (!this.d_loading && this.showLoader) {
-                    const { isRangeChanged } = this.onScrollPositionChange(event);
-                    const changed = isRangeChanged || (this.step ? this.isPageChanged() : false);
+                if (this.isPageChanged()) {
+                    if (!this.d_loading && this.showLoader) {
+                        const { isRangeChanged } = this.onScrollPositionChange(event);
+                        const changed = isRangeChanged || (this.step ? this.isPageChanged() : false);
 
-                    changed && (this.d_loading = true);
-                }
-
-                this.scrollTimeout = setTimeout(() => {
-                    this.onScrollChange(event);
-
-                    if (this.d_loading && this.showLoader && (!this.lazy || this.loading === undefined)) {
-                        this.d_loading = false;
-                        this.page = this.getPageByFirst();
+                        changed && (this.d_loading = true);
                     }
-                }, this.delay);
+
+                    this.scrollTimeout = setTimeout(() => {
+                        this.onScrollChange(event);
+
+                        if (this.d_loading && this.showLoader && (!this.lazy || this.loading === undefined)) {
+                            this.d_loading = false;
+                            this.page = this.getPageByFirst();
+                        }
+                    }, this.delay);
+                }
             } else {
                 this.onScrollChange(event);
             }

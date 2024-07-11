@@ -1,6 +1,4 @@
 import { mount } from '@vue/test-utils';
-import PrimeVue from '@fcbtech/primevue/config';
-import { nextTick } from 'vue';
 import Tree from './Tree.vue';
 
 describe('Tree.vue', () => {
@@ -41,5 +39,46 @@ describe('Tree.vue', () => {
         await textInput.trigger('keydown.space');
 
         expect(wrapper.emitted('keydown')).toBeFalsy();
+    });
+
+    it('emits update:filterValue on filter input', async () => {
+        wrapper = mount(Tree, {
+            props: {
+                filter: true
+            }
+        });
+
+        let searchField = wrapper.find('input.p-tree-filter');
+
+        await searchField.trigger('keydown.space');
+
+        expect(wrapper.emitted('filter')).toBeTruthy();
+    });
+
+    it('should render icon', ({ expect }) => {
+        expect(wrapper.find('span.pi-inbox').exists()).toBeTruthy();
+        expect(wrapper.find('span.pi-inbox').classes('p-treenode-icon')).toBeTruthy();
+    });
+
+    it('should render icon slot', ({ expect }) => {
+        let wrapper = mount(Tree, {
+            slots: {
+                nodeicon: `<i data-node-icon/>`
+            },
+            props: {
+                value: [
+                    {
+                        key: '0',
+                        label: 'Documents',
+                        data: 'Documents Folder',
+                        children: []
+                    }
+                ]
+            }
+        });
+
+        const nodeIcon = wrapper.find('i[data-node-icon]');
+
+        expect(nodeIcon.exists()).toBeTruthy();
     });
 });

@@ -1,49 +1,31 @@
 <template>
     <Portal>
         <transition name="p-confirm-popup" @enter="onEnter" @after-enter="onAfterEnter" @leave="onLeave" @after-leave="onAfterLeave" v-bind="ptm('transition')">
-            <div v-if="visible" :ref="containerRef" v-focustrap role="alertdialog" :class="cx('root')" :aria-modal="visible" @click="onOverlayClick" @keydown="onOverlayKeydown" v-bind="{ ...$attrs, ...ptm('root') }">
+            <div v-if="visible" :ref="containerRef" v-focustrap role="alertdialog" :class="cx('root')" :aria-modal="visible" @click="onOverlayClick" @keydown="onOverlayKeydown" v-bind="ptmi('root')">
                 <slot v-if="$slots.container" name="container" :message="confirmation" :onAccept="accept" :onReject="reject" :acceptCallback="accept" :rejectCallback="reject"></slot>
                 <template v-else>
                     <template v-if="!$slots.message">
                         <div :class="cx('content')" v-bind="ptm('content')">
                             <slot name="icon">
                                 <component v-if="$slots.icon" :is="$slots.icon" :class="cx('icon')" />
-                                <span v-else-if="confirmation.icon" :class="cx('icon')" v-bind="ptm('icon')" />
+                                <span v-else-if="confirmation.icon" :class="[confirmation.icon, cx('icon')]" v-bind="ptm('icon')" />
                             </slot>
                             <span :class="cx('message')" v-bind="ptm('message')">{{ confirmation.message }}</span>
                         </div>
                     </template>
                     <component v-else :is="$slots.message" :message="confirmation"></component>
                     <div :class="cx('footer')" v-bind="ptm('footer')">
-                        <CPButton
-                            :label="rejectLabel"
-                            @click="reject()"
-                            @keydown="onRejectKeydown"
-                            :autofocus="autoFocusReject"
-                            :class="[cx('rejectButton'), confirmation.rejectClass]"
-                            :unstyled="unstyled"
-                            :pt="ptm('rejectButton')"
-                            data-pc-name="rejectbutton"
-                        >
+                        <CPButton :label="rejectLabel" @click="reject()" @keydown="onRejectKeydown" :autofocus="autoFocusReject" :class="[cx('rejectButton'), confirmation.rejectClass]" :unstyled="unstyled" :pt="ptm('rejectButton')">
                             <template v-if="rejectIcon || $slots.rejecticon" #icon="iconProps">
                                 <slot name="rejecticon">
-                                    <span :class="[rejectIcon, iconProps.class]" v-bind="ptm('rejectButton')['icon']" data-pc-name="rejectbuttonicon" />
+                                    <span :class="[rejectIcon, iconProps.class]" v-bind="ptm('rejectButton')['icon']" data-pc-section="rejectbuttonicon" />
                                 </slot>
                             </template>
                         </CPButton>
-                        <CPButton
-                            :label="acceptLabel"
-                            @click="accept()"
-                            @keydown="onAcceptKeydown"
-                            :autofocus="autoFocusAccept"
-                            :class="[cx('acceptButton'), confirmation.acceptClass]"
-                            :unstyled="unstyled"
-                            :pt="ptm('acceptButton')"
-                            data-pc-name="acceptbutton"
-                        >
+                        <CPButton :label="acceptLabel" @click="accept()" @keydown="onAcceptKeydown" :autofocus="autoFocusAccept" :class="[cx('acceptButton'), confirmation.acceptClass]" :unstyled="unstyled" :pt="ptm('acceptButton')">
                             <template v-if="acceptIcon || $slots.accepticon" #icon="iconProps">
                                 <slot name="accepticon">
-                                    <span :class="[acceptIcon, iconProps.class]" v-bind="ptm('acceptButton')['icon']" data-pc-name="acceptbuttonicon" />
+                                    <span :class="[acceptIcon, iconProps.class]" v-bind="ptm('acceptButton')['icon']" data-pc-section="acceptbuttonicon" />
                                 </slot>
                             </template>
                         </CPButton>
@@ -67,7 +49,6 @@ export default {
     name: 'ConfirmPopup',
     extends: BaseConfirmPopup,
     inheritAttrs: false,
-
     data() {
         return {
             visible: false,
@@ -153,14 +134,14 @@ export default {
             this.visible = false;
         },
         onAcceptKeydown(event) {
-            if (event.code === 'Space' || event.code === 'Enter') {
+            if (event.code === 'Space' || event.code === 'Enter' || event.code === 'NumpadEnter') {
                 this.accept();
                 DomHandler.focus(this.target);
                 event.preventDefault();
             }
         },
         onRejectKeydown(event) {
-            if (event.code === 'Space' || event.code === 'Enter') {
+            if (event.code === 'Space' || event.code === 'Enter' || event.code === 'NumpadEnter') {
                 this.reject();
                 DomHandler.focus(this.target);
                 event.preventDefault();
@@ -191,7 +172,7 @@ export default {
             ZIndexUtils.clear(el);
         },
         alignOverlay() {
-            DomHandler.absolutePosition(this.container, this.target);
+            DomHandler.absolutePosition(this.container, this.target, false);
 
             const containerOffset = DomHandler.getOffset(this.container);
             const targetOffset = DomHandler.getOffset(this.target);

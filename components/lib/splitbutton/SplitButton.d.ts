@@ -13,7 +13,7 @@ import { ButtonPassThroughOptions } from '../button';
 import { MenuItem } from '../menuitem';
 import { PassThroughOptions } from '../passthrough';
 import { TieredMenuPassThroughOptions, TieredMenuRouterBindProps } from '../tieredmenu';
-import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, PassThrough, HintedString } from '../ts-helpers';
 
 export declare type SplitButtonPassThroughOptionType = SplitButtonPassThroughAttributes | ((options: SplitButtonPassThroughMethodOptions) => SplitButtonPassThroughAttributes | string) | string | null | undefined;
 
@@ -34,9 +34,31 @@ export interface SplitButtonPassThroughMethodOptions {
      */
     state: SplitButtonState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
+}
+
+/**
+ * Custom shared passthrough(pt) option method.
+ */
+export interface SplitButtonSharedPassThroughMethodOptions {
+    /**
+     * Defines valid properties.
+     */
+    props: SplitButtonProps;
+    /**
+     * Defines current inline state.
+     */
+    state: SplitButtonState;
 }
 
 /**
@@ -56,12 +78,12 @@ export interface SplitButtonPassThroughOptions {
      * Used to pass attributes to the Button component.
      * @see {@link ButtonPassThroughOptions}
      */
-    menuButton?: ButtonPassThroughOptions;
+    menuButton?: ButtonPassThroughOptions<SplitButtonSharedPassThroughMethodOptions>;
     /**
      * Used to pass attributes to the TieredMenu component.
      * @see {@link TieredMenuPassThroughOptions}
      */
-    menu?: TieredMenuPassThroughOptions;
+    menu?: TieredMenuPassThroughOptions<SplitButtonSharedPassThroughMethodOptions>;
     /**
      * Used to manage all lifecycle hooks.
      * @see {@link BaseComponent.ComponentHooks}
@@ -119,7 +141,7 @@ export interface SplitButtonProps {
      * Special keywords are 'body' for document body and 'self' for the element itself.
      * @defaultValue body
      */
-    appendTo?: 'body' | 'self' | string | undefined | HTMLElement;
+    appendTo?: HintedString<'body' | 'self'> | undefined | HTMLElement;
     /**
      * When present, it specifies that the element should be disabled.
      * @defaultValue false
@@ -149,7 +171,7 @@ export interface SplitButtonProps {
     /**
      * Defines the style of the button.
      */
-    severity?: 'secondary' | 'success' | 'info' | 'warning' | 'help' | 'danger' | string | undefined;
+    severity?: HintedString<'secondary' | 'success' | 'info' | 'warning' | 'help' | 'danger' | 'contrast'> | undefined;
     /**
      * Add a shadow to indicate elevation.
      * @defaultValue false
@@ -291,8 +313,8 @@ export interface SplitButtonEmits {
  */
 declare class SplitButton extends ClassComponent<SplitButtonProps, SplitButtonSlots, SplitButtonEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         SplitButton: GlobalComponentConstructor<SplitButton>;
     }
 }

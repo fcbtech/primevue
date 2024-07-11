@@ -1,7 +1,7 @@
 <template>
-    <div :class="cx('root')" v-bind="ptm('root')" data-pc-name="scrollpanel">
+    <div :class="cx('root')" v-bind="ptmi('root')">
         <div :class="cx('wrapper')" v-bind="ptm('wrapper')">
-            <div ref="content" :class="cx('content')" @scroll="onScroll" @mouseenter="moveBar" v-bind="ptm('content')">
+            <div ref="content" :id="contentId" :class="cx('content')" @scroll="onScroll" @mouseenter="moveBar" v-bind="ptm('content')">
                 <slot></slot>
             </div>
         </div>
@@ -11,6 +11,7 @@
             tabindex="0"
             role="scrollbar"
             aria-orientation="horizontal"
+            :aria-controls="contentId"
             :aria-valuenow="lastScrollLeft"
             @mousedown="onXBarMouseDown"
             @keydown="onKeyDown($event)"
@@ -26,6 +27,7 @@
             tabindex="0"
             role="scrollbar"
             aria-orientation="vertical"
+            :aria-controls="contentId"
             :aria-valuenow="lastScrollTop"
             @mousedown="onYBarMouseDown"
             @keydown="onKeyDown($event)"
@@ -44,6 +46,7 @@ import BaseScrollPanel from './BaseScrollPanel.vue';
 export default {
     name: 'ScrollPanel',
     extends: BaseScrollPanel,
+    inheritAttrs: false,
     initialized: false,
     documentResizeListener: null,
     documentMouseMoveListener: null,
@@ -59,13 +62,20 @@ export default {
     outsideClickListener: null,
     data() {
         return {
-            id: UniqueComponentId(),
+            id: this.$attrs.id,
             orientation: 'vertical',
             lastScrollTop: 0,
             lastScrollLeft: 0
         };
     },
+    watch: {
+        '$attrs.id': function (newValue) {
+            this.id = newValue || UniqueComponentId();
+        }
+    },
     mounted() {
+        this.id = this.id || UniqueComponentId();
+
         if (this.$el.offsetParent) {
             this.initialize();
         }
@@ -119,22 +129,27 @@ export default {
                 this.scrollYRatio = ownHeight / totalHeight;
 
                 this.frame = this.requestAnimationFrame(() => {
-                    if (this.scrollXRatio >= 1) {
-                        this.$refs.xBar.setAttribute('data-p-scrollpanel-hidden', 'true');
-                        !this.isUnstyled && DomHandler.addClass(this.$refs.xBar, 'p-scrollpanel-hidden');
-                    } else {
-                        this.$refs.xBar.setAttribute('data-p-scrollpanel-hidden', 'false');
-                        !this.isUnstyled && DomHandler.removeClass(this.$refs.xBar, 'p-scrollpanel-hidden');
-                        this.$refs.xBar.style.cssText = 'width:' + Math.max(this.scrollXRatio * 100, 10) + '%; left:' + (this.$refs.content.scrollLeft / totalWidth) * 100 + '%;bottom:' + bottom + 'px;';
+                    if (this.$refs.xBar) {
+                        if (this.scrollXRatio >= 1) {
+                            this.$refs.xBar.setAttribute('data-p-scrollpanel-hidden', 'true');
+                            !this.isUnstyled && DomHandler.addClass(this.$refs.xBar, 'p-scrollpanel-hidden');
+                        } else {
+                            this.$refs.xBar.setAttribute('data-p-scrollpanel-hidden', 'false');
+                            !this.isUnstyled && DomHandler.removeClass(this.$refs.xBar, 'p-scrollpanel-hidden');
+                            this.$refs.xBar.style.cssText = 'width:' + Math.max(this.scrollXRatio * 100, 10) + '%; left:' + (this.$refs.content.scrollLeft / totalWidth) * 100 + '%;bottom:' + bottom + 'px;';
+                        }
                     }
 
-                    if (this.scrollYRatio >= 1) {
-                        this.$refs.yBar.setAttribute('data-p-scrollpanel-hidden', 'true');
-                        !this.isUnstyled && DomHandler.addClass(this.$refs.yBar, 'p-scrollpanel-hidden');
-                    } else {
-                        this.$refs.yBar.setAttribute('data-p-scrollpanel-hidden', 'false');
-                        !this.isUnstyled && DomHandler.removeClass(this.$refs.yBar, 'p-scrollpanel-hidden');
-                        this.$refs.yBar.style.cssText = 'height:' + Math.max(this.scrollYRatio * 100, 10) + '%; top: calc(' + (this.$refs.content.scrollTop / totalHeight) * 100 + '% - ' + this.$refs.xBar.clientHeight + 'px);right:' + right + 'px;';
+                    if (this.$refs.yBar) {
+                        if (this.scrollYRatio >= 1) {
+                            this.$refs.yBar.setAttribute('data-p-scrollpanel-hidden', 'true');
+                            !this.isUnstyled && DomHandler.addClass(this.$refs.yBar, 'p-scrollpanel-hidden');
+                        } else {
+                            this.$refs.yBar.setAttribute('data-p-scrollpanel-hidden', 'false');
+                            !this.isUnstyled && DomHandler.removeClass(this.$refs.yBar, 'p-scrollpanel-hidden');
+                            this.$refs.yBar.style.cssText =
+                                'height:' + Math.max(this.scrollYRatio * 100, 10) + '%; top: calc(' + (this.$refs.content.scrollTop / totalHeight) * 100 + '% - ' + this.$refs.xBar.clientHeight + 'px);right:' + right + 'px;';
+                        }
                     }
                 });
             }
@@ -356,6 +371,11 @@ export default {
                 window.removeEventListener('resize', this.documentResizeListener);
                 this.documentResizeListener = null;
             }
+        }
+    },
+    computed: {
+        contentId() {
+            return this.id + '_content';
         }
     }
 };

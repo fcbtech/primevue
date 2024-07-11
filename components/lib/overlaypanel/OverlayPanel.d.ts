@@ -10,7 +10,7 @@
 import { TransitionProps, VNode } from 'vue';
 import { ComponentHooks } from '../basecomponent';
 import { PassThroughOptions } from '../passthrough';
-import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, PassThrough, HintedString } from '../ts-helpers';
 
 export declare type OverlayPanelPassThroughOptionType = OverlayPanelPassThroughAttributes | ((options: OverlayPanelPassThroughMethodOptions) => OverlayPanelPassThroughAttributes | string) | string | null | undefined;
 
@@ -32,6 +32,14 @@ export interface OverlayPanelPassThroughMethodOptions {
      * Defines current inline state.
      */
     state: OverlayPanelState;
+    /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
     /**
      * Defines passthrough(pt) options in global config.
      */
@@ -128,7 +136,7 @@ export interface OverlayPanelProps {
      * A valid query selector or an HTMLElement to specify where the overlay gets attached.
      * @defaultValue body
      */
-    appendTo?: 'body' | 'self' | string | undefined | HTMLElement;
+    appendTo?: HintedString<'body' | 'self'> | undefined | HTMLElement;
     /**
      * Base zIndex value to use in layering.
      * @defaultValue 0
@@ -237,6 +245,10 @@ export interface OverlayPanelEmits {
  */
 declare class OverlayPanel extends ClassComponent<OverlayPanelProps, OverlayPanelSlots, OverlayPanelEmits> {
     /**
+     * Aligns overlay panel based on the current position of the container.
+     */
+    alignOverlay(): void;
+    /**
      * Toggles the visibility of the overlay.
      * @param {Event} event - Browser event.
      * @param {*} [target] - Optional target if event.currentTarget should not be used.
@@ -260,8 +272,8 @@ declare class OverlayPanel extends ClassComponent<OverlayPanelProps, OverlayPane
     hide(): void;
 }
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         OverlayPanel: GlobalComponentConstructor<OverlayPanel>;
     }
 }

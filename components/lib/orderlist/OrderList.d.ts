@@ -9,7 +9,7 @@
  */
 import { ButtonHTMLAttributes, HTMLAttributes, TransitionProps, VNode } from 'vue';
 import { ComponentHooks } from '../basecomponent';
-import { ButtonPassThroughOptionType } from '../button';
+import { ButtonPassThroughOptions } from '../button';
 import { PassThroughOptions } from '../passthrough';
 import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
 
@@ -38,9 +38,31 @@ export interface OrderListPassThroughMethodOptions {
      */
     context: OrderListContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
+}
+
+/**
+ * Custom shared passthrough(pt) option method.
+ */
+export interface OrderListSharedPassThroughMethodOptions {
+    /**
+     * Defines valid properties.
+     */
+    props: OrderListProps;
+    /**
+     * Defines current inline state.
+     */
+    state: OrderListState;
 }
 
 /**
@@ -93,19 +115,19 @@ export interface OrderListPassThroughOptions {
     /**
      * Used to pass attributes to the Button component.
      */
-    moveUpButton?: ButtonPassThroughOptionType;
+    moveUpButton?: ButtonPassThroughOptions<OrderListSharedPassThroughMethodOptions>;
     /**
      * Used to pass attributes to the Button component.
      */
-    moveTopButton?: ButtonPassThroughOptionType;
+    moveTopButton?: ButtonPassThroughOptions<OrderListSharedPassThroughMethodOptions>;
     /**
      * Used to pass attributes to the Button component.
      */
-    moveDownButton?: ButtonPassThroughOptionType;
+    moveDownButton?: ButtonPassThroughOptions<OrderListSharedPassThroughMethodOptions>;
     /**
      * Used to pass attributes to the Button component.
      */
-    moveBottomButton?: ButtonPassThroughOptionType;
+    moveBottomButton?: ButtonPassThroughOptions<OrderListSharedPassThroughMethodOptions>;
     /**
      * Used to pass attributes to the container's DOM element.
      */
@@ -200,9 +222,19 @@ export interface OrderListProps {
      * Defines whether metaKey is requred or not for the selection.
      * When true metaKey needs to be pressed to select or unselect an item and
      * when set to false selection of each item can be toggled individually. On touch enabled devices, metaKeySelection is turned off automatically.
-     * @defaultValue true
+     * @defaultValue false
      */
     metaKeySelection?: boolean | undefined;
+    /**
+     * Whether to focus on the first visible or selected element.
+     * @defaultValue true
+     */
+    autoOptionFocus?: boolean | undefined;
+    /**
+     * When enabled, the focus is placed on the hovered option.
+     * @defaultValue true
+     */
+    focusOnHover?: boolean | undefined;
     /**
      * Inline style of the the list element.
      */
@@ -248,11 +280,11 @@ export interface OrderListProps {
     /**
      * Defines a string value that labels an interactive list element.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Identifier of the underlying list element.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {OrderListPassThroughOptions}
@@ -357,8 +389,8 @@ export interface OrderListEmits {
  */
 declare class OrderList extends ClassComponent<OrderListProps, OrderListSlots, OrderListEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         OrderList: GlobalComponentConstructor<OrderList>;
     }
 }

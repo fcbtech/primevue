@@ -4,17 +4,17 @@
     </DocSectionText>
     <ConfirmPopup group="headless">
         <template #container="{ message, acceptCallback, rejectCallback }">
-            <div class="bg-gray-900 text-white border-round p-3">
+            <div class="border-round p-3">
                 <span>{{ message.message }}</span>
                 <div class="flex align-items-center gap-2 mt-3">
-                    <Button label="Save" @click="acceptCallback" class="p-button-sm p-button-outlined"></Button>
-                    <Button label="Cancel" outlined @click="rejectCallback" class="p-button-sm p-button-text"></Button>
+                    <Button label="Save" @click="acceptCallback" size="small"></Button>
+                    <Button label="Cancel" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
                 </div>
             </div>
         </template>
     </ConfirmPopup>
     <div class="card flex justify-content-center">
-        <Button @click="requireConfirmation($event)" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="requireConfirmation($event)" label="Save"></Button>
     </div>
     <DocSectionCode :code="code" />
 </template>
@@ -27,33 +27,33 @@ export default {
                 basic: `
 <ConfirmPopup group="headless">
     <template #container="{ message, acceptCallback, rejectCallback }">
-        <div class="bg-gray-900 text-white border-round p-3">
+        <div class="border-round p-3">
             <span>{{ message.message }}</span>
             <div class="flex align-items-center gap-2 mt-3">
-                <Button label="Save" @click="acceptCallback" class="p-button-sm p-button-outlined"></Button>
-                <Button label="Cancel" outlined @click="rejectCallback" class="p-button-sm p-button-text"></Button>
+                <Button label="Save" @click="acceptCallback" size="small"></Button>
+                <Button label="Cancel" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
             </div>
         </div>
     </template>
 </ConfirmPopup>
-<Button @click="requireConfirmation($event)" icon="pi pi-check" label="Confirm"></Button>
+<Button @click="requireConfirmation($event)" label="Save"></Button>
 `,
                 options: `
 <template>
     <Toast />
     <ConfirmPopup group="headless">
         <template #container="{ message, acceptCallback, rejectCallback }">
-            <div class="bg-gray-900 text-white border-round p-3">
+            <div class="border-round p-3">
                 <span>{{ message.message }}</span>
                 <div class="flex align-items-center gap-2 mt-3">
-                    <Button label="Save" @click="acceptCallback" class="p-button-sm p-button-outlined"></Button>
-                    <Button label="Cancel" outlined @click="rejectCallback" class="p-button-sm p-button-text"></Button>
+                    <Button label="Save" @click="acceptCallback" size="small"></Button>
+                    <Button label="Cancel" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
                 </div>
             </div>
         </template>
     </ConfirmPopup>
     <div class="card flex justify-content-center">
-        <Button @click="requireConfirmation($event)" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="requireConfirmation($event)" label="Save"></Button>
     </div>
 </template>
 
@@ -64,7 +64,7 @@ export default {
             this.$confirm.require({
                 target: event.currentTarget,
                 group: 'headless',
-                message: 'Are you sure? You cannot undo this.',
+                message: 'Save your current process?',
                 accept: () => {
                     this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
                 },
@@ -82,23 +82,23 @@ export default {
     <Toast />
     <ConfirmPopup group="headless">
         <template #container="{ message, acceptCallback, rejectCallback }">
-            <div class="bg-gray-900 text-white border-round p-3">
+            <div class="border-round p-3">
                 <span>{{ message.message }}</span>
                 <div class="flex align-items-center gap-2 mt-3">
-                    <Button label="Save" @click="acceptCallback" class="p-button-sm p-button-outlined"></Button>
-                    <Button label="Cancel" outlined @click="rejectCallback" class="p-button-sm p-button-text"></Button>
+                    <Button label="Save" @click="acceptCallback" size="small"></Button>
+                    <Button label="Cancel" outlined @click="rejectCallback" severity="secondary" size="small" text></Button>
                 </div>
             </div>
         </template>
     </ConfirmPopup>
     <div class="card flex justify-content-center">
-        <Button @click="requireConfirmation($event)" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="requireConfirmation($event)" label="Save"></Button>
     </div>
 </template>
 
 <script setup>
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+import { useConfirm } from "@fcbtech/primevue/useconfirm";
+import { useToast } from "@fcbtech/primevue/usetoast";
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -107,7 +107,7 @@ const requireConfirmation = (event) => {
     confirm.require({
         target: event.currentTarget,
         group: 'headless',
-        message: 'Are you sure? You cannot undo this.',
+        message: 'Save your current process?',
         accept: () => {
             toast.add({severity:'info', summary:'Confirmed', detail:'You have accepted', life: 3000});
         },
@@ -126,7 +126,7 @@ const requireConfirmation = (event) => {
             this.$confirm.require({
                 target: event.currentTarget,
                 group: 'headless',
-                message: 'Are you sure? You cannot undo this.',
+                message: 'Save your current process?',
                 accept: () => {
                     this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
                 },

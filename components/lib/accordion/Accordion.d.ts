@@ -32,6 +32,14 @@ export interface AccordionPassThroughMethodOptions {
      */
     state: AccordionState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -224,8 +232,8 @@ export interface AccordionEmits {
  */
 declare class Accordion extends ClassComponent<AccordionProps, AccordionSlots, AccordionEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Accordion: GlobalComponentConstructor<Accordion>;
     }
 }

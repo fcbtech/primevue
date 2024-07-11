@@ -1,5 +1,5 @@
 <template>
-    <div :class="cx('root')" v-bind="ptm('root')" data-pc-name="tabview">
+    <div :class="cx('root')" role="tablist" v-bind="ptmi('root')">
         <div :class="cx('navContainer')" v-bind="ptm('navContainer')">
             <button
                 v-if="scrollable && !isPrevButtonDisabled"
@@ -13,12 +13,12 @@
                 v-bind="{ ...previousButtonProps, ...ptm('previousButton') }"
                 data-pc-group-section="navbutton"
             >
-                <slot name="previcon">
+                <slot name="previousicon">
                     <component :is="prevIcon ? 'span' : 'ChevronLeftIcon'" aria-hidden="true" :class="prevIcon" v-bind="ptm('previousIcon')" />
                 </slot>
             </button>
             <div ref="content" :class="cx('navContent')" @scroll="onScroll" v-bind="ptm('navContent')">
-                <ul ref="nav" :class="cx('nav')" role="tablist" v-bind="ptm('nav')">
+                <ul ref="nav" :class="cx('nav')" v-bind="ptm('nav')">
                     <li
                         v-for="(tab, index) of tabs"
                         :key="getKey(tab, index)"
@@ -102,6 +102,7 @@ import BaseTabView from './BaseTabView.vue';
 export default {
     name: 'TabView',
     extends: BaseTabView,
+    inheritAttrs: false,
     emits: ['update:activeIndex', 'tab-change', 'tab-click'],
     data() {
         return {
@@ -123,12 +124,12 @@ export default {
     },
     mounted() {
         this.id = this.id || UniqueComponentId();
-
         this.updateInkBar();
         this.scrollable && this.updateButtonState();
     },
     updated() {
         this.updateInkBar();
+        this.scrollable && this.updateButtonState();
     },
     methods: {
         isTabPanel(child) {
@@ -154,6 +155,7 @@ export default {
             const tabMetaData = {
                 props: tab.props,
                 parent: {
+                    instance: this,
                     props: this.$props,
                     state: this.$data
                 },
@@ -219,6 +221,7 @@ export default {
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                 case 'Space':
                     this.onTabEnterKey(event, tab, index);
                     break;
@@ -304,7 +307,7 @@ export default {
                 this.scrollInView({ element });
 
                 if (this.selectOnFocus) {
-                    const index = parseInt(element.parentElement.dataset.index, 10);
+                    const index = parseInt(element.parentElement.dataset.pcIndex, 10);
                     const tab = this.tabs[index];
 
                     this.changeActiveIndex(event, tab, index);

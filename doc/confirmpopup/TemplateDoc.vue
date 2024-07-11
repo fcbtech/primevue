@@ -4,14 +4,14 @@
     </DocSectionText>
     <ConfirmPopup group="templating">
         <template #message="slotProps">
-            <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+            <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3 pb-0">
                 <i :class="slotProps.message.icon" class="text-6xl text-primary-500"></i>
                 <p>{{ slotProps.message.message }}</p>
             </div>
         </template>
     </ConfirmPopup>
     <div class="card flex justify-content-center">
-        <Button @click="showTemplate($event)" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="showTemplate($event)" label="Save"></Button>
     </div>
     <DocSectionCode :code="code" />
 </template>
@@ -24,27 +24,27 @@ export default {
                 basic: `
 <ConfirmPopup group="templating">
     <template #message="slotProps">
-        <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+        <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3 pb-0">
             <i :class="slotProps.message.icon" class="text-6xl text-primary-500"></i>
             <p>{{ slotProps.message.message }}</p>
         </div>
     </template>
 </ConfirmPopup>
-<Button @click="showTemplate($event)" icon="pi pi-check" label="Confirm"></Button>
+<Button @click="showTemplate($event)" label="Save"></Button>
 `,
                 options: `
 <template>
     <Toast />
     <ConfirmPopup group="templating">
         <template #message="slotProps">
-            <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+            <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3 pb-0">
                 <i :class="slotProps.message.icon" class="text-6xl text-primary-500"></i>
                 <p>{{ slotProps.message.message }}</p>
             </div>
         </template>
     </ConfirmPopup>
     <div class="card flex justify-content-center">
-        <Button @click="showTemplate($event)" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="showTemplate($event)" label="Save"></Button>
     </div>
 </template>
 
@@ -59,8 +59,10 @@ export default {
                 icon: 'pi pi-exclamation-circle',
                 acceptIcon: 'pi pi-check',
                 rejectIcon: 'pi pi-times',
-                rejectClass: 'p-button-sm',
-                acceptClass: 'p-button-outlined p-button-sm',
+                acceptLabel: 'Confirm',
+                rejectLabel: 'Cancel',
+                rejectClass: 'p-button-outlined p-button-sm',
+                acceptClass: 'p-button-sm',
                 accept: () => {
                     this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
                 },
@@ -78,20 +80,20 @@ export default {
     <Toast />
     <ConfirmPopup group="templating">
         <template #message="slotProps">
-            <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+            <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3 pb-0">
                 <i :class="slotProps.message.icon" class="text-6xl text-primary-500"></i>
                 <p>{{ slotProps.message.message }}</p>
             </div>
         </template>
     </ConfirmPopup>
     <div class="card flex justify-content-center">
-        <Button @click="showTemplate($event)" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="showTemplate($event)" label="Save"></Button>
     </div>
 </template>
 
 <script setup>
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+import { useConfirm } from "@fcbtech/primevue/useconfirm";
+import { useToast } from "@fcbtech/primevue/usetoast";
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -104,8 +106,10 @@ const showTemplate = (event) => {
         icon: 'pi pi-exclamation-circle',
         acceptIcon: 'pi pi-check',
         rejectIcon: 'pi pi-times',
-        rejectClass: 'p-button-sm',
-        acceptClass: 'p-button-outlined p-button-sm',
+        acceptLabel: 'Confirm',
+        rejectLabel: 'Cancel',
+        rejectClass: 'p-button-outlined p-button-sm',
+        acceptClass: 'p-button-sm',
         accept: () => {
             toast.add({severity:'info', summary:'Confirmed', detail:'You have accepted', life: 3000});
         },
@@ -128,8 +132,10 @@ const showTemplate = (event) => {
                 icon: 'pi pi-exclamation-circle',
                 acceptIcon: 'pi pi-check',
                 rejectIcon: 'pi pi-times',
-                rejectClass: 'p-button-sm',
-                acceptClass: 'p-button-outlined p-button-sm',
+                acceptLabel: 'Confirm',
+                rejectLabel: 'Cancel',
+                rejectClass: 'p-button-outlined p-button-sm',
+                acceptClass: 'p-button-sm',
                 accept: () => {
                     this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
                 },

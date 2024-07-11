@@ -6,7 +6,7 @@
         </p>
     </DocSectionText>
 
-    <DocSectionCode :code="code" hideToggleCode importCode hideCodeSandbox hideStackBlitz />
+    <DocSectionCode :code="code" hideToggleCode importCode hideStackBlitz />
 </template>
 
 <script>
@@ -16,10 +16,10 @@ export default {
             code: {
                 basic: `
 import { createApp } from "vue";
-import PrimeVue from "primevue/config";
+import PrimeVue from "@fcbtech/primevue/config";
 const app = createApp(App);
 
-app.use(PrimeVue, { 
+app.use(PrimeVue, {
     pt: {
         global: {
             css: \`
@@ -48,7 +48,7 @@ app.use(PrimeVue, {
                 }
             \`
         }
-    } 
+    }
 });
 `
             }

@@ -10,7 +10,7 @@
 import { HTMLAttributes, InputHTMLAttributes, TransitionProps, VNode } from 'vue';
 import { ComponentHooks } from '../basecomponent';
 import { PassThroughOptions } from '../passthrough';
-import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, PassThrough, HintedString } from '../ts-helpers';
 
 export declare type CascadeSelectPassThroughOptionType = CascadeSelectPassThroughAttributes | ((options: CascadeSelectPassThroughMethodOptions) => CascadeSelectPassThroughAttributes | string) | string | null | undefined;
 
@@ -32,6 +32,18 @@ export interface CascadeSelectPassThroughMethodOptions {
      * Defines current inline state.
      */
     state: CascadeSelectState;
+    /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
+     * Defines current options.
+     */
+    context: CascadeSelectContext;
     /**
      * Defines passthrough(pt) options in global config.
      */
@@ -187,6 +199,43 @@ export interface CascadeSelectState {
 }
 
 /**
+ * Defines current options in CascadeSelect component.
+ */
+export interface CascadeSelectContext {
+    /**
+     * Current option.
+     */
+    item: any;
+    /**
+     * Index of the option.
+     */
+    index: number;
+    /**
+     * Level of the option.
+     */
+    level: number;
+    /**
+     * Current item group state of option as a boolean.
+     */
+    itemGroup: boolean;
+    /**
+     * Current active state of option as a boolean.
+     * @defaultValue false
+     */
+    active: boolean;
+    /**
+     * Current focused state of option as a boolean.
+     * @defaultValue false
+     */
+    focused: boolean;
+    /**
+     * Current disabled state of option as a boolean.
+     * @defaultValue false
+     */
+    disabled: boolean;
+}
+
+/**
  * Defines valid properties in CascadeSelect component.
  */
 export interface CascadeSelectProps {
@@ -223,10 +272,20 @@ export interface CascadeSelectProps {
      */
     placeholder?: string | undefined;
     /**
+     * When present, it specifies that the component should have invalid state style.
+     * @defaultValue false
+     */
+    invalid?: boolean | undefined;
+    /**
      * When present, it specifies that the component should be disabled.
      * @defaultValue false
      */
     disabled?: boolean | undefined;
+    /**
+     * Specifies the input variant of the component.
+     * @defaultValue outlined
+     */
+    variant?: 'outlined' | 'filled' | undefined;
     /**
      * A property to uniquely identify an option.
      */
@@ -263,7 +322,7 @@ export interface CascadeSelectProps {
      * A valid query selector or an HTMLElement to specify where the overlay gets attached. Special keywords are 'body' for document body and 'self' for the element itself.
      * @defaultValue body
      */
-    appendTo?: 'body' | 'self' | string | undefined | HTMLElement;
+    appendTo?: HintedString<'body' | 'self'> | undefined | HTMLElement;
     /**
      * Whether the dropdown is in loading state.
      * @defaultValue false
@@ -286,7 +345,7 @@ export interface CascadeSelectProps {
     optionGroupIcon?: string | undefined;
     /**
      * Whether to focus on the first visible or selected element when the overlay panel is shown.
-     * @defaultValue true
+     * @defaultValue false
      */
     autoOptionFocus?: boolean | undefined;
     /**
@@ -294,6 +353,11 @@ export interface CascadeSelectProps {
      * @defaultValue false
      */
     selectOnFocus?: boolean | undefined;
+    /**
+     * When enabled, the focus is placed on the hovered option.
+     * @defaultValue true
+     */
+    focusOnHover?: boolean | undefined;
     /**
      * Locale to use in searching. The default locale is the host environment's current locale.
      */
@@ -330,11 +394,11 @@ export interface CascadeSelectProps {
     /**
      * Establishes relationships between the component and label(s) where its value should be one or more element IDs.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Establishes a string value that labels the component.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {CascadeSelectPassThroughOptions}
@@ -464,8 +528,8 @@ export interface CascadeSelectEmits {
  */
 declare class CascadeSelect extends ClassComponent<CascadeSelectProps, CascadeSelectSlots, CascadeSelectEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         CascadeSelect: GlobalComponentConstructor<CascadeSelect>;
     }
 }

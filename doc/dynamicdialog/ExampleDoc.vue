@@ -152,7 +152,7 @@ const showProducts = () => {
 			<Column field="name" header="Name"></Column>
             <Column header="Image">
                 <template #body="slotProps">
-                    <img :src="'https://primefaces.org/cdn/primevue/images/product/' + slotProps.data.image" :alt="slotProps.data.name" class="shadow-2 w-4rem" />
+                    <img :src="'https://primefaces.org/cdn/primevue/images/product/' + slotProps.data.image" :alt="slotProps.data.name" class="w-4rem" />
                 </template>
             </Column>
 			<Column field="category" header="Category"></Column>
@@ -265,7 +265,7 @@ export default {
 			<Column field="name" header="Name"></Column>
             <Column header="Image">
                 <template #body="slotProps">
-                    <img :src="'https://primefaces.org/cdn/primevue/images/product/' + slotProps.data.image" :alt="slotProps.data.name" class="shadow-2 w-4rem" />
+                    <img :src="'https://primefaces.org/cdn/primevue/images/product/' + slotProps.data.image" :alt="slotProps.data.name" class="w-4rem" />
                 </template>
             </Column>
 			<Column field="category" header="Category"></Column>
@@ -282,7 +282,7 @@ export default {
 
 <script setup>
 import { ref, onMounted, inject } from "vue";
-import { useDialog } from "primevue/usedialog";
+import { useDialog } from "@fcbtech/primevue/usedialog";
 import { ProductService } from "@/service/ProductService";
 import InfoDemo from "./InfoDemo.vue";
 

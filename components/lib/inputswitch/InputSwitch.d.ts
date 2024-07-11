@@ -7,7 +7,6 @@
  * @module inputswitch
  *
  */
-import { InputHTMLAttributes } from 'vue';
 import { ComponentHooks } from '../basecomponent';
 import { PassThroughOptions } from '../passthrough';
 import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
@@ -27,9 +26,17 @@ export interface InputSwitchPassThroughMethodOptions {
      */
     props: InputSwitchProps;
     /**
-     * Defines current inline state.
+     * Defines current options.
      */
-    state: InputSwitchState;
+    context: InputSwitchContext;
+    /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
     /**
      * Defines passthrough(pt) options in global config.
      */
@@ -46,17 +53,13 @@ export interface InputSwitchPassThroughOptions {
      */
     root?: InputSwitchPassThroughOptionType;
     /**
+     * Used to pass attributes to the input's DOM element.
+     */
+    input?: InputSwitchPassThroughOptionType;
+    /**
      * Used to pass attributes to the slider's DOM element.
      */
     slider?: InputSwitchPassThroughOptionType;
-    /**
-     * Used to pass attributes to the hidden input wrapper's DOM element.
-     */
-    hiddenInputWrapper?: InputSwitchPassThroughOptionType;
-    /**
-     * Used to pass attributes to the hidden input's DOM element.
-     */
-    hiddenInput?: InputSwitchPassThroughOptionType;
     /**
      * Used to manage all lifecycle hooks.
      * @see {@link BaseComponent.ComponentHooks}
@@ -69,17 +72,6 @@ export interface InputSwitchPassThroughOptions {
  */
 export interface InputSwitchPassThroughAttributes {
     [key: string]: any;
-}
-
-/**
- * Defines current inline state in InputSwitch component.
- */
-export interface InputSwitchState {
-    /**
-     * Current focus state as a boolean.
-     * @defaultValue false
-     */
-    focused: boolean;
 }
 
 /**
@@ -102,10 +94,24 @@ export interface InputSwitchProps {
      */
     falseValue?: any;
     /**
+     * When present, it specifies that the component should have invalid state style.
+     * @defaultValue false
+     */
+    invalid?: boolean | undefined;
+    /**
      * When present, it specifies that the component should be disabled.
      * @defaultValue false
      */
     disabled?: boolean | undefined;
+    /**
+     * When present, it specifies that an input field is read-only.
+     * @default false
+     */
+    readonly?: boolean | undefined;
+    /**
+     * Index of the element in tabbing order.
+     */
+    tabindex?: number | undefined;
     /**
      * 	Identifier of the underlying input element.
      */
@@ -119,17 +125,13 @@ export interface InputSwitchProps {
      */
     inputStyle?: object | undefined;
     /**
-     * Used to pass all properties of the HTMLInputElement to the focusable input element inside the component.
-     */
-    inputProps?: InputHTMLAttributes | undefined;
-    /**
      * Establishes relationships between the component and label(s) where its value should be one or more element IDs.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Establishes a string value that labels the component.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {InputSwitchPassThroughOptions}
@@ -147,6 +149,22 @@ export interface InputSwitchProps {
     unstyled?: boolean;
 }
 
+/**
+ * Defines current options in InputSwitch component.
+ */
+export interface InputSwitchContext {
+    /**
+     * Current checked state of the item as a boolean.
+     * @defaultValue false
+     */
+    checked: boolean;
+    /**
+     * Current disabled state of the item as a boolean.
+     * @defaultValue false
+     */
+    disabled: boolean;
+}
+
 export interface InputSwitchSlots {}
 
 /**
@@ -159,20 +177,20 @@ export interface InputSwitchEmits {
      */
     'update:modelValue'(value: boolean): void;
     /**
-     * Callback to invoke on click.
-     * @param {Event} event - Browser event.
-     */
-    click(event: Event): void;
-    /**
      * Callback to invoke on value change.
      * @param {Event} event - Browser event.
      */
     change(event: Event): void;
     /**
-     * Callback to invoke on value change.
-     * @param {boolean} value - New value.
+     * Callback to invoke when the component receives focus.
+     * @param {Event} event - Browser event.
      */
-    input(value: boolean): void;
+    focus(event: Event): void;
+    /**
+     * Callback to invoke when the component loses focus.
+     * @param {Event} event - Browser event.
+     */
+    blur(event: Event): void;
 }
 
 /**
@@ -189,8 +207,8 @@ export interface InputSwitchEmits {
  */
 declare class InputSwitch extends ClassComponent<InputSwitchProps, InputSwitchSlots, InputSwitchEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         InputSwitch: GlobalComponentConstructor<InputSwitch>;
     }
 }

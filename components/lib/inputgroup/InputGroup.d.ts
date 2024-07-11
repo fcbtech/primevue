@@ -23,6 +23,14 @@ export interface InputGroupPassThroughMethodOptions {
      */
     instance: any;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -105,8 +113,8 @@ export interface InputGroupEmits {}
  */
 declare class InputGroup extends ClassComponent<InputGroupProps, InputGroupSlots, InputGroupEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         InputGroup: GlobalComponentConstructor<InputGroup>;
     }
 }

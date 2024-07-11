@@ -18,9 +18,21 @@ export default {
             type: null,
             default: false
         },
+        invalid: {
+            type: Boolean,
+            default: false
+        },
         disabled: {
             type: Boolean,
             default: false
+        },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
+        tabindex: {
+            type: Number,
+            default: null
         },
         inputId: {
             type: String,
@@ -34,15 +46,11 @@ export default {
             type: Object,
             default: null
         },
-        inputProps: {
-            type: null,
-            default: null
-        },
-        'aria-labelledby': {
+        ariaLabelledby: {
             type: String,
             default: null
         },
-        'aria-label': {
+        ariaLabel: {
             type: String,
             default: null
         }

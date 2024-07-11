@@ -1,7 +1,7 @@
 <template>
     <Portal :appendTo="appendTo">
         <transition name="p-contextmenu" @enter="onEnter" @after-enter="onAfterEnter" @leave="onLeave" @after-leave="onAfterLeave" v-bind="ptm('transition')">
-            <div v-if="visible" :ref="containerRef" :class="cx('root')" v-bind="{ ...$attrs, ...ptm('root') }" data-pc-name="contextmenu">
+            <div v-if="visible" :ref="containerRef" :class="cx('root')" v-bind="ptmi('root')">
                 <ContextMenuSub
                     :ref="listRef"
                     :id="id + '_list'"
@@ -10,9 +10,9 @@
                     :root="true"
                     :tabindex="tabindex"
                     aria-orientation="vertical"
-                    :aria-activedescendant="focused ? focusedItemId : undefined"
+                    :aria-activedescendant="focused ? focusedItemIdx : undefined"
                     :menuId="id"
-                    :focusedItemId="focused ? focusedItemId : undefined"
+                    :focusedItemId="focused ? focusedItemIdx : undefined"
                     :items="processedItems"
                     :templates="$slots"
                     :activeItemPath="activeItemPath"
@@ -27,6 +27,7 @@
                     @keydown="onKeyDown"
                     @item-click="onItemClick"
                     @item-mouseenter="onItemMouseEnter"
+                    @item-mousemove="onItemMouseMove"
                 />
             </div>
         </transition>
@@ -105,6 +106,9 @@ export default {
         isItemDisabled(item) {
             return this.getItemProp(item, 'disabled');
         },
+        isItemVisible(item) {
+            return this.getItemProp(item, 'visible') !== false;
+        },
         isItemGroup(item) {
             return ObjectUtils.isNotEmpty(this.getItemProp(item, 'items'));
         },
@@ -181,6 +185,7 @@ export default {
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     this.onEnterKey(event);
                     break;
 
@@ -246,6 +251,11 @@ export default {
         onItemMouseEnter(event) {
             this.onItemChange(event);
         },
+        onItemMouseMove(event) {
+            if (this.focused) {
+                this.changeFocusedItemIndex(event, event.processedItem.index);
+            }
+        },
         onArrowDownKey(event) {
             const itemIndex = this.focusedItemInfo.index !== -1 ? this.findNextItemIndex(this.focusedItemInfo.index) : this.findFirstFocusedItemIndex();
 
@@ -308,7 +318,7 @@ export default {
         },
         onEnterKey(event) {
             if (this.focusedItemInfo.index !== -1) {
-                const element = DomHandler.findSingle(this.list, `li[id="${`${this.focusedItemId}`}"]`);
+                const element = DomHandler.findSingle(this.list, `li[id="${`${this.focusedItemIdx}`}"]`);
                 const anchorElement = element && DomHandler.findSingle(element, 'a[data-pc-section="action"]');
 
                 anchorElement ? anchorElement.click() : element && element.click();
@@ -449,10 +459,10 @@ export default {
             }
         },
         isItemMatched(processedItem) {
-            return this.isValidItem(processedItem) && this.getProccessedItemLabel(processedItem).toLocaleLowerCase().startsWith(this.searchValue.toLocaleLowerCase());
+            return this.isValidItem(processedItem) && this.getProccessedItemLabel(processedItem)?.toLocaleLowerCase().startsWith(this.searchValue.toLocaleLowerCase());
         },
         isValidItem(processedItem) {
-            return !!processedItem && !this.isItemDisabled(processedItem.item) && !this.isItemSeparator(processedItem.item);
+            return !!processedItem && !this.isItemDisabled(processedItem.item) && !this.isItemSeparator(processedItem.item) && this.isItemVisible(processedItem.item);
         },
         isValidSelectedItem(processedItem) {
             return this.isValidItem(processedItem) && this.isSelected(processedItem);
@@ -532,7 +542,7 @@ export default {
             }
         },
         scrollInView(index = -1) {
-            const id = index !== -1 ? `${this.id}_${index}` : this.focusedItemId;
+            const id = index !== -1 ? `${this.id}_${index}` : this.focusedItemIdx;
             const element = DomHandler.findSingle(this.list, `li[id="${id}"]`);
 
             if (element) {
@@ -576,13 +586,13 @@ export default {
 
             return processedItem ? processedItem.items : this.processedItems;
         },
-        focusedItemId() {
+        focusedItemIdx() {
             return this.focusedItemInfo.index !== -1 ? `${this.id}${ObjectUtils.isNotEmpty(this.focusedItemInfo.parentKey) ? '_' + this.focusedItemInfo.parentKey : ''}_${this.focusedItemInfo.index}` : null;
         }
     },
     components: {
-        ContextMenuSub: ContextMenuSub,
-        Portal: Portal
+        ContextMenuSub,
+        Portal
     }
 };
 </script>

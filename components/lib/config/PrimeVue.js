@@ -3,7 +3,7 @@ import { inject, reactive } from 'vue';
 
 export const defaultOptions = {
     ripple: false,
-    inputStyle: 'outlined',
+    inputStyle: null,
     locale: {
         startsWith: 'Starts with',
         contains: 'Contains',
@@ -92,7 +92,7 @@ export const defaultOptions = {
             moveToSource: 'Move to Source',
             moveAllToTarget: 'Move All to Target',
             moveAllToSource: 'Move All to Source',
-            pageLabel: '{page}',
+            pageLabel: 'Page {page}',
             firstPageLabel: 'First Page',
             lastPageLabel: 'Last Page',
             nextPageLabel: 'Next Page',
@@ -119,7 +119,8 @@ export const defaultOptions = {
             zoomIn: 'Zoom In',
             zoomOut: 'Zoom Out',
             rotateRight: 'Rotate Right',
-            rotateLeft: 'Rotate Left'
+            rotateLeft: 'Rotate Left',
+            listLabel: 'Option List'
         }
     },
     filterMatchModeOptions: {

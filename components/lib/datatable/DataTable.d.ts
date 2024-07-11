@@ -14,7 +14,7 @@ import { ColumnGroupPassThroughOptionType } from '../columngroup';
 import { PaginatorPassThroughOptionType } from '../paginator';
 import { PassThroughOptions } from '../passthrough';
 import { RowPassThroughOptionType } from '../row';
-import { ClassComponent, GlobalComponentConstructor, Nullable, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, HintedString, Nullable, PassThrough } from '../ts-helpers';
 import { VirtualScrollerPassThroughOptionType, VirtualScrollerProps } from '../virtualscroller';
 
 export declare type DataTablePassThroughOptionType = DataTablePassThroughAttributes | ((options: DataTablePassThroughMethodOptions) => DataTablePassThroughAttributes | string) | string | null | undefined;
@@ -42,9 +42,31 @@ export interface DataTablePassThroughMethodOptions {
      */
     context: DataTableContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
+}
+
+/**
+ * Custom shared passthrough(pt) option method.
+ */
+export interface DataTableSharedPassThroughMethodOptions {
+    /**
+     * Defines valid properties.
+     */
+    props: DataTableProps;
+    /**
+     * Defines current inline state.
+     */
+    state: DataTableState;
 }
 
 /**
@@ -72,7 +94,7 @@ export interface DataTableFilterMetaData {
     /**
      * Filter match mode
      */
-    matchMode: 'startsWith' | 'contains' | 'notContains' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte' | 'between' | 'dateIs' | 'dateIsNot' | 'dateBefore' | 'dateAfter' | string | undefined;
+    matchMode: HintedString<'startsWith' | 'contains' | 'notContains' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte' | 'between' | 'dateIs' | 'dateIsNot' | 'dateBefore' | 'dateAfter'> | undefined;
 }
 
 /**
@@ -174,7 +196,7 @@ export interface DataTableSortEvent {
     /**
      * Match modes per field
      */
-    filterMatchModes: 'startsWith' | 'contains' | 'notContains' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte' | 'between' | 'dateIs' | 'dateIsNot' | 'dateBefore' | 'dateAfter' | string | undefined;
+    filterMatchModes: HintedString<'startsWith' | 'contains' | 'notContains' | 'endsWith' | 'equals' | 'notEquals' | 'in' | 'lt' | 'lte' | 'gt' | 'gte' | 'between' | 'dateIs' | 'dateIsNot' | 'dateBefore' | 'dateAfter'> | undefined;
 }
 
 /**
@@ -378,7 +400,7 @@ export interface DataTableRowExpandEvent {
     /**
      * Expanded row data
      */
-    data: any[];
+    data: any;
 }
 
 /**
@@ -582,7 +604,7 @@ export interface DataTablePassThroughOptions {
      * Used to pass attributes to the Paginator component.
      * @see {@link PaginatorPassThroughOptionType}
      */
-    paginator?: PaginatorPassThroughOptionType;
+    paginator?: PaginatorPassThroughOptionType<DataTableSharedPassThroughMethodOptions>;
     /**
      * Used to pass attributes to the wrapper's DOM element.
      */
@@ -921,9 +943,9 @@ export interface DataTableProps {
      */
     filterDisplay?: 'menu' | 'row' | undefined;
     /**
-     * Fields for global filter
+     * 	An array of fields as string or function to use in global filtering.
      */
-    globalFilterFields?: string[] | undefined;
+    globalFilterFields?: (string | ((data: any) => string))[] | undefined;
     /**
      * Locale to use in filtering. The default locale is the host environment's current locale.
      */
@@ -944,7 +966,7 @@ export interface DataTableProps {
     /**
      * Defines whether metaKey is requred or not for the selection. When true metaKey needs to be pressed to select or unselect an item and
      * when set to false selection of each item can be toggled individually. On touch enabled devices, metaKeySelection is turned off automatically.
-     * @defaultValue true
+     * @defaultValue false
      */
     metaKeySelection?: boolean | undefined;
     /**
@@ -1044,12 +1066,15 @@ export interface DataTableProps {
     editingRows?: any[] | DataTableEditingRows;
     /**
      * A function that takes the row data as a parameter and returns a string to apply a particular class for the row.
+     * The return value is added to the row's :classes array (see Vue.js class bindings).
      */
-    rowClass?: (data: any) => object | string | undefined;
+    rowClass?: (data: any) => string | object | undefined;
     /**
-     * A function that takes the row data as a parameter and returns the inline style for the corresponding row.
+     * A function that takes the row data as a parameter and returns the inline style object for the corresponding row.
+     * The function may also return an array of style objects which will be merged.
+     * The return value of this function is directly applied as a Vue.js style-binding on the table row.
      */
-    rowStyle?: (data: any) => object | undefined;
+    rowStyle?: (data: any) => object | object[] | undefined;
     /**
      * When specified, enables horizontal and/or vertical scrolling.
      * @defaultValue false
@@ -1058,7 +1083,7 @@ export interface DataTableProps {
     /**
      * Height of the scroll viewport in fixed pixels or the 'flex' keyword for a dynamic size.
      */
-    scrollHeight?: 'flex' | string | undefined;
+    scrollHeight?: HintedString<'flex'> | undefined;
     /**
      * Whether to use the virtualScroller feature. The properties of VirtualScroller component can be used like an object in it.
      * Note: Currently only vertical orientation mode is supported.
@@ -1084,17 +1109,22 @@ export interface DataTableProps {
      */
     stripedRows?: boolean | undefined;
     /**
+     *  Highlights automatically the first item.
+     *  @defaultValue false
+     */
+    highlightOnSelect?: boolean | undefined;
+    /**
      * Defines the size of the table.
      */
     size?: 'small' | 'large' | undefined;
     /**
      * Inline style of the table element.
      */
-    tableStyle?: any;
+    tableStyle?: string | object | undefined;
     /**
      * Style class of the table element.
      */
-    tableClass?: any;
+    tableClass?: string | object | undefined;
     /**
      * Used to pass all properties of the TableHTMLAttributes to table element inside the component.
      */
@@ -1490,8 +1520,8 @@ declare class DataTable extends ClassComponent<DataTableProps, DataTableSlots, D
     exportCSV(options?: DataTableExportCSVOptions, data?: any[]): void;
 }
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         DataTable: GlobalComponentConstructor<DataTable>;
     }
 }

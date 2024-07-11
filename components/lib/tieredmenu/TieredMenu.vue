@@ -1,7 +1,7 @@
 <template>
     <Portal :appendTo="appendTo" :disabled="!popup">
         <transition name="p-connected-overlay" @enter="onEnter" @after-enter="onAfterEnter" @leave="onLeave" @after-leave="onAfterLeave" v-bind="ptm('transition')">
-            <div v-if="visible" :ref="containerRef" :id="id" :class="cx('root')" @click="onOverlayClick" v-bind="{ ...$attrs, ...ptm('root') }" data-pc-name="tieredmenu">
+            <div v-if="visible" :ref="containerRef" :id="id" :class="cx('root')" @click="onOverlayClick" v-bind="ptmi('root')">
                 <div v-if="$slots.start" :class="cx('start')" v-bind="ptm('start')">
                     <slot name="start"></slot>
                 </div>
@@ -29,6 +29,7 @@
                     @keydown="onKeyDown"
                     @item-click="onItemClick"
                     @item-mouseenter="onItemMouseEnter"
+                    @item-mousemove="onItemMouseMove"
                 />
                 <div v-if="$slots.end" :class="cx('end')" v-bind="ptm('end')">
                     <slot name="end"></slot>
@@ -114,6 +115,9 @@ export default {
         isItemDisabled(item) {
             return this.getItemProp(item, 'disabled');
         },
+        isItemVisible(item) {
+            return this.getItemProp(item, 'visible') !== false;
+        },
         isItemGroup(item) {
             return ObjectUtils.isNotEmpty(this.getItemProp(item, 'items'));
         },
@@ -137,8 +141,6 @@ export default {
                 this.relatedTarget = event.relatedTarget || null;
             }
 
-            this.focusedItemInfo = { index: this.findFirstFocusedItemIndex(), level: 0, parentKey: '' };
-
             isFocus && DomHandler.focus(this.menubar);
         },
         hide(event, isFocus) {
@@ -155,7 +157,10 @@ export default {
         },
         onFocus(event) {
             this.focused = true;
-            this.focusedItemInfo = this.focusedItemInfo.index !== -1 ? this.focusedItemInfo : { index: this.findFirstFocusedItemIndex(), level: 0, parentKey: '' };
+
+            if (!this.popup) {
+                this.focusedItemInfo = this.focusedItemInfo.index !== -1 ? this.focusedItemInfo : { index: this.findFirstFocusedItemIndex(), level: 0, parentKey: '' };
+            }
 
             this.$emit('focus', event);
         },
@@ -205,6 +210,7 @@ export default {
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     this.onEnterKey(event);
                     break;
 
@@ -291,6 +297,11 @@ export default {
                 this.onItemChange(event);
             }
         },
+        onItemMouseMove(event) {
+            if (this.focused) {
+                this.changeFocusedItemIndex(event, event.processedItem.index);
+            }
+        },
         onArrowDownKey(event) {
             const itemIndex = this.focusedItemInfo.index !== -1 ? this.findNextItemIndex(this.focusedItemInfo.index) : this.findFirstFocusedItemIndex();
 
@@ -372,8 +383,12 @@ export default {
             this.onEnterKey(event);
         },
         onEscapeKey(event) {
-            this.hide(event, true);
-            !this.popup && (this.focusedItemInfo.index = this.findFirstFocusedItemIndex());
+            if (this.focusedItemInfo.level !== 0) {
+                const _focusedItemInfo = this.focusedItemInfo;
+
+                this.hide(event, false);
+                !this.popup && (this.focusedItemInfo = { index: Number(_focusedItemInfo.parentKey.split('_')[0]), level: 0, parentKey: '' });
+            }
 
             event.preventDefault();
         },
@@ -419,8 +434,12 @@ export default {
             }
         },
         alignOverlay() {
-            this.container.style.minWidth = DomHandler.getOuterWidth(this.target) + 'px';
             DomHandler.absolutePosition(this.container, this.target);
+            const targetWidth = DomHandler.getOuterWidth(this.target);
+
+            if (targetWidth > DomHandler.getOuterWidth(this.container)) {
+                this.container.style.minWidth = DomHandler.getOuterWidth(this.target) + 'px';
+            }
         },
         bindOutsideClickListener() {
             if (!this.outsideClickListener) {
@@ -474,10 +493,10 @@ export default {
             }
         },
         isItemMatched(processedItem) {
-            return this.isValidItem(processedItem) && this.getProccessedItemLabel(processedItem).toLocaleLowerCase().startsWith(this.searchValue.toLocaleLowerCase());
+            return this.isValidItem(processedItem) && this.getProccessedItemLabel(processedItem)?.toLocaleLowerCase().startsWith(this.searchValue.toLocaleLowerCase());
         },
         isValidItem(processedItem) {
-            return !!processedItem && !this.isItemDisabled(processedItem.item) && !this.isItemSeparator(processedItem.item);
+            return !!processedItem && !this.isItemDisabled(processedItem.item) && !this.isItemSeparator(processedItem.item) && this.isItemVisible(processedItem.item);
         },
         isValidSelectedItem(processedItem) {
             return this.isValidItem(processedItem) && this.isSelected(processedItem);

@@ -33,6 +33,14 @@ export interface PanelPassThroughMethodOptions {
      */
     state: PanelState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -235,8 +243,8 @@ export interface PanelEmits {
  */
 declare class Panel extends ClassComponent<PanelProps, PanelSlots, PanelEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Panel: GlobalComponentConstructor<Panel>;
     }
 }

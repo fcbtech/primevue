@@ -21,24 +21,24 @@
             <template v-if="!$slots.message">
                 <slot name="icon">
                     <component v-if="$slots.icon" :is="$slots.icon" :class="cx('icon')" />
-                    <span v-else-if="confirmation.icon" :class="cx('icon')" v-bind="ptm('icon')" />
+                    <span v-else-if="confirmation.icon" :class="[confirmation.icon, cx('icon')]" v-bind="ptm('icon')" />
                 </slot>
                 <span :class="cx('message')" v-bind="ptm('message')">{{ message }}</span>
             </template>
             <component v-else :is="$slots.message" :message="confirmation"></component>
         </template>
         <template v-if="!$slots.container" #footer>
-            <CDButton :label="rejectLabel" :class="[cx('rejectButton'), confirmation.rejectClass]" @click="reject()" :autofocus="autoFocusReject" :unstyled="unstyled" :pt="ptm('rejectButton')" data-pc-name="rejectbutton">
+            <CDButton :label="rejectLabel" :class="[cx('rejectButton'), confirmation.rejectClass]" @click="reject()" :autofocus="autoFocusReject" :unstyled="unstyled" :pt="ptm('rejectButton')">
                 <template v-if="rejectIcon || $slots.rejecticon" #icon="iconProps">
                     <slot name="rejecticon">
-                        <span :class="[rejectIcon, iconProps.class]" v-bind="ptm('rejectButton')['icon']" data-pc-name="rejectbuttonicon" />
+                        <span :class="[rejectIcon, iconProps.class]" v-bind="ptm('rejectButton')['icon']" data-pc-section="rejectbuttonicon" />
                     </slot>
                 </template>
             </CDButton>
-            <CDButton :label="acceptLabel" :class="[cx('acceptButton'), confirmation.acceptClass]" @click="accept()" :autofocus="autoFocusAccept" :unstyled="unstyled" :pt="ptm('acceptButton')" data-pc-name="acceptbutton">
+            <CDButton :label="acceptLabel" :class="[cx('acceptButton'), confirmation.acceptClass]" @click="accept()" :autofocus="autoFocusAccept" :unstyled="unstyled" :pt="ptm('acceptButton')">
                 <template v-if="acceptIcon || $slots.accepticon" #icon="iconProps">
                     <slot name="accepticon">
-                        <span :class="[acceptIcon, iconProps.class]" v-bind="ptm('acceptButton')['icon']" data-pc-name="acceptbuttonicon" />
+                        <span :class="[acceptIcon, iconProps.class]" v-bind="ptm('acceptButton')['icon']" data-pc-section="acceptbuttonicon" />
                     </slot>
                 </template>
             </CDButton>

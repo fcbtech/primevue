@@ -2,79 +2,83 @@
     <DocSectionText v-bind="$attrs">
         <p>CRUD implementation example with a Dialog.</p>
     </DocSectionText>
-    <div class="card">
-        <Toolbar class="mb-4">
-            <template #start>
-                <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
-                <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
-            </template>
+    <DeferredDemo @load="loadDemoData">
+        <div class="card">
+            <Toolbar class="mb-4">
+                <template #start>
+                    <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
+                    <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
+                </template>
 
-            <template #end>
-                <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
-                <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
-            </template>
-        </Toolbar>
+                <template #end>
+                    <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
+                    <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
+                </template>
+            </Toolbar>
 
-        <DataTable
-            ref="dt"
-            v-model:selection="selectedProducts"
-            :value="products"
-            dataKey="id"
-            :paginator="true"
-            :rows="10"
-            :filters="filters"
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            :rowsPerPageOptions="[5, 10, 25]"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-        >
-            <template #header>
-                <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
-                    <h4 class="m-0">Manage Products</h4>
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-search" />
-                        <InputText v-model="filters['global'].value" placeholder="Search..." />
-                    </span>
-                </div>
-            </template>
+            <DataTable
+                ref="dt"
+                v-model:selection="selectedProducts"
+                :value="products"
+                dataKey="id"
+                :paginator="true"
+                :rows="10"
+                :filters="filters"
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                :rowsPerPageOptions="[5, 10, 25]"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            >
+                <template #header>
+                    <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+                        <h4 class="m-0">Manage Products</h4>
+                        <IconField iconPosition="left">
+                            <InputIcon>
+                                <i class="pi pi-search" />
+                            </InputIcon>
+                            <InputText v-model="filters['global'].value" placeholder="Search..." />
+                        </IconField>
+                    </div>
+                </template>
 
-            <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-            <Column field="code" header="Code" sortable style="min-width: 12rem"></Column>
-            <Column field="name" header="Name" sortable style="min-width: 16rem"></Column>
-            <Column header="Image">
-                <template #body="slotProps">
-                    <img :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`" :alt="slotProps.data.image" class="shadow-2 border-round" style="width: 64px" />
-                </template>
-            </Column>
-            <Column field="price" header="Price" sortable style="min-width: 8rem">
-                <template #body="slotProps">
-                    {{ formatCurrency(slotProps.data.price) }}
-                </template>
-            </Column>
-            <Column field="category" header="Category" sortable style="min-width: 10rem"></Column>
-            <Column field="rating" header="Reviews" sortable style="min-width: 12rem">
-                <template #body="slotProps">
-                    <Rating :modelValue="slotProps.data.rating" :readonly="true" :cancel="false" />
-                </template>
-            </Column>
-            <Column field="inventoryStatus" header="Status" sortable style="min-width: 12rem">
-                <template #body="slotProps">
-                    <Tag :value="slotProps.data.inventoryStatus" :severity="getStatusLabel(slotProps.data.inventoryStatus)" />
-                </template>
-            </Column>
-            <Column :exportable="false" style="min-width: 12rem">
-                <template #body="slotProps">
-                    <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editProduct(slotProps.data)" />
-                    <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteProduct(slotProps.data)" />
-                </template>
-            </Column>
-        </DataTable>
-    </div>
+                <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+                <Column field="code" header="Code" sortable style="min-width: 12rem"></Column>
+                <Column field="name" header="Name" sortable style="min-width: 16rem"></Column>
+                <Column header="Image">
+                    <template #body="slotProps">
+                        <img :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`" :alt="slotProps.data.image" class="border-round" style="width: 64px" />
+                    </template>
+                </Column>
+                <Column field="price" header="Price" sortable style="min-width: 8rem">
+                    <template #body="slotProps">
+                        {{ formatCurrency(slotProps.data.price) }}
+                    </template>
+                </Column>
+                <Column field="category" header="Category" sortable style="min-width: 10rem"></Column>
+                <Column field="rating" header="Reviews" sortable style="min-width: 12rem">
+                    <template #body="slotProps">
+                        <Rating :modelValue="slotProps.data.rating" :readonly="true" :cancel="false" />
+                    </template>
+                </Column>
+                <Column field="inventoryStatus" header="Status" sortable style="min-width: 12rem">
+                    <template #body="slotProps">
+                        <Tag :value="slotProps.data.inventoryStatus" :severity="getStatusLabel(slotProps.data.inventoryStatus)" />
+                    </template>
+                </Column>
+                <Column :exportable="false" style="min-width: 12rem">
+                    <template #body="slotProps">
+                        <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editProduct(slotProps.data)" />
+                        <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteProduct(slotProps.data)" />
+                    </template>
+                </Column>
+            </DataTable>
+        </div>
+    </DeferredDemo>
 
     <Dialog v-model:visible="productDialog" :style="{ width: '450px' }" header="Product Details" :modal="true" class="p-fluid">
         <img v-if="product.image" :src="`https://primefaces.org/cdn/primevue/images/product/${product.image}`" :alt="product.image" class="block m-auto pb-3" />
         <div class="field">
             <label for="name">Name</label>
-            <InputText id="name" v-model.trim="product.name" required="true" autofocus :class="{ 'p-invalid': submitted && !product.name }" />
+            <InputText id="name" v-model.trim="product.name" required="true" autofocus :invalid="submitted && !product.name" />
             <small v-if="submitted && !product.name" class="p-error">Name is required.</small>
         </div>
         <div class="field">
@@ -197,17 +201,19 @@ export default {
         <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)"  />
     </template>
 </Toolbar>
-<DataTable ref="dt" :value="products" v-model:selection="selectedProducts" dataKey="id" 
+<DataTable ref="dt" :value="products" v-model:selection="selectedProducts" dataKey="id"
     :paginator="true" :rows="10" :filters="filters"
     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products">
     <template #header>
         <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
             <h4 class="m-0">Manage Products</h4>
-            <span class="p-input-icon-left">
-                <i class="pi pi-search" />
+            <IconField iconPosition="left">
+                <InputIcon>
+                    <i class="pi pi-search" />
+                </InputIcon>
                 <InputText v-model="filters['global'].value" placeholder="Search..." />
-            </span>
+            </IconField>
         </div>
     </template>
     <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
@@ -215,7 +221,7 @@ export default {
     <Column field="name" header="Name" sortable style="min-width:16rem"></Column>
     <Column header="Image">
         <template #body="slotProps">
-            <img :src="\`https://primefaces.org/cdn/primevue/images/product/\${slotProps.data.image}\`" :alt="slotProps.data.image" class="shadow-2 border-round" style="width: 64px" />
+            <img :src="\`https://primefaces.org/cdn/primevue/images/product/\${slotProps.data.image}\`" :alt="slotProps.data.image" class="border-round" style="width: 64px" />
         </template>
     </Column>
     <Column field="price" header="Price" sortable style="min-width:8rem">
@@ -258,17 +264,19 @@ export default {
                 </template>
             </Toolbar>
 
-            <DataTable ref="dt" :value="products" v-model:selection="selectedProducts" dataKey="id" 
+            <DataTable ref="dt" :value="products" v-model:selection="selectedProducts" dataKey="id"
                 :paginator="true" :rows="10" :filters="filters"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products">
                 <template #header>
                     <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
                         <h4 class="m-0">Manage Products</h4>
-						<span class="p-input-icon-left">
-                            <i class="pi pi-search" />
+						<IconField iconPosition="left">
+                            <InputIcon>
+                                <i class="pi pi-search" />
+                            </InputIcon>
                             <InputText v-model="filters['global'].value" placeholder="Search..." />
-                        </span>
+                        </IconField>
 					</div>
                 </template>
 
@@ -277,7 +285,7 @@ export default {
                 <Column field="name" header="Name" sortable style="min-width:16rem"></Column>
                 <Column header="Image">
                     <template #body="slotProps">
-                        <img :src="\`https://primefaces.org/cdn/primevue/images/product/\${slotProps.data.image}\`" :alt="slotProps.data.image" class="shadow-2 border-round" style="width: 64px" />
+                        <img :src="\`https://primefaces.org/cdn/primevue/images/product/\${slotProps.data.image}\`" :alt="slotProps.data.image" class="border-round" style="width: 64px" />
                     </template>
                 </Column>
                 <Column field="price" header="Price" sortable style="min-width:8rem">
@@ -309,7 +317,7 @@ export default {
             <img v-if="product.image" :src="\`https://primefaces.org/cdn/primevue/images/product/\${product.image}\`" :alt="product.image" class="block m-auto pb-3" />
             <div class="field">
                 <label for="name">Name</label>
-                <InputText id="name" v-model.trim="product.name" required="true" autofocus :class="{'p-invalid': submitted && !product.name}" />
+                <InputText id="name" v-model.trim="product.name" required="true" autofocus :invalid="submitted && !product.name" />
                 <small class="p-error" v-if="submitted && !product.name">Name is required.</small>
             </div>
             <div class="field">
@@ -442,7 +450,7 @@ export default {
         saveProduct() {
             this.submitted = true;
 
-			if (this.product.name.trim()) {
+			if (this.product?.name?.trim()) {
                 if (this.product.id) {
                     this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value: this.product.inventoryStatus;
                     this.products[this.findIndexById(this.product.id)] = this.product;
@@ -547,17 +555,19 @@ export default {
                 </template>
             </Toolbar>
 
-            <DataTable ref="dt" :value="products" v-model:selection="selectedProducts" dataKey="id" 
+            <DataTable ref="dt" :value="products" v-model:selection="selectedProducts" dataKey="id"
                 :paginator="true" :rows="10" :filters="filters"
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products">
                 <template #header>
                     <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
                         <h4 class="m-0">Manage Products</h4>
-						<span class="p-input-icon-left">
-                            <i class="pi pi-search" />
+						<IconField iconPosition="left">
+                            <InputIcon>
+                                <i class="pi pi-search" />
+                            </InputIcon>
                             <InputText v-model="filters['global'].value" placeholder="Search..." />
-                        </span>
+                        </IconField>
 					</div>
                 </template>
 
@@ -566,7 +576,7 @@ export default {
                 <Column field="name" header="Name" sortable style="min-width:16rem"></Column>
                 <Column header="Image">
                     <template #body="slotProps">
-                        <img :src="\`https://primefaces.org/cdn/primevue/images/product/\${slotProps.data.image}\`" :alt="slotProps.data.image" class="shadow-2 border-round" style="width: 64px" />
+                        <img :src="\`https://primefaces.org/cdn/primevue/images/product/\${slotProps.data.image}\`" :alt="slotProps.data.image" class="border-round" style="width: 64px" />
                     </template>
                 </Column>
                 <Column field="price" header="Price" sortable style="min-width:8rem">
@@ -598,7 +608,7 @@ export default {
             <img v-if="product.image" :src="\`https://primefaces.org/cdn/primevue/images/product/\${product.image}\`" :alt="product.image" class="block m-auto pb-3" />
             <div class="field">
                 <label for="name">Name</label>
-                <InputText id="name" v-model.trim="product.name" required="true" autofocus :class="{'p-invalid': submitted && !product.name}" />
+                <InputText id="name" v-model.trim="product.name" required="true" autofocus :invalid="submitted && !product.name" />
                 <small class="p-error" v-if="submitted && !product.name">Name is required.</small>
             </div>
             <div class="field">
@@ -730,7 +740,7 @@ const hideDialog = () => {
 const saveProduct = () => {
     submitted.value = true;
 
-    if (product.value.name.trim()) {
+    if (product?.value.name?.trim()) {
         if (product.value.id) {
             product.value.inventoryStatus = product.value.inventoryStatus.value ? product.value.inventoryStatus.value : product.value.inventoryStatus;
             products.value[findIndexById(product.value.id)] = product.value;
@@ -830,14 +840,13 @@ const getStatusLabel = (status) => {
             }
         };
     },
-
     created() {
         this.initFilters();
     },
-    mounted() {
-        ProductService.getProducts().then((data) => (this.products = data));
-    },
     methods: {
+        loadDemoData() {
+            ProductService.getProducts().then((data) => (this.products = data));
+        },
         formatCurrency(value) {
             if (value) return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
@@ -855,7 +864,7 @@ const getStatusLabel = (status) => {
         saveProduct() {
             this.submitted = true;
 
-            if (this.product.name.trim()) {
+            if (this.product?.name?.trim()) {
                 if (this.product.id) {
                     this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
                     this.products[this.findIndexById(this.product.id)] = this.product;

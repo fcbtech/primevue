@@ -35,6 +35,14 @@ export interface OrganizationChartPassThroughMethodOptions {
      */
     context: OrganizationChartContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -333,8 +341,8 @@ export interface OrganizationChartEmits {
  */
 declare class OrganizationChart extends ClassComponent<OrganizationChartProps, OrganizationChartSlots, OrganizationChartEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         OrganizationChart: GlobalComponentConstructor<OrganizationChart>;
     }
 }

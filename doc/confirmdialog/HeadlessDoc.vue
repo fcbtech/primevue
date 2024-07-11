@@ -18,7 +18,7 @@
         </template>
     </ConfirmDialog>
     <div class="card flex justify-content-center">
-        <Button @click="requireConfirmation()" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="requireConfirmation()" label="Save"></Button>
     </div>
     <DocSectionCode :code="code" />
 </template>
@@ -44,7 +44,7 @@ export default {
         </div>
     </template>
 </ConfirmDialog>
-<Button @click="requireConfirmation()" icon="pi pi-check" label="Confirm"></Button>
+<Button @click="requireConfirmation()" label="Save"></Button>
 `,
                 options: `
 <template>
@@ -64,7 +64,7 @@ export default {
         </template>
     </ConfirmDialog>
     <div class="card flex justify-content-center">
-        <Button @click="requireConfirmation()" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="requireConfirmation()" label="Save"></Button>
     </div>
     <Toast />
 </template>
@@ -107,14 +107,14 @@ export default {
         </template>
     </ConfirmDialog>
     <div class="card flex justify-content-center">
-        <Button @click="requireConfirmation()" icon="pi pi-check" label="Confirm"></Button>
+        <Button @click="requireConfirmation()" label="Save"></Button>
     </div>
     <Toast />
 </template>
 
 <script setup>
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
+import { useConfirm } from "@fcbtech/primevue/useconfirm";
+import { useToast } from "@fcbtech/primevue/usetoast";
 
 const confirm = useConfirm();
 const toast = useToast();

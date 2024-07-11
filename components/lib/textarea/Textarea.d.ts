@@ -10,7 +10,7 @@
 import { TextareaHTMLAttributes } from 'vue';
 import { ComponentHooks } from '../basecomponent';
 import { PassThroughOptions } from '../passthrough';
-import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, Nullable, PassThrough } from '../ts-helpers';
 
 export declare type TextareaPassThroughOptionType = TextareaPassThroughAttributes | ((options: TextareaPassThroughMethodOptions) => TextareaPassThroughAttributes | string) | string | null | undefined;
 
@@ -30,6 +30,14 @@ export interface TextareaPassThroughMethodOptions {
      * Defines current options.
      */
     context: TextareaContext;
+    /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
     /**
      * Defines passthrough(pt) options in global config.
      */
@@ -83,12 +91,22 @@ export interface TextareaProps extends TextareaHTMLAttributes {
     /**
      * Value of the component.
      */
-    modelValue?: string | undefined;
+    modelValue?: Nullable<string>;
     /**
      * When present, height of textarea changes as being typed.
      * @defaultValue false
      */
     autoResize?: boolean | undefined;
+    /**
+     * When present, it specifies that the component should have invalid state style.
+     * @defaultValue false
+     */
+    invalid?: boolean | undefined;
+    /**
+     * Specifies the input variant of the component.
+     * @defaultValue outlined
+     */
+    variant?: 'outlined' | 'filled' | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {TextareaPassThroughOptions}
@@ -136,8 +154,8 @@ export interface TextareaEmits {
  */
 declare class Textarea extends ClassComponent<TextareaProps, TextareaSlots, TextareaEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Textarea: GlobalComponentConstructor<Textarea>;
     }
 }

@@ -1,9 +1,9 @@
 <template>
-    <div :class="cx('root')" role="region" v-bind="ptm('root')">
+    <div :class="cx('root')" role="region" v-bind="ptmi('root')">
         <div v-if="$slots.header" :class="cx('header')" v-bind="ptm('header')">
             <slot name="header"></slot>
         </div>
-        <div :class="[cx('content'), contentClass]" v-bind="ptm('content')">
+        <div v-if="!empty" :class="[cx('content'), contentClass]" v-bind="ptm('content')">
             <div :class="[cx('container'), containerClass]" :aria-live="allowAutoplay ? 'polite' : 'off'" v-bind="ptm('container')">
                 <button
                     v-if="showNavigators"
@@ -89,6 +89,9 @@
                 </li>
             </ul>
         </div>
+        <slot v-else name="empty">
+            {{ emptyMessageText }}
+        </slot>
         <div v-if="$slots.footer" :class="cx('footer')" v-bind="ptm('footer')">
             <slot name="footer"></slot>
         </div>
@@ -101,12 +104,13 @@ import ChevronLeftIcon from '@fcbtech/primevue/icons/chevronleft';
 import ChevronRightIcon from '@fcbtech/primevue/icons/chevronright';
 import ChevronUpIcon from '@fcbtech/primevue/icons/chevronup';
 import Ripple from '@fcbtech/primevue/ripple';
-import { DomHandler, UniqueComponentId, ObjectUtils } from '@fcbtech/primevue/utils';
+import { DomHandler, ObjectUtils, UniqueComponentId } from '@fcbtech/primevue/utils';
 import BaseCarousel from './BaseCarousel.vue';
 
 export default {
     name: 'Carousel',
     extends: BaseCarousel,
+    inheritAttrs: false,
     emits: ['update:page'],
     isRemainingItemsAdded: false,
     data() {
@@ -185,74 +189,72 @@ export default {
         }
     },
     updated() {
-        const isCircular = this.isCircular();
-        let stateChanged = false;
-        let totalShiftedItems = this.totalShiftedItems;
+        if (!this.empty) {
+            const isCircular = this.isCircular();
+            let stateChanged = false;
+            let totalShiftedItems = this.totalShiftedItems;
 
-        if (this.autoplayInterval) {
-            this.stopAutoplay();
-        }
-
-        if (this.d_oldNumScroll !== this.d_numScroll || this.d_oldNumVisible !== this.d_numVisible || this.d_oldValue.length !== this.value.length) {
-            this.remainingItems = (this.value.length - this.d_numVisible) % this.d_numScroll;
-
-            let page = this.d_page;
-
-            if (this.totalIndicators !== 0 && page >= this.totalIndicators) {
-                page = this.totalIndicators - 1;
-
-                this.$emit('update:page', page);
-                this.d_page = page;
-
-                stateChanged = true;
+            if (this.autoplayInterval) {
+                this.stopAutoplay();
             }
 
-            totalShiftedItems = page * this.d_numScroll * -1;
+            if (this.d_oldNumScroll !== this.d_numScroll || this.d_oldNumVisible !== this.d_numVisible || this.d_oldValue.length !== this.value.length) {
+                this.remainingItems = (this.value.length - this.d_numVisible) % this.d_numScroll;
+
+                let page = this.d_page;
+
+                if (this.totalIndicators !== 0 && page >= this.totalIndicators) {
+                    page = this.totalIndicators - 1;
+                    this.$emit('update:page', page);
+                    this.d_page = page;
+                    stateChanged = true;
+                }
+
+                totalShiftedItems = page * this.d_numScroll * -1;
+
+                if (isCircular) {
+                    totalShiftedItems -= this.d_numVisible;
+                }
+
+                if (page === this.totalIndicators - 1 && this.remainingItems > 0) {
+                    totalShiftedItems += -1 * this.remainingItems + this.d_numScroll;
+                    this.isRemainingItemsAdded = true;
+                } else {
+                    this.isRemainingItemsAdded = false;
+                }
+
+                if (totalShiftedItems !== this.totalShiftedItems) {
+                    this.totalShiftedItems = totalShiftedItems;
+                    stateChanged = true;
+                }
+
+                this.d_oldNumScroll = this.d_numScroll;
+                this.d_oldNumVisible = this.d_numVisible;
+                this.d_oldValue = this.value;
+                this.$refs.itemsContainer.style.transform = this.isVertical() ? `translate3d(0, ${totalShiftedItems * (100 / this.d_numVisible)}%, 0)` : `translate3d(${totalShiftedItems * (100 / this.d_numVisible)}%, 0, 0)`;
+            }
 
             if (isCircular) {
-                totalShiftedItems -= this.d_numVisible;
-            }
+                if (this.d_page === 0) {
+                    totalShiftedItems = -1 * this.d_numVisible;
+                } else if (totalShiftedItems === 0) {
+                    totalShiftedItems = -1 * this.value.length;
 
-            if (page === this.totalIndicators - 1 && this.remainingItems > 0) {
-                totalShiftedItems += -1 * this.remainingItems + this.d_numScroll;
-                this.isRemainingItemsAdded = true;
-            } else {
-                this.isRemainingItemsAdded = false;
-            }
+                    if (this.remainingItems > 0) {
+                        this.isRemainingItemsAdded = true;
+                    }
+                }
 
-            if (totalShiftedItems !== this.totalShiftedItems) {
-                this.totalShiftedItems = totalShiftedItems;
+                if (totalShiftedItems !== this.totalShiftedItems) {
+                    this.totalShiftedItems = totalShiftedItems;
 
-                stateChanged = true;
-            }
-
-            this.d_oldNumScroll = this.d_numScroll;
-            this.d_oldNumVisible = this.d_numVisible;
-            this.d_oldValue = this.value;
-
-            this.$refs.itemsContainer.style.transform = this.isVertical() ? `translate3d(0, ${totalShiftedItems * (100 / this.d_numVisible)}%, 0)` : `translate3d(${totalShiftedItems * (100 / this.d_numVisible)}%, 0, 0)`;
-        }
-
-        if (isCircular) {
-            if (this.d_page === 0) {
-                totalShiftedItems = -1 * this.d_numVisible;
-            } else if (totalShiftedItems === 0) {
-                totalShiftedItems = -1 * this.value.length;
-
-                if (this.remainingItems > 0) {
-                    this.isRemainingItemsAdded = true;
+                    stateChanged = true;
                 }
             }
 
-            if (totalShiftedItems !== this.totalShiftedItems) {
-                this.totalShiftedItems = totalShiftedItems;
-
-                stateChanged = true;
+            if (!stateChanged && this.isAutoplay()) {
+                this.startAutoplay();
             }
-        }
-
-        if (!stateChanged && this.isAutoplay()) {
-            this.startAutoplay();
         }
     },
     beforeUnmount() {
@@ -407,7 +409,10 @@ export default {
             };
         },
         onTouchMove(e) {
-            if (e.cancelable) {
+            const touchobj = e.changedTouches[0];
+            const diff = this.isVertical() ? touchobj.pageY - this.startPos.y : touchobj.pageX - this.startPos.x;
+
+            if (Math.abs(diff) > this.swipeThreshold && e.cancelable) {
                 e.preventDefault();
             }
         },
@@ -453,6 +458,8 @@ export default {
 
                 case 'ArrowUp':
                 case 'ArrowDown':
+                case 'PageUp':
+                case 'PageDown':
                     event.preventDefault();
                     break;
 
@@ -481,7 +488,7 @@ export default {
             this.changedFocusedIndicator(activeIndex, 0);
         },
         onEndKey() {
-            const indicators = [...DomHandler.find(this.$refs.indicatorContent, '[data-pc-section="indicator"]r')];
+            const indicators = [...DomHandler.find(this.$refs.indicatorContent, '[data-pc-section="indicator"]')];
             const activeIndex = this.findFocusedIndicatorIndex();
 
             this.changedFocusedIndicator(activeIndex, indicators.length - 1);
@@ -621,6 +628,12 @@ export default {
         },
         attributeSelector() {
             return UniqueComponentId();
+        },
+        empty() {
+            return !this.value || this.value.length === 0;
+        },
+        emptyMessageText() {
+            return this.$primevue.config?.locale?.emptyMessage || '';
         }
     },
     components: {

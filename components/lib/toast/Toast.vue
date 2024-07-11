@@ -1,6 +1,6 @@
 <template>
     <Portal>
-        <div ref="container" :class="cx('root')" :style="sx('root', true, { position })" v-bind="{ ...$attrs, ...ptm('root') }">
+        <div ref="container" :class="cx('root')" :style="sx('root', true, { position })" v-bind="ptmi('root')">
             <transition-group name="p-toast-message" tag="div" @enter="onEnter" @leave="onLeave" v-bind="{ ...ptm('message'), ...ptm('transition') }">
                 <ToastMessage
                     v-for="msg of messages"
@@ -72,17 +72,12 @@ export default {
             this.messages = [...this.messages, message];
         },
         remove(params) {
-            let index = -1;
+            const index = this.messages.findIndex((m) => m.id === params.message.id);
 
-            for (let i = 0; i < this.messages.length; i++) {
-                if (this.messages[i] === params.message) {
-                    index = i;
-                    break;
-                }
+            if (index !== -1) {
+                this.messages.splice(index, 1);
+                this.$emit(params.type, { message: params.message });
             }
-
-            this.messages.splice(index, 1);
-            this.$emit(params.type, { message: params.message });
         },
         onAdd(message) {
             if (this.group == message.group) {

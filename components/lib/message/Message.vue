@@ -1,6 +1,6 @@
 <template>
-    <transition name="p-message" appear v-bind="ptm('transition')">
-        <div v-show="visible" :class="cx('root')" role="alert" aria-live="assertive" aria-atomic="true" v-bind="ptm('root')" data-pc-name="message">
+    <transition name="p-message" appear v-bind="ptmi('transition')">
+        <div v-show="visible" :class="cx('root')" role="alert" aria-live="assertive" aria-atomic="true" v-bind="ptm('root')">
             <slot v-if="$slots.container" name="container" :onClose="close" :closeCallback="close"></slot>
             <div v-else :class="cx('wrapper')" v-bind="ptm('wrapper')">
                 <slot name="messageicon" class="p-message-icon">
@@ -32,7 +32,8 @@ import BaseMessage from './BaseMessage.vue';
 export default {
     name: 'Message',
     extends: BaseMessage,
-    emits: ['close'],
+    inheritAttrs: false,
+    emits: ['close', 'life-end'],
     timeout: null,
     data() {
         return {
@@ -59,6 +60,7 @@ export default {
         closeAfterDelay() {
             setTimeout(() => {
                 this.visible = false;
+                this.$emit('life-end');
             }, this.life);
         }
     },

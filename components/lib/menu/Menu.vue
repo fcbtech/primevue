@@ -1,7 +1,7 @@
 <template>
     <Portal :appendTo="appendTo" :disabled="!popup">
         <transition name="p-connected-overlay" @enter="onEnter" @leave="onLeave" @after-leave="onAfterLeave" v-bind="ptm('transition')">
-            <div v-if="popup ? overlayVisible : true" :ref="containerRef" :id="id" :class="cx('root')" @click="onOverlayClick" v-bind="{ ...$attrs, ...ptm('root') }" data-pc-name="menu">
+            <div v-if="popup ? overlayVisible : true" :ref="containerRef" :id="id" :class="cx('root')" @click="onOverlayClick" v-bind="ptmi('root')">
                 <div v-if="$slots.start" :class="cx('start')" v-bind="ptm('start')">
                     <slot name="start"></slot>
                 </div>
@@ -21,16 +21,38 @@
                 >
                     <template v-for="(item, i) of model" :key="label(item) + i.toString()">
                         <template v-if="item.items && visible(item) && !item.separator">
-                            <li v-if="item.items" :id="id + '_' + i" :class="[cx('submenuHeader'), item.class]" role="none" v-bind="ptm('submenuHeader')">
+                            <li v-if="item.items" :id="id + '_' + i" :class="[cx('submenuHeader'), item.class]" :style="item.style" role="none" v-bind="ptm('submenuHeader')">
                                 <slot name="submenuheader" :item="item">{{ label(item) }}</slot>
                             </li>
                             <template v-for="(child, j) of item.items" :key="child.label + i + '_' + j">
-                                <PVMenuitem v-if="visible(child) && !child.separator" :id="id + '_' + i + '_' + j" :item="child" :templates="$slots" :focusedOptionId="focusedOptionId" @item-click="itemClick" :pt="pt" />
+                                <PVMenuitem
+                                    v-if="visible(child) && !child.separator"
+                                    :id="id + '_' + i + '_' + j"
+                                    :item="child"
+                                    :templates="$slots"
+                                    :focusedOptionId="focusedOptionId"
+                                    :unstyled="unstyled"
+                                    @item-click="itemClick"
+                                    @item-mousemove="itemMouseMove"
+                                    :pt="pt"
+                                />
                                 <li v-else-if="visible(child) && child.separator" :key="'separator' + i + j" :class="[cx('separator'), item.class]" :style="child.style" role="separator" v-bind="ptm('separator')"></li>
                             </template>
                         </template>
                         <li v-else-if="visible(item) && item.separator" :key="'separator' + i.toString()" :class="[cx('separator'), item.class]" :style="item.style" role="separator" v-bind="ptm('separator')"></li>
-                        <PVMenuitem v-else :key="label(item) + i.toString()" :id="id + '_' + i" :item="item" :index="i" :templates="$slots" :focusedOptionId="focusedOptionId" @item-click="itemClick" :pt="pt" />
+                        <PVMenuitem
+                            v-else
+                            :key="label(item) + i.toString()"
+                            :id="id + '_' + i"
+                            :item="item"
+                            :index="i"
+                            :templates="$slots"
+                            :focusedOptionId="focusedOptionId"
+                            :unstyled="unstyled"
+                            @item-click="itemClick"
+                            @item-mousemove="itemMouseMove"
+                            :pt="pt"
+                        />
                     </template>
                 </ul>
                 <div v-if="$slots.end" :class="cx('end')" v-bind="ptm('end')">
@@ -116,15 +138,14 @@ export default {
                 this.focusedOptionIndex = event.id;
             }
         },
+        itemMouseMove(event) {
+            if (this.focused) {
+                this.focusedOptionIndex = event.id;
+            }
+        },
         onListFocus(event) {
             this.focused = true;
-
-            if (!this.popup) {
-                if (this.selectedOptionIndex !== -1) {
-                    this.changeFocusedOptionIndex(this.selectedOptionIndex);
-                    this.selectedOptionIndex = -1;
-                } else this.changeFocusedOptionIndex(0);
-            }
+            !this.popup && this.changeFocusedOptionIndex(0);
 
             this.$emit('focus', event);
         },
@@ -152,6 +173,7 @@ export default {
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     this.onEnterKey(event);
                     break;
 
@@ -254,7 +276,6 @@ export default {
 
             if (this.popup) {
                 DomHandler.focus(this.list);
-                this.changeFocusedOptionIndex(0);
             }
 
             this.$emit('show');
@@ -272,7 +293,11 @@ export default {
         },
         alignOverlay() {
             DomHandler.absolutePosition(this.container, this.target);
-            this.container.style.minWidth = DomHandler.getOuterWidth(this.target) + 'px';
+            const targetWidth = DomHandler.getOuterWidth(this.target);
+
+            if (targetWidth > DomHandler.getOuterWidth(this.container)) {
+                this.container.style.minWidth = DomHandler.getOuterWidth(this.target) + 'px';
+            }
         },
         bindOutsideClickListener() {
             if (!this.outsideClickListener) {
