@@ -1,4 +1,4 @@
-import BaseStyle from 'primevue/base/style';
+import BaseStyle from '@fcbtech/primevue/base/style';
 
 const classes = {
     root: 'p-input-icon'

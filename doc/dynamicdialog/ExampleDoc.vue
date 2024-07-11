@@ -282,7 +282,7 @@ export default {
 
 <script setup>
 import { ref, onMounted, inject } from "vue";
-import { useDialog } from "primevue/usedialog";
+import { useDialog } from "@fcbtech/primevue/usedialog";
 import { ProductService } from "@/service/ProductService";
 import InfoDemo from "./InfoDemo.vue";
 

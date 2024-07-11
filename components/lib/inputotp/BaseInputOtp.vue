@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import InputOtpStyle from 'primevue/inputotp/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import InputOtpStyle from '@fcbtech/primevue/inputotp/style';
 
 export default {
     name: 'BaseInputOtp',

@@ -21,7 +21,7 @@ export default {
             code1: {
                 basic: `
 //in main.js
-import 'primevue/resources/themes/aura-light-green/theme.css'
+import '@fcbtech/primevue/resources/themes/aura-light-green/theme.css'
 `
             },
             code2: {

@@ -288,8 +288,8 @@ export default {
 
 <script setup>
 import { ref } from 'vue';
-import { usePrimeVue } from 'primevue/config';
-import { useToast } from "primevue/usetoast";
+import { usePrimeVue } from '@fcbtech/primevue/config';
+import { useToast } from "@fcbtech/primevue/usetoast";
 
 const $primevue = usePrimeVue();
 const toast = useToast();

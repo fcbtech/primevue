@@ -9,8 +9,8 @@ export default {
         return {
             code: {
                 basic: `
-import Stepper from 'primevue/stepper';
-import StepperPanel from 'primevue/stepperpanel';
+import Stepper from '@fcbtech/primevue/stepper';
+import StepperPanel from '@fcbtech/primevue/stepperpanel';
 `
             }
         };

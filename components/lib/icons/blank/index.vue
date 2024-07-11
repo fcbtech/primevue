@@ -4,7 +4,7 @@
     </svg>
 </template>
 <script>
-import BaseIcon from 'primevue/baseicon';
+import BaseIcon from '@fcbtech/primevue/baseicon';
 
 export default {
     name: 'BlankIcon',

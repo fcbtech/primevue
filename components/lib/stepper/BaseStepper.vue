@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import StepperStyle from 'primevue/stepper/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import StepperStyle from '@fcbtech/primevue/stepper/style';
 
 export default {
     name: 'BaseStepper',

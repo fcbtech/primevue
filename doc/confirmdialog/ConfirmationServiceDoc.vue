@@ -24,7 +24,7 @@ app.use(ConfirmationService);
             },
             code2: {
                 basic: `
-import { useConfirm } from "primevue/useconfirm";
+import { useConfirm } from "@fcbtech/primevue/useconfirm";
 
 const confirm = useConfirm();
 `

@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { UniqueComponentId } from 'primevue/utils';
+import { UniqueComponentId } from '@fcbtech/primevue/utils';
 import { mergeProps } from 'vue';
 import BaseStepper from './BaseStepper.vue';
 import StepperContent from './StepperContent.vue';

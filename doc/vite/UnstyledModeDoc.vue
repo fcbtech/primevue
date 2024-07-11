@@ -17,7 +17,7 @@ export default {
             code1: {
                 basic: `
 import { createApp } from "vue";
-import PrimeVue from "primevue/config";
+import PrimeVue from "@fcbtech/primevue/config";
 const app = createApp(App);
 
 app.use(PrimeVue, {
@@ -28,7 +28,7 @@ app.use(PrimeVue, {
             code2: {
                 basic: `
 import { createApp } from 'vue';
-import PrimeVue from 'primevue/config';
+import PrimeVue from '@fcbtech/primevue/config';
 import Lara from '@/presets/lara';      //import preset
 
 const app = createApp(App);

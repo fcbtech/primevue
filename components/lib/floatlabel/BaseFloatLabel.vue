@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import FloatLabelStyle from 'primevue/floatlabel/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import FloatLabelStyle from '@fcbtech/primevue/floatlabel/style';
 
 export default {
     name: 'BaseFloatLabel',

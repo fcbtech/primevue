@@ -46,7 +46,7 @@ export default defineConfig({
             code3: {
                 basic: `
 import { createApp } from "vue";
-import PrimeVue from "primevue/config";
+import PrimeVue from "@fcbtech/primevue/config";
 import App from './App.vue'
 const app = createApp(App);
 

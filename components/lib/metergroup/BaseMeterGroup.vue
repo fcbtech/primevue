@@ -1,6 +1,6 @@
 <script>
-import BaseComponent from 'primevue/basecomponent';
-import MeterGroupStyle from 'primevue/metergroup/style';
+import BaseComponent from '@fcbtech/primevue/basecomponent';
+import MeterGroupStyle from '@fcbtech/primevue/metergroup/style';
 
 export default {
     name: 'MeterGroup',
