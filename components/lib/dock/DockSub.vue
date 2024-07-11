@@ -88,11 +88,11 @@ export default {
             type: Number,
             default: 0
         },
-        'aria-label': {
+        ariaLabel: {
             type: String,
             default: null
         },
-        'aria-labelledby': {
+        ariaLabelledby: {
             type: String,
             default: null
         }
@@ -197,6 +197,7 @@ export default {
                 }
 
                 case 'Enter':
+                case 'NumpadEnter':
 
                 case 'Space': {
                     this.onSpaceKey(event);

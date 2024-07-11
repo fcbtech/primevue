@@ -33,6 +33,14 @@ export interface ImagePassThroughMethodOptions {
      */
     state: ImageState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -178,7 +186,7 @@ export interface ImageProps {
     imageClass?: any;
     /**
      * Custom indicator icon.
-     * @deprecated since v3.27.0. Use 'indicator' slot.
+     * @deprecated since v3.27.0. Use 'indicatoricon' slot.
      */
     indicatorIcon?: string;
     /**
@@ -215,7 +223,7 @@ export interface ImageSlots {
     /**
      * Custom indicator template.
      */
-    indicator(): VNode[];
+    indicatoricon(): VNode[];
     /**
      * Custom refresh template.
      */
@@ -319,8 +327,8 @@ declare class Image extends ClassComponent<ImageProps, ImageSlots, ImageEmits> {
     error(): void;
 }
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Image: GlobalComponentConstructor<Image>;
     }
 }

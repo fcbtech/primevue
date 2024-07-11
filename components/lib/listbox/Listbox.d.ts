@@ -10,7 +10,7 @@
 import { InputHTMLAttributes, VNode } from 'vue';
 import { ComponentHooks } from '../basecomponent';
 import { PassThroughOptions } from '../passthrough';
-import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, PassThrough, HintedString } from '../ts-helpers';
 import { VirtualScrollerItemOptions, VirtualScrollerPassThroughOptionType, VirtualScrollerProps } from '../virtualscroller';
 
 export declare type ListboxPassThroughOptionType = ListboxPassThroughAttributes | ((options: ListboxPassThroughMethodOptions) => ListboxPassThroughAttributes | string) | string | null | undefined;
@@ -35,6 +35,14 @@ export interface ListboxPassThroughMethodOptions {
      * Defines current options.
      */
     context: ListboxContext;
+    /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
     /**
      * Defines passthrough(pt) options in global config.
      */
@@ -233,6 +241,11 @@ export interface ListboxProps {
      */
     listStyle?: string | undefined;
     /**
+     * When present, it specifies that the component should have invalid state style.
+     * @defaultValue false
+     */
+    invalid?: boolean | undefined;
+    /**
      * When specified, disables the component.
      * @defaultValue false
      */
@@ -269,7 +282,7 @@ export interface ListboxProps {
      * Defines the filtering algorithm to use when searching the options.
      * @defaultValue contains
      */
-    filterMatchMode?: 'contains' | 'startsWith' | 'endsWith' | string | undefined;
+    filterMatchMode?: HintedString<'contains' | 'startsWith' | 'endsWith'> | undefined;
     /**
      * Fields used when filtering the options, defaults to optionLabel.
      */
@@ -285,7 +298,7 @@ export interface ListboxProps {
     virtualScrollerOptions?: VirtualScrollerProps;
     /**
      * Whether to focus on the first visible or selected element.
-     * @defaultValue true
+     * @defaultValue false
      */
     autoOptionFocus?: boolean | undefined;
     /**
@@ -293,6 +306,11 @@ export interface ListboxProps {
      * @defaultValue false
      */
     selectOnFocus?: boolean | undefined;
+    /**
+     * When enabled, the focus is placed on the hovered option.
+     * @defaultValue true
+     */
+    focusOnHover?: boolean | undefined;
     /**
      * Text to be displayed in hidden accessible field when filtering returns any results. Defaults to value from PrimeVue locale configuration.
      * @defaultValue '{0} results are available'
@@ -330,11 +348,11 @@ export interface ListboxProps {
     /**
      * Defines a string value that labels an interactive element.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Identifier of the underlying input element.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {ListboxPassThroughOptions}
@@ -512,8 +530,8 @@ export interface ListboxEmits {
  */
 declare class Listbox extends ClassComponent<ListboxProps, ListboxSlots, ListboxEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Listbox: GlobalComponentConstructor<Listbox>;
     }
 }

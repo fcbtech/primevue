@@ -55,18 +55,18 @@ export default {
             default: true
         },
         valueTemplate: {
-            type: String,
+            type: [String, Function],
             default: '{value}'
         },
         tabindex: {
             type: Number,
             default: 0
         },
-        'aria-labelledby': {
+        ariaLabelledby: {
             type: String,
             default: null
         },
-        'aria-label': {
+        ariaLabel: {
             type: String,
             default: null
         }

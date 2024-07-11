@@ -1,5 +1,5 @@
 <template>
-    <span ref="container" :id="id" :class="cx('root')" :style="sx('root')" v-bind="ptm('root')" data-pc-name="calendar">
+    <span ref="container" :id="d_id" :class="cx('root')" :style="sx('root')" v-bind="ptmi('root')">
         <input
             v-if="!inline"
             :ref="inputRef"
@@ -16,6 +16,7 @@
             :aria-controls="panelId"
             :aria-labelledby="ariaLabelledby"
             :aria-label="ariaLabel"
+            :aria-invalid="invalid || undefined"
             inputmode="none"
             :disabled="disabled"
             :readonly="!manualInput || readonly"
@@ -28,7 +29,7 @@
             v-bind="{ ...inputProps, ...ptm('input') }"
         />
         <CalendarButton
-            v-if="showIcon"
+            v-if="showIcon && iconDisplay === 'button'"
             :class="cx('dropdownButton')"
             :disabled="disabled"
             @click="onButtonClick"
@@ -39,7 +40,6 @@
             :aria-controls="panelId"
             :unstyled="unstyled"
             :pt="ptm('dropdownButton')"
-            data-pc-section="dropdownbutton"
         >
             <template #icon>
                 <slot name="dropdownicon" :class="icon">
@@ -47,6 +47,11 @@
                 </slot>
             </template>
         </CalendarButton>
+        <template v-else-if="showIcon && iconDisplay === 'input'">
+            <slot name="inputicon" :class="cx('inputIcon')" :clickCallback="onButtonClick">
+                <component :is="icon ? 'i' : 'CalendarIcon'" :class="[icon, cx('inputIcon')]" @click="onButtonClick" v-bind="ptm('inputicon')" />
+            </slot>
+        </template>
         <Portal :appendTo="appendTo" :disabled="inline">
             <transition name="p-connected-overlay" @enter="onOverlayEnter($event)" @after-enter="onOverlayEnterComplete" @after-leave="onOverlayAfterLeave" @leave="onOverlayLeave" v-bind="ptm('transition')">
                 <div
@@ -169,7 +174,11 @@
                                         <thead v-bind="ptm('tableHeader')">
                                             <tr v-bind="ptm('tableHeaderRow')">
                                                 <th v-if="showWeek" scope="col" :class="cx('weekHeader')" v-bind="ptm('weekHeader', { context: { disabled: showWeek } })" :data-p-disabled="showWeek" data-pc-group-section="tableheadercell">
-                                                    <span v-bind="ptm('weekLabel')" data-pc-group-section="tableheadercelllabel">{{ weekHeaderLabel }}</span>
+                                                    <slot name="weekheaderlabel">
+                                                        <span v-bind="ptm('weekHeaderLabel', { context: { disabled: showWeek } })" data-pc-group-section="tableheadercelllabel">
+                                                            {{ weekHeaderLabel }}
+                                                        </span>
+                                                    </slot>
                                                 </th>
                                                 <th v-for="weekDay of weekDays" :key="weekDay" scope="col" :abbr="weekDay" v-bind="ptm('tableHeaderCell')" data-pc-group-section="tableheadercell">
                                                     <span v-bind="ptm('weekDay')" data-pc-group-section="tableheadercelllabel">{{ weekDay }}</span>
@@ -180,8 +189,10 @@
                                             <tr v-for="(week, i) of month.dates" :key="week[0].day + '' + week[0].month" v-bind="ptm('tableBodyRow')">
                                                 <td v-if="showWeek" :class="cx('weekNumber')" v-bind="ptm('weekNumber')" data-pc-group-section="tablebodycell">
                                                     <span :class="cx('weekLabelContainer')" v-bind="ptm('weekLabelContainer', { context: { disabled: showWeek } })" :data-p-disabled="showWeek" data-pc-group-section="tablebodycelllabel">
-                                                        <span v-if="month.weekNumbers[i] < 10" style="visibility: hidden" v-bind="ptm('weekLabel')">0</span>
-                                                        {{ month.weekNumbers[i] }}
+                                                        <slot name="weeklabel" :weekNumber="month.weekNumbers[i]">
+                                                            <span v-if="month.weekNumbers[i] < 10" style="visibility: hidden" v-bind="ptm('weekLabel')">0</span>
+                                                            {{ month.weekNumbers[i] }}
+                                                        </slot>
                                                     </span>
                                                 </td>
                                                 <td
@@ -194,7 +205,9 @@
                                                             context: {
                                                                 date,
                                                                 today: date.today,
-                                                                otherMonth: date.otherMonth
+                                                                otherMonth: date.otherMonth,
+                                                                selected: isSelected(date),
+                                                                disabled: !date.selectable
                                                             }
                                                         })
                                                     "
@@ -214,6 +227,8 @@
                                                             ptm('dayLabel', {
                                                                 context: {
                                                                     date,
+                                                                    today: date.today,
+                                                                    otherMonth: date.otherMonth,
                                                                     selected: isSelected(date),
                                                                     disabled: !date.selectable
                                                                 }
@@ -475,7 +490,6 @@
                             @keydown="onContainerButtonKeydown"
                             :unstyled="unstyled"
                             :pt="ptm('todayButton')"
-                            data-pc-section="todaybutton"
                             data-pc-group-section="button"
                         />
                         <CalendarButton
@@ -486,7 +500,6 @@
                             @keydown="onContainerButtonKeydown"
                             :unstyled="unstyled"
                             :pt="ptm('clearButton')"
-                            data-pc-section="clearbutton"
                             data-pc-group-section="button"
                         />
                     </div>
@@ -513,6 +526,7 @@ import BaseCalendar from './BaseCalendar.vue';
 export default {
     name: 'Calendar',
     extends: BaseCalendar,
+    inheritAttrs: false,
     emits: ['show', 'hide', 'input', 'month-change', 'year-change', 'date-select', 'update:modelValue', 'today-click', 'clear-click', 'focus', 'blur', 'keydown'],
     navigationState: null,
     timePickerChange: false,
@@ -520,6 +534,7 @@ export default {
     outsideClickListener: null,
     maskClickListener: null,
     resizeListener: null,
+    matchMediaListener: null,
     overlay: null,
     input: null,
     mask: null,
@@ -530,6 +545,7 @@ export default {
     typeUpdate: false,
     data() {
         return {
+            d_id: this.id,
             currentMonth: null,
             currentYear: null,
             currentHour: null,
@@ -539,18 +555,25 @@ export default {
             focused: false,
             overlayVisible: false,
             currentView: this.view,
+            query: null,
             queryMatches: false
         };
     },
     watch: {
-        modelValue(newValue) {
-            this.updateCurrentMetaData();
+        id: function (newValue) {
+            this.d_id = newValue || UniqueComponentId();
+        },
+        modelValue: {
+            deep: true,
+            handler(newValue) {
+                this.updateCurrentMetaData();
 
-            if (!this.typeUpdate && !this.inline && this.input) {
-                this.input.value = this.formatValue(newValue);
+                if (!this.typeUpdate && !this.inline && this.input) {
+                    this.input.value = this.formatValue(newValue);
+                }
+
+                this.typeUpdate = false;
             }
-
-            this.typeUpdate = false;
         },
         showTime() {
             this.updateCurrentMetaData();
@@ -582,20 +605,18 @@ export default {
         },
         currentView() {
             Promise.resolve(null).then(() => this.alignOverlay());
+        },
+        view(newValue) {
+            this.currentView = newValue;
         }
     },
     created() {
         this.updateCurrentMetaData();
     },
     mounted() {
+        this.d_id = this.d_id || UniqueComponentId();
         this.createResponsiveStyle();
-        const query = matchMedia(`(max-width: ${this.breakpoint})`);
-
-        this.queryMatches = query.matches;
-
-        query.addEventListener('change', () => {
-            this.queryMatches = query.matches;
-        });
+        this.bindMatchMediaListener();
 
         if (this.inline) {
             this.overlay && this.overlay.setAttribute(this.attributeSelector, '');
@@ -603,10 +624,6 @@ export default {
             if (!this.disabled) {
                 this.preventFocus = true;
                 this.initFocusableCell();
-
-                if (this.numberOfMonths === 1) {
-                    this.overlay.style.width = DomHandler.getOuterWidth(this.$el) + 'px';
-                }
             }
         } else {
             this.input.value = this.formatValue(this.modelValue);
@@ -638,6 +655,7 @@ export default {
 
         this.unbindOutsideClickListener();
         this.unbindResizeListener();
+        this.unbindMatchMediaListener();
 
         if (this.scrollHandler) {
             this.scrollHandler.destroy();
@@ -1022,6 +1040,27 @@ export default {
                 this.resizeListener = null;
             }
         },
+        bindMatchMediaListener() {
+            if (!this.matchMediaListener) {
+                const query = matchMedia(`(max-width: ${this.breakpoint})`);
+
+                this.query = query;
+                this.queryMatches = query.matches;
+
+                this.matchMediaListener = () => {
+                    this.queryMatches = query.matches;
+                    this.mobileActive = false;
+                };
+
+                this.query.addEventListener('change', this.matchMediaListener);
+            }
+        },
+        unbindMatchMediaListener() {
+            if (this.matchMediaListener) {
+                this.query.removeEventListener('change', this.matchMediaListener);
+                this.matchMediaListener = null;
+            }
+        },
         isOutsideClicked(event) {
             return !(this.$el.isSameNode(event.target) || this.isNavIconClicked(event) || this.$el.contains(event.target) || (this.overlay && this.overlay.contains(event.target)));
         },
@@ -1126,8 +1165,7 @@ export default {
             let date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
 
             if (this.showTime) {
-                if (this.hourFormat === '12' && this.pm && this.currentHour != 12) date.setHours(this.currentHour + 12);
-                else date.setHours(this.currentHour);
+                this.hourFormat === '12' && this.currentHour !== 12 && this.pm ? date.setHours(this.currentHour + 12) : date.setHours(this.currentHour);
 
                 date.setMinutes(this.currentMinute);
                 date.setSeconds(this.currentSecond);
@@ -1658,10 +1696,13 @@ export default {
         },
         enableModality() {
             if (!this.mask) {
-                this.mask = document.createElement('div');
+                let styleClass = 'p-datepicker-mask p-datepicker-mask-scrollblocker p-component-overlay p-component-overlay-enter';
+
+                this.mask = DomHandler.createElement('div', {
+                    class: !this.isUnstyled && styleClass,
+                    'p-bind': this.ptm('datepickermask')
+                });
                 this.mask.style.zIndex = String(parseInt(this.overlay.style.zIndex, 10) - 1);
-                this.mask.setAttribute('data-pc-section', 'datepicker-mask');
-                !this.isUnstyled && DomHandler.addMultipleClasses(this.mask, 'p-datepicker-mask p-datepicker-mask-scrollblocker p-component-overlay p-component-overlay-enter');
 
                 this.maskClickListener = () => {
                     this.overlayVisible = false;
@@ -1697,7 +1738,7 @@ export default {
             for (let i = 0; i < bodyChildren.length; i++) {
                 let bodyChild = bodyChildren[i];
 
-                if (DomHandler.isAttributeEquals(bodyChild, 'data-pc-section', 'datepicker-mask')) {
+                if (DomHandler.isAttributeEquals(bodyChild, 'data-pc-section', 'datepickermask')) {
                     hasBlockerMasks = true;
                     break;
                 }
@@ -2152,6 +2193,7 @@ export default {
                 }
 
                 case 'Enter':
+                case 'NumpadEnter':
 
                 case 'Space': {
                     this.onDateSelect(event, date);
@@ -2328,6 +2370,7 @@ export default {
                 }
 
                 case 'Enter':
+                case 'NumpadEnter':
 
                 case 'Space': {
                     this.onMonthSelect(event, index);
@@ -2421,6 +2464,7 @@ export default {
                 }
 
                 case 'Enter':
+                case 'NumpadEnter':
 
                 case 'Space': {
                     this.onYearSelect(event, index);
@@ -2629,6 +2673,18 @@ export default {
                 if (this.overlayVisible) {
                     this.overlayVisible = false;
                 }
+            } else if (event.code === 'Enter') {
+                if (this.manualInput && event.target.value !== null && event.target.value?.trim() !== '') {
+                    try {
+                        let value = this.parseValue(event.target.value);
+
+                        if (this.isValidSelection(value)) {
+                            this.overlayVisible = false;
+                        }
+                    } catch (err) {
+                        /* NoOp */
+                    }
+                }
             }
         },
         overlayRef(el) {
@@ -2693,14 +2749,14 @@ export default {
                         let { breakpoint, numMonths } = responsiveOptions[i];
                         let styles = `
                             .p-datepicker[${this.attributeSelector}] .p-datepicker-group:nth-child(${numMonths}) .p-datepicker-next {
-                                display: inline-flex !important;
+                                display: inline-flex;
                             }
                         `;
 
                         for (let j = numMonths; j < this.numberOfMonths; j++) {
                             styles += `
                                 .p-datepicker[${this.attributeSelector}] .p-datepicker-group:nth-child(${j + 1}) {
-                                    display: none !important;
+                                    display: none;
                                 }
                             `;
                         }
@@ -2953,7 +3009,7 @@ export default {
             return this.numberOfMonths > 1 || this.disabled;
         },
         panelId() {
-            return UniqueComponentId() + '_panel';
+            return this.d_id + '_panel';
         }
     },
     components: {

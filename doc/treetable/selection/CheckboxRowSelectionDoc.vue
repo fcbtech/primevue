@@ -1,16 +1,20 @@
 <template>
     <DocSectionText v-bind="$attrs">
         <p>Selection of multiple nodes via checkboxes is enabled by configuring <i>selectionMode</i> as <i>checkbox</i>.</p>
-        <p>In checkbox selection mode, value binding should be a key-value pair where key is the node key and value is an object that has <i>checked</i> and <i>partialChecked</i> properties to represent the checked state of a node.</p>
+        <p>
+            In checkbox selection mode, value binding should be a key-value pair where key (or the dataKey) is the node key and value is an object that has <i>checked</i> and <i>partialChecked</i> properties to represent the checked state of a node.
+        </p>
     </DocSectionText>
-    <DocSectionCode :code="introCode" hideToggleCode importCode hideCodeSandbox hideStackBlitz />
-    <div class="card">
-        <TreeTable v-model:selectionKeys="selectedKey" :value="nodes" selectionMode="checkbox">
-            <Column field="name" header="Name" expander></Column>
-            <Column field="size" header="Size"></Column>
-            <Column field="type" header="Type"></Column>
-        </TreeTable>
-    </div>
+    <DocSectionCode :code="introCode" hideToggleCode importCode hideStackBlitz />
+    <DeferredDemo @load="loadDemoData">
+        <div class="card">
+            <TreeTable v-model:selectionKeys="selectedKey" :value="nodes" selectionMode="checkbox">
+                <Column field="name" header="Name" expander></Column>
+                <Column field="size" header="Size"></Column>
+                <Column field="type" header="Type"></Column>
+            </TreeTable>
+        </div>
+    </DeferredDemo>
     <DocSectionCode :code="code" :service="['NodeService']" />
 </template>
 
@@ -29,7 +33,8 @@ export default {
         partialChecked: false,
         checked: true
     }
-}`
+}
+`
             },
             code: {
                 basic: `
@@ -120,8 +125,10 @@ const selectedKey = ref();
             }
         };
     },
-    mounted() {
-        NodeService.getTreeTableNodes().then((data) => (this.nodes = data));
+    methods: {
+        loadDemoData() {
+            NodeService.getTreeTableNodes().then((data) => (this.nodes = data));
+        }
     }
 };
 </script>

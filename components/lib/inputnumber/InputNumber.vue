@@ -1,5 +1,5 @@
 <template>
-    <span :class="cx('root')" v-bind="ptm('root')" data-pc-name="inputnumber">
+    <span :class="cx('root')" v-bind="ptmi('root')">
         <INInputText
             ref="input"
             :id="inputId"
@@ -10,11 +10,13 @@
             :aria-valuemin="min"
             :aria-valuemax="max"
             :aria-valuenow="modelValue"
+            :inputmode="mode === 'decimal' && !minFractionDigits ? 'numeric' : 'decimal'"
             :disabled="disabled"
             :readonly="readonly"
             :placeholder="placeholder"
             :aria-labelledby="ariaLabelledby"
             :aria-label="ariaLabel"
+            :aria-invalid="invalid || undefined"
             @input="onUserInput"
             @keydown="onInputKeyDown"
             @keypress="onInputKeyPress"
@@ -22,37 +24,19 @@
             @click="onInputClick"
             @focus="onInputFocus"
             @blur="onInputBlur"
-            v-bind="{ ...inputProps, ...ptm('input') }"
+            v-bind="inputProps"
+            :pt="ptm('input')"
             :unstyled="unstyled"
-            data-pc-section="input"
         />
         <span v-if="showButtons && buttonLayout === 'stacked'" :class="cx('buttonGroup')" v-bind="ptm('buttonGroup')">
-            <INButton
-                :class="[cx('incrementButton'), incrementButtonClass]"
-                v-on="upButtonListeners"
-                :disabled="disabled"
-                :tabindex="-1"
-                aria-hidden="true"
-                v-bind="{ ...incrementButtonProps, ...ptm('incrementButton') }"
-                :unstyled="unstyled"
-                data-pc-section="incrementbutton"
-            >
+            <INButton :class="[cx('incrementButton'), incrementButtonClass]" v-on="upButtonListeners" :disabled="disabled" :tabindex="-1" aria-hidden="true" v-bind="incrementButtonProps" :pt="ptm('incrementButton')" :unstyled="unstyled">
                 <template #icon>
                     <slot name="incrementbuttonicon">
                         <component :is="incrementButtonIcon ? 'span' : 'AngleUpIcon'" :class="incrementButtonIcon" v-bind="ptm('incrementButton')['icon']" data-pc-section="incrementbuttonicon" />
                     </slot>
                 </template>
             </INButton>
-            <INButton
-                :class="[cx('decrementButton'), decrementButtonClass]"
-                v-on="downButtonListeners"
-                :disabled="disabled"
-                :tabindex="-1"
-                aria-hidden="true"
-                v-bind="{ ...decrementButtonProps, ...ptm('decrementButton') }"
-                :unstyled="unstyled"
-                data-pc-section="decrementbutton"
-            >
+            <INButton :class="[cx('decrementButton'), decrementButtonClass]" v-on="downButtonListeners" :disabled="disabled" :tabindex="-1" aria-hidden="true" v-bind="decrementButtonProps" :pt="ptm('decrementButton')" :unstyled="unstyled">
                 <template #icon>
                     <slot name="decrementbuttonicon">
                         <component :is="decrementButtonIcon ? 'span' : 'AngleDownIcon'" :class="decrementButtonIcon" v-bind="ptm('decrementButton')['icon']" data-pc-section="decrementbuttonicon" />
@@ -67,9 +51,9 @@
             :disabled="disabled"
             :tabindex="-1"
             aria-hidden="true"
-            v-bind="{ ...incrementButtonProps, ...ptm('incrementButton') }"
+            v-bind="incrementButtonProps"
+            :pt="ptm('incrementButton')"
             :unstyled="unstyled"
-            data-pc-section="incrementbutton"
         >
             <template #icon>
                 <slot name="incrementbuttonicon">
@@ -84,9 +68,9 @@
             :disabled="disabled"
             :tabindex="-1"
             aria-hidden="true"
-            v-bind="{ ...decrementButtonProps, ...ptm('decrementButton') }"
+            v-bind="decrementButtonProps"
+            :pt="ptm('decrementButton')"
             :unstyled="unstyled"
-            data-pc-section="decrementbutton"
         >
             <template #icon>
                 <slot name="decrementbuttonicon">
@@ -102,12 +86,13 @@ import Button from '@fcbtech/primevue/button';
 import AngleDownIcon from '@fcbtech/primevue/icons/angledown';
 import AngleUpIcon from '@fcbtech/primevue/icons/angleup';
 import InputText from '@fcbtech/primevue/inputtext';
-import { DomHandler } from '@fcbtech/primevue/utils';
+import { DomHandler, ObjectUtils } from '@fcbtech/primevue/utils';
 import BaseInputNumber from './BaseInputNumber.vue';
 
 export default {
     name: 'InputNumber',
     extends: BaseInputNumber,
+    inheritAttrs: false,
     emits: ['update:modelValue', 'input', 'focus', 'blur'],
     numberFormat: null,
     _numeral: null,
@@ -176,7 +161,8 @@ export default {
                 currencyDisplay: this.currencyDisplay,
                 useGrouping: this.useGrouping,
                 minimumFractionDigits: this.minFractionDigits,
-                maximumFractionDigits: this.maxFractionDigits
+                maximumFractionDigits: this.maxFractionDigits,
+                roundingMode: this.roundingMode
             };
         },
         constructParser() {
@@ -220,7 +206,7 @@ export default {
         },
         getCurrencyExpression() {
             if (this.currency) {
-                const formatter = new Intl.NumberFormat(this.locale, { style: 'currency', currency: this.currency, currencyDisplay: this.currencyDisplay, minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                const formatter = new Intl.NumberFormat(this.locale, { style: 'currency', currency: this.currency, currencyDisplay: this.currencyDisplay, minimumFractionDigits: 0, maximumFractionDigits: 0, roundingMode: this.roundingMode });
 
                 return new RegExp(`[${formatter.format(1).replace(/\s/g, '').replace(this._numeral, '').replace(this._group, '')}]`, 'g');
             }
@@ -242,7 +228,7 @@ export default {
             if (this.suffix) {
                 this.suffixChar = this.suffix;
             } else {
-                const formatter = new Intl.NumberFormat(this.locale, { style: this.mode, currency: this.currency, currencyDisplay: this.currencyDisplay, minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                const formatter = new Intl.NumberFormat(this.locale, { style: this.mode, currency: this.currency, currencyDisplay: this.currencyDisplay, minimumFractionDigits: 0, maximumFractionDigits: 0, roundingMode: this.roundingMode });
 
                 this.suffixChar = formatter.format(1).split('1')[1];
             }
@@ -349,7 +335,7 @@ export default {
             }
         },
         onUpButtonKeyDown(event) {
-            if (event.keyCode === 32 || event.keyCode === 13) {
+            if (event.code === 'Space' || event.code === 'Enter' || event.code === 'NumpadEnter') {
                 this.repeat(event, null, 1);
             }
         },
@@ -376,7 +362,7 @@ export default {
             }
         },
         onDownButtonKeyDown(event) {
-            if (event.keyCode === 32 || event.keyCode === 13) {
+            if (event.code === 'Space' || event.code === 'Enter' || event.code === 'NumpadEnter') {
                 this.repeat(event, null, -1);
             }
         },
@@ -392,22 +378,19 @@ export default {
                 return;
             }
 
-            this.lastValue = event.target.value;
-
-            if (event.shiftKey || event.altKey) {
+            if (event.altKey || event.ctrlKey || event.metaKey) {
                 this.isSpecialChar = true;
+                this.lastValue = this.$refs.input.$el.value;
 
                 return;
             }
+
+            this.lastValue = event.target.value;
 
             let selectionStart = event.target.selectionStart;
             let selectionEnd = event.target.selectionEnd;
             let inputValue = event.target.value;
             let newValueStr = null;
-
-            if (event.altKey) {
-                event.preventDefault();
-            }
 
             switch (event.code) {
                 case 'ArrowUp':
@@ -527,17 +510,19 @@ export default {
                     break;
 
                 case 'Home':
-                    if (this.min) {
+                    event.preventDefault();
+
+                    if (!ObjectUtils.isEmpty(this.min)) {
                         this.updateModel(event, this.min);
-                        event.preventDefault();
                     }
 
                     break;
 
                 case 'End':
-                    if (this.max) {
+                    event.preventDefault();
+
+                    if (!ObjectUtils.isEmpty(this.max)) {
                         this.updateModel(event, this.max);
-                        event.preventDefault();
                     }
 
                     break;
@@ -551,13 +536,15 @@ export default {
                 return;
             }
 
-            event.preventDefault();
-            let code = event.which || event.keyCode;
-            let char = String.fromCharCode(code);
-            const isDecimalSign = this.isDecimalSign(char);
+            let char = event.key;
+            let isDecimalSign = this.isDecimalSign(char);
             const isMinusSign = this.isMinusSign(char);
 
-            if ((48 <= code && code <= 57) || isMinusSign || isDecimalSign) {
+            if (event.code !== 'Enter') {
+                event.preventDefault();
+            }
+
+            if ((Number(char) >= 0 && Number(char) <= 9) || isMinusSign || isDecimalSign) {
                 this.insert(event, char, { isDecimalSign, isMinusSign });
             }
         },
@@ -685,7 +672,7 @@ export default {
 
                 this._decimal.lastIndex = 0;
 
-                return decimalCharIndex > 0 ? value.slice(0, start) + this.formatValue(text) + value.slice(end) : value || this.formatValue(text);
+                return decimalCharIndex > 0 ? value.slice(0, start) + this.formatValue(text) + value.slice(end) : this.formatValue(text) || value;
             } else if (end - start === value.length) {
                 return this.formatValue(text);
             } else if (start === 0) {
@@ -869,9 +856,13 @@ export default {
                     selectionEnd = sRegex.lastIndex + tRegex.lastIndex;
                     this.$refs.input.$el.setSelectionRange(selectionEnd, selectionEnd);
                 } else if (newLength === currentLength) {
-                    if (operation === 'insert' || operation === 'delete-back-single') this.$refs.input.$el.setSelectionRange(selectionEnd + 1, selectionEnd + 1);
-                    else if (operation === 'delete-single') this.$refs.input.$el.setSelectionRange(selectionEnd - 1, selectionEnd - 1);
-                    else if (operation === 'delete-range' || operation === 'spin') this.$refs.input.$el.setSelectionRange(selectionEnd, selectionEnd);
+                    if (operation === 'insert' || operation === 'delete-back-single') {
+                        this.$refs.input.$el.setSelectionRange(selectionEnd + 1, selectionEnd + 1);
+                    } else if (operation === 'delete-single') {
+                        this.$refs.input.$el.setSelectionRange(selectionEnd - 1, selectionEnd - 1);
+                    } else if (operation === 'delete-range' || operation === 'spin') {
+                        this.$refs.input.$el.setSelectionRange(selectionEnd, selectionEnd);
+                    }
                 } else if (operation === 'delete-back-single') {
                     let prevChar = inputValue.charAt(selectionEnd - 1);
                     let nextChar = inputValue.charAt(selectionEnd);
@@ -950,6 +941,10 @@ export default {
             input.value = this.formatValue(newValue);
             input.setAttribute('aria-valuenow', newValue);
             this.updateModel(event, newValue);
+
+            if (!this.disabled && !this.readonly && this.highlightOnFocus) {
+                DomHandler.clearSelection();
+            }
         },
         clearTimer() {
             if (this.timer) {

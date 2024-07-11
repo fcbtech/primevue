@@ -14,6 +14,7 @@
         @blur="onBlur"
         @keydown="onKeyDown"
         @item-toggle="onItemToggle"
+        @item-mousemove="onItemMouseMove"
         :pt="pt"
         :unstyled="unstyled"
         v-bind="ptm('menu')"
@@ -126,6 +127,7 @@ export default {
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     this.onEnterKey(event);
                     break;
 
@@ -224,13 +226,18 @@ export default {
             this.focusedItem = processedItem;
             DomHandler.focus(this.$el);
         },
+        onItemMouseMove(event) {
+            if (this.focused) {
+                this.focusedItem = event.processedItem;
+            }
+        },
         isElementInPanel(event, element) {
             const panel = event.currentTarget.closest('[data-pc-section="panel"]');
 
             return panel && panel.contains(element);
         },
         isItemMatched(processedItem) {
-            return this.isValidItem(processedItem) && this.getItemLabel(processedItem).toLocaleLowerCase(this.searchLocale).startsWith(this.searchValue.toLocaleLowerCase(this.searchLocale));
+            return this.isValidItem(processedItem) && this.getItemLabel(processedItem)?.toLocaleLowerCase(this.searchLocale).startsWith(this.searchValue.toLocaleLowerCase(this.searchLocale));
         },
         isVisibleItem(processedItem) {
             return !!processedItem && (processedItem.level === 0 || this.isItemActive(processedItem)) && this.isItemVisible(processedItem);

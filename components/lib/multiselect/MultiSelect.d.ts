@@ -10,7 +10,7 @@
 import { ButtonHTMLAttributes, HTMLAttributes, InputHTMLAttributes, TransitionProps, VNode } from 'vue';
 import { ComponentHooks } from '../basecomponent';
 import { PassThroughOptions } from '../passthrough';
-import { ClassComponent, GlobalComponentConstructor, PassThrough } from '../ts-helpers';
+import { ClassComponent, GlobalComponentConstructor, PassThrough, HintedString } from '../ts-helpers';
 import { VirtualScrollerItemOptions, VirtualScrollerPassThroughOptionType, VirtualScrollerProps } from '../virtualscroller';
 
 export declare type MultiSelectPassThroughOptionType = MultiSelectPassThroughAttributes | ((options: MultiSelectPassThroughMethodOptions) => MultiSelectPassThroughAttributes | string) | string | null | undefined;
@@ -37,6 +37,14 @@ export interface MultiSelectPassThroughMethodOptions {
      * Defines current options.
      */
     context: MultiSelectContext;
+    /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
     /**
      * Defines passthrough(pt) options in global config.
      */
@@ -138,10 +146,6 @@ export interface MultiSelectPassThroughOptions {
      */
     header?: MultiSelectPassThroughOptionType;
     /**
-     * Used to pass attributes to the header checkbox container's DOM element.
-     */
-    headerCheckboxContainer?: MultiSelectPassThroughOptionType;
-    /**
      * Used to pass attributes to the header checkbox's DOM element.
      */
     headerCheckbox?: MultiSelectPassThroughOptionType;
@@ -187,17 +191,9 @@ export interface MultiSelectPassThroughOptions {
      */
     item?: MultiSelectPassThroughOptionType;
     /**
-     * Used to pass attributes to the checkbox container's DOM element.
+     * Used to pass attributes to the item checkbox's DOM element.
      */
-    checkboxContainer?: MultiSelectPassThroughOptionType;
-    /**
-     * Used to pass attributes to the checkbox's DOM element.
-     */
-    checkbox?: MultiSelectPassThroughOptionType;
-    /**
-     * Used to pass attributes to the checkbox icon's DOM element.
-     */
-    checkboxIcon?: MultiSelectPassThroughOptionType;
+    itemCheckbox?: MultiSelectPassThroughOptionType;
     /**
      * Used to pass attributes to the option's DOM element.
      */
@@ -206,10 +202,6 @@ export interface MultiSelectPassThroughOptions {
      * Used to pass attributes to the emptyMessage's DOM element.
      */
     emptyMessage?: MultiSelectPassThroughOptionType;
-    /**
-     * Used to pass attributes to the hidden input wrapper's DOM element.
-     */
-    hiddenInputWrapper?: MultiSelectPassThroughOptionType;
     /**
      * Used to pass attributes to the hidden input's DOM element.
      */
@@ -340,10 +332,20 @@ export interface MultiSelectProps {
      */
     placeholder?: string | undefined;
     /**
+     * When present, it specifies that the component should have invalid state style.
+     * @defaultValue false
+     */
+    invalid?: boolean | undefined;
+    /**
      * When present, it specifies that the component should be disabled.
      * @defaultValue false
      */
     disabled?: boolean | undefined;
+    /**
+     * Specifies the input variant of the component.
+     * @defaultValue outlined
+     */
+    variant?: 'outlined' | 'filled' | undefined;
     /**
      * Identifier of the underlying input element.
      */
@@ -393,7 +395,7 @@ export interface MultiSelectProps {
      * Defines the filtering algorithm to use when searching the options.
      * @defaultValue contains
      */
-    filterMatchMode?: 'contains' | 'startsWith' | 'endsWith' | string | undefined;
+    filterMatchMode?: HintedString<'contains' | 'startsWith' | 'endsWith'> | undefined;
     /**
      * Fields used when filtering the options, defaults to optionLabel.
      */
@@ -402,7 +404,7 @@ export interface MultiSelectProps {
      * A valid query selector or an HTMLElement to specify where the overlay gets attached. Special keywords are 'body' for document body and 'self' for the element itself.
      * @defaultValue body
      */
-    appendTo?: 'body' | 'self' | string | undefined | HTMLElement;
+    appendTo?: HintedString<'body' | 'self'> | undefined | HTMLElement;
     /**
      * Defines how the selected items are displayed.
      * @defaultValue comma
@@ -478,7 +480,7 @@ export interface MultiSelectProps {
     virtualScrollerOptions?: VirtualScrollerProps;
     /**
      * Whether to focus on the first visible or selected element when the overlay panel is shown.
-     * @defaultValue true
+     * @defaultValue false
      */
     autoOptionFocus?: boolean | undefined;
     /**
@@ -486,6 +488,16 @@ export interface MultiSelectProps {
      * @defaultValue false
      */
     autoFilterFocus?: boolean | undefined;
+    /**
+     * When enabled, the focus is placed on the hovered option.
+     * @defaultValue true
+     */
+    focusOnHover?: boolean | undefined;
+    /**
+     *  Highlights automatically the first item.
+     *  @defaultValue false
+     */
+    highlightOnSelect?: boolean | undefined;
     /**
      * Text to be displayed in hidden accessible field when filtering returns any results. Defaults to value from PrimeVue locale configuration.
      * @defaultValue '{0} results are available'
@@ -518,11 +530,11 @@ export interface MultiSelectProps {
     /**
      * Defines a string value that labels an interactive element.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Identifier of the underlying input element.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {MultiSelectPassThroughOptions}
@@ -850,8 +862,8 @@ declare class MultiSelect extends ClassComponent<MultiSelectProps, MultiSelectSl
     hide(isFocus?: boolean): void;
 }
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         MultiSelect: GlobalComponentConstructor<MultiSelect>;
     }
 }

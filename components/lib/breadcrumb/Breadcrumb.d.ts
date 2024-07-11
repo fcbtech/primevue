@@ -32,6 +32,14 @@ export interface BreadcrumbPassThroughMethodOptions {
      */
     context: BreadcrumbContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -141,11 +149,11 @@ export interface BreadcrumbProps {
     /**
      * Defines a string value that labels an interactive element.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Identifier of the underlying menu element.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {BreadcrumbPassThroughOptions}
@@ -224,8 +232,8 @@ export interface BreadcrumbEmits {}
  */
 declare class Breadcrumb extends ClassComponent<BreadcrumbProps, BreadcrumbSlots, BreadcrumbEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Breadcrumb: GlobalComponentConstructor<Breadcrumb>;
     }
 }

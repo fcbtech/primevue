@@ -31,6 +31,14 @@ export interface VirtualScrollerPassThroughMethodOptions {
      */
     state: VirtualScrollerState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -511,8 +519,8 @@ declare class VirtualScroller extends ClassComponent<VirtualScrollerProps, Virtu
     getRenderedRange(): VirtualScrollerRangeMethod;
 }
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         VirtualScroller: GlobalComponentConstructor<VirtualScroller>;
     }
 }

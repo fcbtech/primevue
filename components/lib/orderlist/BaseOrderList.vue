@@ -24,6 +24,14 @@ export default {
         },
         metaKeySelection: {
             type: Boolean,
+            default: false
+        },
+        autoOptionFocus: {
+            type: Boolean,
+            default: true
+        },
+        focusOnHover: {
+            type: Boolean,
             default: true
         },
         responsive: {
@@ -62,11 +70,11 @@ export default {
             type: null,
             default: null
         },
-        'aria-labelledby': {
+        ariaLabelledby: {
             type: String,
             default: null
         },
-        'aria-label': {
+        ariaLabel: {
             type: String,
             default: null
         }

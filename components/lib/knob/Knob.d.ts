@@ -30,6 +30,14 @@ export interface KnobPassThroughMethodOptions {
      */
     state: KnobState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -170,7 +178,7 @@ export interface KnobProps {
      * Template string of the value.
      * @defaultValue '{value}'
      */
-    valueTemplate?: string | undefined;
+    valueTemplate?: (val: number) => string | string | undefined;
     /**
      * Index of the element in tabbing order.
      * @defaultValue 0
@@ -179,11 +187,11 @@ export interface KnobProps {
     /**
      * Establishes relationships between the component and label(s) where its value should be one or more element IDs.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Used to define a string that labels the element.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {KnobPassThroughOptions}
@@ -234,8 +242,8 @@ export interface KnobEmits {
  */
 declare class Knob extends ClassComponent<KnobProps, KnobSlots, KnobEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Knob: GlobalComponentConstructor<Knob>;
     }
 }

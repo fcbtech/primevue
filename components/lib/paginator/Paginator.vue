@@ -1,6 +1,6 @@
 <template>
-    <nav v-if="alwaysShow ? true : pageLinks && pageLinks.length > 1" v-bind="ptm('paginatorWrapper')">
-        <div v-for="(value, key) in templateItems" :key="key" ref="paginator" :class="cx('paginator', { key })" v-bind="ptm('root')" data-pc-name="paginator">
+    <nav v-if="alwaysShow ? true : pageLinks && pageLinks.length > 1" v-bind="ptmi('paginatorWrapper')">
+        <div v-for="(value, key) in templateItems" :key="key" ref="paginator" :class="cx('paginator', { key })" v-bind="ptm('root')">
             <div v-if="$slots.start" :class="cx('start')" v-bind="ptm('start')">
                 <slot name="start" :state="currentState"></slot>
             </div>
@@ -70,6 +70,7 @@ import RowsPerPageDropdown from './RowsPerPageDropdown.vue';
 export default {
     name: 'Paginator',
     extends: BasePaginator,
+    inheritAttrs: false,
     emits: ['update:first', 'update:rows', 'page'],
     data() {
         return {
@@ -160,31 +161,38 @@ export default {
                 });
 
                 for (const [index, [key]] of Object.entries(Object.entries(sortedBreakpoints))) {
-                    const minValue = Object.entries(sortedBreakpoints)[index - 1] ? `and (min-width:${Object.keys(sortedBreakpoints)[index - 1]})` : '';
+                    let minValue, calculatedMinValue;
+
+                    if (key !== 'default' && typeof Object.keys(sortedBreakpoints)[index - 1] === 'string') {
+                        calculatedMinValue = Number(Object.keys(sortedBreakpoints)[index - 1].slice(0, -2)) + 1 + 'px';
+                    } else {
+                        calculatedMinValue = Object.keys(sortedBreakpoints)[index - 1];
+                    }
+
+                    minValue = Object.entries(sortedBreakpoints)[index - 1] ? `and (min-width:${calculatedMinValue})` : '';
 
                     if (key === 'default') {
                         innerHTML += `
                             @media screen ${minValue} {
                                 .paginator[${this.attributeSelector}],
-                                .p-paginator-default{
-                                    display: flex !important;
+                                    display: flex;
                                 }
                             }
                         `;
                     } else {
                         innerHTML += `
-                        .paginator[${this.attributeSelector}], .p-paginator-${key} {
-                                display: none !important;
-                            }
-                        @media screen ${minValue} and (max-width: ${key}) {
-                            .paginator[${this.attributeSelector}], .p-paginator-${key} {
-                                display: flex !important;
-                            }
-                            .paginator[${this.attributeSelector}],
-                            .p-paginator-default{
-                                display: none !important;
-                            }
-                        }
+.paginator[${this.attributeSelector}], .p-paginator-${key} {
+    display: none;
+}
+@media screen ${minValue} and (max-width: ${key}) {
+    .paginator[${this.attributeSelector}], .p-paginator-${key} {
+        display: flex;
+    }
+    .paginator[${this.attributeSelector}],
+    .p-paginator-default{
+        display: none;
+    }
+}
                     `;
                     }
                 }

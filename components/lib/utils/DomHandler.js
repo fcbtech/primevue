@@ -114,7 +114,7 @@ export default {
 
     index(element) {
         if (element) {
-            let children = element.parentNode.childNodes;
+            let children = this.getParentNode(element)?.childNodes;
             let num = 0;
 
             for (let i = 0; i < children.length; i++) {
@@ -294,7 +294,7 @@ export default {
         return 0;
     },
 
-    absolutePosition(element, target) {
+    absolutePosition(element, target, gutter = true) {
         if (element) {
             const elementDimensions = element.offsetParent ? { width: element.offsetWidth, height: element.offsetHeight } : this.getHiddenElementDimensions(element);
             const elementOuterHeight = elementDimensions.height;
@@ -305,18 +305,19 @@ export default {
             const windowScrollTop = this.getWindowScrollTop();
             const windowScrollLeft = this.getWindowScrollLeft();
             const viewport = this.getViewport();
-            let top, left;
+            let top,
+                left,
+                origin = 'top';
 
             if (targetOffset.top + targetOuterHeight + elementOuterHeight > viewport.height) {
                 top = targetOffset.top + windowScrollTop - elementOuterHeight;
-                element.style.transformOrigin = 'bottom';
+                origin = 'bottom';
 
                 if (top < 0) {
                     top = windowScrollTop;
                 }
             } else {
                 top = targetOuterHeight + targetOffset.top + windowScrollTop;
-                element.style.transformOrigin = 'top';
             }
 
             if (targetOffset.left + elementOuterWidth > viewport.width) left = Math.max(0, targetOffset.left + windowScrollLeft + targetOuterWidth - elementOuterWidth);
@@ -324,27 +325,30 @@ export default {
 
             element.style.top = top + 'px';
             element.style.left = left + 'px';
+            element.style.transformOrigin = origin;
+            gutter && (element.style.marginTop = origin === 'bottom' ? 'calc(var(--p-anchor-gutter) * -1)' : 'calc(var(--p-anchor-gutter))');
         }
     },
 
-    relativePosition(element, target) {
+    relativePosition(element, target, gutter = true) {
         if (element) {
             const elementDimensions = element.offsetParent ? { width: element.offsetWidth, height: element.offsetHeight } : this.getHiddenElementDimensions(element);
             const targetHeight = target.offsetHeight;
             const targetOffset = target.getBoundingClientRect();
             const viewport = this.getViewport();
-            let top, left;
+            let top,
+                left,
+                origin = 'top';
 
             if (targetOffset.top + targetHeight + elementDimensions.height > viewport.height) {
                 top = -1 * elementDimensions.height;
-                element.style.transformOrigin = 'bottom';
+                origin = 'bottom';
 
                 if (targetOffset.top + top < 0) {
                     top = -1 * targetOffset.top;
                 }
             } else {
                 top = targetHeight;
-                element.style.transformOrigin = 'top';
             }
 
             if (elementDimensions.width > viewport.width) {
@@ -360,6 +364,8 @@ export default {
 
             element.style.top = top + 'px';
             element.style.left = left + 'px';
+            element.style.transformOrigin = origin;
+            gutter && (element.style.marginTop = origin === 'bottom' ? 'calc(var(--p-anchor-gutter) * -1)' : 'calc(var(--p-anchor-gutter))');
         }
     },
 
@@ -392,8 +398,20 @@ export default {
         }
     },
 
+    getParentNode(element) {
+        let parent = element?.parentNode;
+
+        if (parent && parent instanceof ShadowRoot && parent.host) {
+            parent = parent.host;
+        }
+
+        return parent;
+    },
+
     getParents(element, parents = []) {
-        return element['parentNode'] === null ? parents : this.getParents(element.parentNode, parents.concat([element.parentNode]));
+        const parent = this.getParentNode(element);
+
+        return parent === null ? parents : this.getParents(parent, parents.concat([parent]));
     },
 
     getScrollableParents(element) {
@@ -649,7 +667,7 @@ export default {
     },
 
     isExist(element) {
-        return !!(element !== null && typeof element !== 'undefined' && element.nodeName && element.parentNode);
+        return !!(element !== null && typeof element !== 'undefined' && element.nodeName && this.getParentNode(element));
     },
 
     isClient() {

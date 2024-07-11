@@ -31,6 +31,14 @@ export interface ChipPassThroughMethodOptions {
      */
     state: ChipState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -196,8 +204,8 @@ export interface ChipEmits {
  */
 declare class Chip extends ClassComponent<ChipProps, ChipSlots, ChipEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Chip: GlobalComponentConstructor<Chip>;
     }
 }

@@ -38,6 +38,14 @@ export interface PanelMenuPassThroughMethodOptions {
      */
     context: PanelMenuContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -397,8 +405,8 @@ export interface PanelMenuEmits {
  */
 declare class PanelMenu extends ClassComponent<PanelMenuProps, PanelMenuSlots, PanelMenuEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         PanelMenu: GlobalComponentConstructor<PanelMenu>;
     }
 }

@@ -18,7 +18,7 @@
             </template>
         </Menu>
     </div>
-    <DocSectionCode :code="code" hideStackBlitz hideCodeSandbox />
+    <DocSectionCode :code="code" hideStackBlitz />
 </template>
 
 <script>
@@ -38,7 +38,7 @@ export default {
                             label: 'Programmatic',
                             icon: 'pi pi-link',
                             command: () => {
-                                this.$router.push('/installation');
+                                this.$router.push('/introduction');
                             }
                         },
                         {
@@ -100,7 +100,7 @@ export default {
                     label: 'Programmatic',
                     icon: 'pi pi-link',
                     command: () => {
-                        this.$router.push('/installation');
+                        this.$router.push('/introduction');
                     }
                 },
                 {
@@ -136,7 +136,7 @@ export default {
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue";
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
@@ -150,7 +150,7 @@ const items = ref([
         label: 'Programmatic',
         icon: 'pi pi-link',
         command: () => {
-            this.$router.push('/installation');
+            router.push('/introduction');
         }
     },
     {

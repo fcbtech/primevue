@@ -20,9 +20,13 @@ export default {
             type: Boolean,
             default: true
         },
+        invalid: {
+            type: Boolean,
+            default: false
+        },
         disabled: Boolean,
         dataKey: null,
-        'aria-labelledby': {
+        ariaLabelledby: {
             type: String,
             default: null
         }

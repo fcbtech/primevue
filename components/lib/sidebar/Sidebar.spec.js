@@ -65,7 +65,7 @@ describe('Sidebar.vue', () => {
     it('When keydown is triggered , hide method should be triggered', async () => {
         const hideSpy = vi.spyOn(wrapper.vm, 'hide');
 
-        await wrapper.find('.p-sidebar').trigger('keydown', { code: 'Escape' });
+        await wrapper.vm.onKeydown({ code: 'Escape' });
 
         expect(hideSpy).toHaveBeenCalled();
     });
@@ -118,5 +118,13 @@ describe('Sidebar.vue', () => {
         wrapper.vm.onAfterLeave();
 
         expect(wrapper.vm.containerVisible).toBeFalsy();
+    });
+
+    it('When component is mounted , dismissable property should still be reactive', async () => {
+        await wrapper.setProps({ dismissable: false, visible: true });
+
+        await wrapper.setProps({ dismissable: true });
+
+        expect(wrapper.vm.containerVisible).toBeTruthy();
     });
 });

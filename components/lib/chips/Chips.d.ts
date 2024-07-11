@@ -31,6 +31,14 @@ export interface ChipsPassThroughMethodOptions {
      */
     state: ChipsState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -177,9 +185,20 @@ export interface ChipsProps {
      */
     removeTokenIcon?: string | undefined;
     /**
+     * When present, it specifies that the component should have invalid state style.
+     * @defaultValue false
+     */
+    invalid?: boolean | undefined;
+    /**
      * When present, it specifies that the element should be disabled.
+     * @defaultValue false
      */
     disabled?: boolean | undefined;
+    /**
+     * Specifies the input variant of the component.
+     * @defaultValue outlined
+     */
+    variant?: 'outlined' | 'filled' | undefined;
     /**
      * Placeholder text for the input.
      */
@@ -187,11 +206,11 @@ export interface ChipsProps {
     /**
      * Establishes relationships between the component and label(s) where its value should be one or more element IDs.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Establishes a string value that labels the component.
      */
-    'aria-label'?: string | undefined;
+    ariaLabel?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {ChipsPassThroughOptions}
@@ -283,8 +302,8 @@ export interface ChipsEmits {
  */
 declare class Chips extends ClassComponent<ChipsProps, ChipsSlots, ChipsEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Chips: GlobalComponentConstructor<Chips>;
     }
 }

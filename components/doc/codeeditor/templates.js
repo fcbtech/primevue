@@ -2,7 +2,7 @@ import pkg from '../../../package.json';
 import { services } from './services';
 
 const PrimeVue = {
-    version: '^3.40.0',
+    version: '^3.50.0',
     description:
         'PrimeVue is an open source UI library for Vue featuring a rich set of 80+ components, a theme designer, various theme alternatives such as Material, Bootstrap, Tailwind, premium templates and professional support. In addition, it integrates with PrimeBlock, which has 400+ ready to use UI blocks to build spectacular applications in no time.'
 };
@@ -60,7 +60,7 @@ const getVueApp = (props = {}, sourceType) => {
 
     if (embedded) {
         // main.js
-        unstyled += `, unstyled: true, pt: Tailwind, ptOptions: { mergeProps: true }`;
+        unstyled += `, unstyled: true, pt: Tailwind`;
         imports += `import Tailwind from '@fcbtech/primevue/passthrough/tailwind';
 import ThemeSwitcher from './components/ThemeSwitcher.vue';`;
         element += `app.component('ThemeSwitcher', ThemeSwitcher);`;
@@ -79,7 +79,7 @@ import ThemeSwitcher from './components/ThemeSwitcher.vue';`;
     } else {
         // main.js
         pvTheme += `import "primeflex/primeflex.css";
-import "primevue/resources/themes/lara-light-teal/theme.css";`;
+import "fcbtech/primevue/resources/themes/aura-light-green/theme.css";`;
 
         // package.json
         dependencies['primeflex'] = app_dependencies['primeflex'] || 'latest';
@@ -136,7 +136,7 @@ export default defineConfig({
         },
         [`${path}main.js`]: {
             content: `${pvTheme}
-import "primevue/resources/primevue.min.css"; /* Deprecated */
+import "fcbtech/primevue/resources/primevue.min.css"; /* Deprecated */
 import "primeicons/primeicons.css";
 import "./style.css";
 import "./flags.css";
@@ -144,7 +144,7 @@ import "./flags.css";
 import { createApp } from "vue";
 import App from "./App.vue";
 import { router } from "./router";
-import PrimeVue from "primevue/config";
+import PrimeVue from "@fcbtech/primevue/config";
 import AutoComplete from '@fcbtech/primevue/autocomplete';
 import Accordion from '@fcbtech/primevue/accordion';
 import AccordionTab from '@fcbtech/primevue/accordiontab';
@@ -152,9 +152,10 @@ import AnimateOnScroll from '@fcbtech/primevue/animateonscroll';
 import Avatar from '@fcbtech/primevue/avatar';
 import AvatarGroup from '@fcbtech/primevue/avatargroup';
 import Badge from '@fcbtech/primevue/badge';
-import BadgeDirective from "primevue/badgedirective";
+import BadgeDirective from '@fcbtech/primevue/badgedirective';
 import BlockUI from '@fcbtech/primevue/blockui';
 import Button from '@fcbtech/primevue/button';
+import ButtonGroup from '@fcbtech/primevue/buttongroup';
 import Breadcrumb from '@fcbtech/primevue/breadcrumb';
 import Calendar from '@fcbtech/primevue/calendar';
 import Card from '@fcbtech/primevue/card';
@@ -182,21 +183,28 @@ import Dropdown from '@fcbtech/primevue/dropdown';
 import DynamicDialog from '@fcbtech/primevue/dynamicdialog';
 import Fieldset from '@fcbtech/primevue/fieldset';
 import FileUpload from '@fcbtech/primevue/fileupload';
+import FloatLabel from '@fcbtech/primevue/floatlabel';
 import FocusTrap from '@fcbtech/primevue/focustrap';
 import Galleria from '@fcbtech/primevue/galleria';
+import IconField from '@fcbtech/primevue/iconfield';
+import InputIcon from '@fcbtech/primevue/inputicon';
 import Image from '@fcbtech/primevue/image';
 import InlineMessage from '@fcbtech/primevue/inlinemessage';
 import Inplace from '@fcbtech/primevue/inplace';
-import InputSwitch from '@fcbtech/primevue/inputswitch';
-import InputText from '@fcbtech/primevue/inputtext';
+import InputGroup from '@fcbtech/primevue/inputgroup';
+import InputGroupAddon from '@fcbtech/primevue/inputgroupaddon';
 import InputMask from '@fcbtech/primevue/inputmask';
 import InputNumber from '@fcbtech/primevue/inputnumber';
+import InputOtp from '@fcbtech/primevue/inputotp';
+import InputSwitch from '@fcbtech/primevue/inputswitch';
+import InputText from '@fcbtech/primevue/inputtext';
 import Knob from '@fcbtech/primevue/knob';
 import Listbox from '@fcbtech/primevue/listbox';
 import MegaMenu from '@fcbtech/primevue/megamenu';
 import Menu from '@fcbtech/primevue/menu';
 import Menubar from '@fcbtech/primevue/menubar';
 import Message from '@fcbtech/primevue/message';
+import MeterGroup from '@fcbtech/primevue/metergroup';
 import MultiSelect from '@fcbtech/primevue/multiselect';
 import OrderList from '@fcbtech/primevue/orderlist';
 import OrganizationChart from '@fcbtech/primevue/organizationchart';
@@ -222,6 +230,8 @@ import SpeedDial from '@fcbtech/primevue/speeddial';
 import SplitButton from '@fcbtech/primevue/splitbutton';
 import Splitter from '@fcbtech/primevue/splitter';
 import SplitterPanel from '@fcbtech/primevue/splitterpanel';
+import Stepper from '@fcbtech/primevue/stepper';
+import StepperPanel from '@fcbtech/primevue/stepperpanel';
 import Steps from '@fcbtech/primevue/steps';
 import StyleClass from '@fcbtech/primevue/styleclass';
 import TabMenu from '@fcbtech/primevue/tabmenu';
@@ -268,6 +278,7 @@ app.component('Badge', Badge);
 app.component('BlockUI', BlockUI);
 app.component('Breadcrumb', Breadcrumb);
 app.component('Button', Button);
+app.component('ButtonGroup', ButtonGroup);
 app.component('Calendar', Calendar);
 app.component('Card', Card);
 app.component('Carousel', Carousel);
@@ -292,12 +303,18 @@ app.component('Dropdown', Dropdown);
 app.component('DynamicDialog', DynamicDialog);
 app.component('Fieldset', Fieldset);
 app.component('FileUpload', FileUpload);
+app.component('FloatLabel', FloatLabel);
 app.component('Galleria', Galleria);
+app.component('IconField', IconField);
 app.component('Image', Image);
 app.component('InlineMessage', InlineMessage);
 app.component('Inplace', Inplace);
+app.component('InputGroup', InputGroup);
+app.component('InputGroupAddon', InputGroupAddon);
+app.component('InputIcon', InputIcon);
 app.component('InputMask', InputMask);
 app.component('InputNumber', InputNumber);
+app.component('InputOtp', InputOtp);
 app.component('InputSwitch', InputSwitch);
 app.component('InputText', InputText);
 app.component('Knob', Knob);
@@ -306,6 +323,7 @@ app.component('MegaMenu', MegaMenu);
 app.component('Menu', Menu);
 app.component('Menubar', Menubar);
 app.component('Message', Message);
+app.component('MeterGroup', MeterGroup);
 app.component('MultiSelect', MultiSelect);
 app.component('OrderList', OrderList);
 app.component('OrganizationChart', OrganizationChart);
@@ -330,6 +348,8 @@ app.component('SpeedDial', SpeedDial);
 app.component('SplitButton', SplitButton);
 app.component('Splitter', Splitter);
 app.component('SplitterPanel', SplitterPanel);
+app.component('Stepper', Stepper);
+app.component('StepperPanel', StepperPanel);
 app.component('Steps', Steps);
 app.component('TabMenu', TabMenu);
 app.component('TabView', TabView);

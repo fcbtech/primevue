@@ -16,6 +16,14 @@ export default {
             type: String,
             default: null
         },
+        invalid: {
+            type: Boolean,
+            default: false
+        },
+        variant: {
+            type: String,
+            default: null
+        },
         disabled: {
             type: Boolean,
             default: false
@@ -29,7 +37,7 @@ export default {
             default: 'single'
         },
         appendTo: {
-            type: String,
+            type: [String, Object],
             default: 'body'
         },
         emptyMessage: {
@@ -42,7 +50,7 @@ export default {
         },
         metaKeySelection: {
             type: Boolean,
-            default: true
+            default: false
         },
         inputId: {
             type: String,
@@ -68,11 +76,11 @@ export default {
             type: null,
             default: null
         },
-        'aria-labelledby': {
+        ariaLabelledby: {
             type: String,
             default: null
         },
-        'aria-label': {
+        ariaLabel: {
             type: String,
             default: null
         }

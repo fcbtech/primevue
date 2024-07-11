@@ -32,10 +32,33 @@ export interface DataViewPassThroughMethodOptions {
      */
     state: DataViewState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
 }
+
+/**
+ * Custom shared passthrough(pt) option method.
+ */
+export interface DataViewSharedPassThroughMethodOptions {
+    /**
+     * Defines valid properties.
+     */
+    props: DataViewProps;
+    /**
+     * Defines current inline state.
+     */
+    state: DataViewState;
+}
+
 /**
  * Custom page event.
  * @see {@link DataViewEmits.page}
@@ -76,7 +99,7 @@ export interface DataViewPassThroughOptions {
      * Used to pass attributes to the Paginator component.
      * @see {@link PaginatorPassThroughOptionType}
      */
-    paginator?: PaginatorPassThroughOptionType;
+    paginator?: PaginatorPassThroughOptionType<DataViewSharedPassThroughMethodOptions>;
     /**
      * Used to pass attributes to the content's DOM element.
      */
@@ -318,8 +341,8 @@ export interface DataViewEmits {
  */
 declare class DataView extends ClassComponent<DataViewProps, DataViewSlots, DataViewEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         DataView: GlobalComponentConstructor<DataView>;
     }
 }

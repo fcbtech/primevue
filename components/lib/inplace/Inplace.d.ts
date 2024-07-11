@@ -33,9 +33,31 @@ export interface InplacePassThroughMethodOptions {
      */
     state: InplaceState;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
+}
+
+/**
+ * Custom shared passthrough(pt) option method.
+ */
+export interface InplaceSharedPassThroughMethodOptions {
+    /**
+     * Defines valid properties.
+     */
+    props: InplaceProps;
+    /**
+     * Defines current inline state.
+     */
+    state: InplaceState;
 }
 
 /**
@@ -59,7 +81,7 @@ export interface InplacePassThroughOptions {
      * Used to pass attributes to the Button component.
      * @see {@link ButtonPassThroughOptions}
      */
-    closeButton?: ButtonPassThroughOptions;
+    closeButton?: ButtonPassThroughOptions<InplaceSharedPassThroughMethodOptions>;
     /**
      * Used to manage all lifecycle hooks.
      * @see {@link BaseComponent.ComponentHooks}
@@ -186,8 +208,8 @@ export interface InplaceEmits {
  */
 declare class Inplace extends ClassComponent<InplaceProps, InplaceSlots, InplaceEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Inplace: GlobalComponentConstructor<Inplace>;
     }
 }

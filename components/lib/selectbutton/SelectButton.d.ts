@@ -35,6 +35,14 @@ export interface SelectButtonPassThroughMethodOptions {
      */
     context: SelectButtonContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -106,10 +114,10 @@ export interface SelectButtonContext {
      */
     active: boolean;
     /**
-     * Current focused state of item as a boolean.
+     * Current disabled state of the item as a boolean.
      * @defaultValue false
      */
-    focused: boolean;
+    disabled: boolean;
     /**
      * Available option.
      */
@@ -146,6 +154,11 @@ export interface SelectButtonProps {
      */
     multiple?: boolean | undefined;
     /**
+     * When present, it specifies that the component should have invalid state style.
+     * @defaultValue false
+     */
+    invalid?: boolean | undefined;
+    /**
      * When present, it specifies that the element should be disabled.
      * @defaultValue false
      */
@@ -168,7 +181,7 @@ export interface SelectButtonProps {
     /**
      * Identifier of the underlying element.
      */
-    'aria-labelledby'?: string | undefined;
+    ariaLabelledby?: string | undefined;
     /**
      * Used to pass attributes to DOM elements inside the component.
      * @type {SelectButtonPassThroughOptions}
@@ -244,8 +257,8 @@ export interface SelectButtonEmits {
  */
 declare class SelectButton extends ClassComponent<SelectButtonProps, SelectButtonSlots, SelectButtonEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         SelectButton: GlobalComponentConstructor<SelectButton>;
     }
 }

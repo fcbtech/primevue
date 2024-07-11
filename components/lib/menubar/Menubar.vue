@@ -1,26 +1,28 @@
 <template>
-    <div :ref="containerRef" :class="cx('root')" v-bind="ptm('root')">
+    <div :ref="containerRef" :class="cx('root')" v-bind="ptmi('root')">
         <div v-if="$slots.start" :class="cx('start')" v-bind="ptm('start')">
             <slot name="start"></slot>
         </div>
-        <a
-            v-if="model && model.length > 0"
-            ref="menubutton"
-            role="button"
-            tabindex="0"
-            :class="cx('button')"
-            :aria-haspopup="model.length && model.length > 0 ? true : false"
-            :aria-expanded="mobileActive"
-            :aria-controls="id"
-            :aria-label="$primevue.config.locale.aria?.navigation"
-            @click="menuButtonClick($event)"
-            @keydown="menuButtonKeydown($event)"
-            v-bind="{ ...buttonProps, ...ptm('button') }"
-        >
-            <slot name="popupicon">
-                <BarsIcon v-bind="ptm('popupIcon')" />
-            </slot>
-        </a>
+        <slot :id="id" name="menubutton" :class="cx('button')" :toggleCallback="(event) => menuButtonClick(event)">
+            <a
+                v-if="model && model.length > 0"
+                ref="menubutton"
+                role="button"
+                tabindex="0"
+                :class="cx('button')"
+                :aria-haspopup="model.length && model.length > 0 ? true : false"
+                :aria-expanded="mobileActive"
+                :aria-controls="id"
+                :aria-label="$primevue.config.locale.aria?.navigation"
+                @click="menuButtonClick($event)"
+                @keydown="menuButtonKeydown($event)"
+                v-bind="{ ...buttonProps, ...ptm('button') }"
+            >
+                <slot name="menubuttonicon">
+                    <BarsIcon v-bind="ptm('menubuttonicon')" />
+                </slot>
+            </a>
+        </slot>
         <MenubarSub
             :ref="menubarRef"
             :id="id"
@@ -44,6 +46,7 @@
             @keydown="onKeyDown"
             @item-click="onItemClick"
             @item-mouseenter="onItemMouseEnter"
+            @item-mousemove="onItemMouseMove"
         />
         <div v-if="$slots.end" :class="cx('end')" v-bind="ptm('end')">
             <slot name="end"></slot>
@@ -60,7 +63,9 @@ import MenubarSub from './MenubarSub.vue';
 export default {
     name: 'Menubar',
     extends: BaseMenubar,
+    inheritAttrs: false,
     emits: ['focus', 'blur'],
+    matchMediaListener: null,
     data() {
         return {
             id: this.$attrs.id,
@@ -69,6 +74,7 @@ export default {
             focusedItemInfo: { index: -1, level: 0, parentKey: '' },
             activeItemPath: [],
             dirty: false,
+            query: null,
             queryMatches: false
         };
     },
@@ -91,18 +97,13 @@ export default {
     menubar: null,
     mounted() {
         this.id = this.id || UniqueComponentId();
-        const query = matchMedia(`(max-width: ${this.breakpoint})`);
-
-        this.queryMatches = query.matches;
-
-        query.addEventListener('change', () => {
-            this.queryMatches = query.matches;
-        });
+        this.bindMatchMediaListener();
     },
     beforeUnmount() {
         this.mobileActive = false;
         this.unbindOutsideClickListener();
         this.unbindResizeListener();
+        this.unbindMatchMediaListener();
 
         if (this.container) {
             ZIndexUtils.clear(this.container);
@@ -119,6 +120,9 @@ export default {
         },
         isItemDisabled(item) {
             return this.getItemProp(item, 'disabled');
+        },
+        isItemVisible(item) {
+            return this.getItemProp(item, 'visible') !== false;
         },
         isItemGroup(item) {
             return ObjectUtils.isNotEmpty(this.getItemProp(item, 'items'));
@@ -149,8 +153,6 @@ export default {
             event.preventDefault();
         },
         show() {
-            this.focusedItemInfo = { index: this.findFirstFocusedItemIndex(), level: 0, parentKey: '' };
-
             DomHandler.focus(this.menubar);
         },
         hide(event, isFocus) {
@@ -169,7 +171,11 @@ export default {
         },
         onFocus(event) {
             this.focused = true;
-            this.focusedItemInfo = this.focusedItemInfo.index !== -1 ? this.focusedItemInfo : { index: this.findFirstFocusedItemIndex(), level: 0, parentKey: '' };
+
+            if (!this.popup) {
+                this.focusedItemInfo = this.focusedItemInfo.index !== -1 ? this.focusedItemInfo : { index: this.findFirstFocusedItemIndex(), level: 0, parentKey: '' };
+            }
+
             this.$emit('focus', event);
         },
         onBlur(event) {
@@ -212,6 +218,7 @@ export default {
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
                     this.onEnterKey(event);
                     break;
 
@@ -289,11 +296,16 @@ export default {
                 this.onItemChange(event);
             }
         },
+        onItemMouseMove(event) {
+            if (this.focused) {
+                this.changeFocusedItemIndex(event, event.processedItem.index);
+            }
+        },
         menuButtonClick(event) {
             this.toggle(event);
         },
         menuButtonKeydown(event) {
-            (event.code === 'Enter' || event.code === 'Space') && this.menuButtonClick(event);
+            (event.code === 'Enter' || event.code === 'NumpadEnter' || event.code === 'Space') && this.menuButtonClick(event);
         },
         onArrowDownKey(event) {
             const processedItem = this.visibleItems[this.focusedItemInfo.index];
@@ -311,8 +323,9 @@ export default {
                 const itemIndex = this.focusedItemInfo.index !== -1 ? this.findNextItemIndex(this.focusedItemInfo.index) : this.findFirstFocusedItemIndex();
 
                 this.changeFocusedItemIndex(event, itemIndex);
-                event.preventDefault();
             }
+
+            event.preventDefault();
         },
         onArrowUpKey(event) {
             const processedItem = this.visibleItems[this.focusedItemInfo.index];
@@ -407,8 +420,12 @@ export default {
             this.onEnterKey(event);
         },
         onEscapeKey(event) {
-            this.hide(event, true);
-            this.focusedItemInfo.index = this.findFirstFocusedItemIndex();
+            if (this.focusedItemInfo.level !== 0) {
+                const _focusedItemInfo = this.focusedItemInfo;
+
+                this.hide(event, false);
+                this.focusedItemInfo = { index: Number(_focusedItemInfo.parentKey.split('_')[0]), level: 0, parentKey: '' };
+            }
 
             event.preventDefault();
         },
@@ -425,10 +442,10 @@ export default {
         bindOutsideClickListener() {
             if (!this.outsideClickListener) {
                 this.outsideClickListener = (event) => {
-                    const isOutsideContainer = this.menubar && !this.menubar.contains(event.target);
-                    const isOutsideMenuButton = this.mobileActive && this.$refs.menubutton ? this.$refs.menubutton !== event.target && !this.$refs.menubutton.contains(event.target) : true;
+                    const isOutsideContainer = this.container && !this.container.contains(event.target);
+                    const isOutsideTarget = !(this.target && (this.target === event.target || this.target.contains(event.target)));
 
-                    if (isOutsideMenuButton && isOutsideContainer) {
+                    if (isOutsideContainer && isOutsideTarget) {
                         this.hide();
                     }
                 };
@@ -461,11 +478,32 @@ export default {
                 this.resizeListener = null;
             }
         },
+        bindMatchMediaListener() {
+            if (!this.matchMediaListener) {
+                const query = matchMedia(`(max-width: ${this.breakpoint})`);
+
+                this.query = query;
+                this.queryMatches = query.matches;
+
+                this.matchMediaListener = () => {
+                    this.queryMatches = query.matches;
+                    this.mobileActive = false;
+                };
+
+                this.query.addEventListener('change', this.matchMediaListener);
+            }
+        },
+        unbindMatchMediaListener() {
+            if (this.matchMediaListener) {
+                this.query.removeEventListener('change', this.matchMediaListener);
+                this.matchMediaListener = null;
+            }
+        },
         isItemMatched(processedItem) {
-            return this.isValidItem(processedItem) && this.getProccessedItemLabel(processedItem).toLocaleLowerCase().startsWith(this.searchValue.toLocaleLowerCase());
+            return this.isValidItem(processedItem) && this.getProccessedItemLabel(processedItem)?.toLocaleLowerCase().startsWith(this.searchValue.toLocaleLowerCase());
         },
         isValidItem(processedItem) {
-            return !!processedItem && !this.isItemDisabled(processedItem.item) && !this.isItemSeparator(processedItem.item);
+            return !!processedItem && !this.isItemDisabled(processedItem.item) && !this.isItemSeparator(processedItem.item) && this.isItemVisible(processedItem.item);
         },
         isValidSelectedItem(processedItem) {
             return this.isValidItem(processedItem) && this.isSelected(processedItem);

@@ -24,6 +24,14 @@ export default {
         },
         metaKeySelection: {
             type: Boolean,
+            default: false
+        },
+        autoOptionFocus: {
+            type: Boolean,
+            default: true
+        },
+        focusOnHover: {
+            type: Boolean,
             default: true
         },
         responsive: {

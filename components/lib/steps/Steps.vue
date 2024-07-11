@@ -1,11 +1,12 @@
 <template>
-    <nav :id="id" :class="cx('root')" v-bind="ptm('root')" data-pc-name="steps">
+    <nav :id="id" :class="cx('root')" v-bind="ptmi('root')">
         <ol ref="list" :class="cx('menu')" v-bind="ptm('menu')">
             <template v-for="(item, index) of model" :key="label(item) + '_' + index.toString()">
                 <li
                     v-if="visible(item)"
                     :class="[cx('menuitem', { item, index }), item.class]"
                     :style="item.style"
+                    :aria-current="isActive(index) ? 'step' : undefined"
                     @click="onItemClick($event, item, index)"
                     @keydown="onItemKeydown($event, item, index)"
                     v-bind="getPTOptions('menuitem', item, index)"
@@ -33,6 +34,7 @@ import BaseSteps from './BaseSteps.vue';
 export default {
     name: 'Steps',
     extends: BaseSteps,
+    inheritAttrs: false,
     emits: ['update:activeStep', 'step-change'],
     data() {
         return {
@@ -47,7 +49,7 @@ export default {
     mounted() {
         const firstItem = this.findFirstItem();
 
-        firstItem.tabIndex = '0';
+        firstItem && (firstItem.tabIndex = '0');
     },
     methods: {
         getPTOptions(key, item, index) {
@@ -115,6 +117,7 @@ export default {
                     break;
 
                 case 'Enter':
+                case 'NumpadEnter':
 
                 case 'Space': {
                     this.onItemClick(event, item);

@@ -27,6 +27,14 @@ export interface DividerPassThroughMethodOptions {
      */
     props: DividerProps;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -120,8 +128,8 @@ export interface DividerEmits {}
  */
 declare class Divider extends ClassComponent<DividerProps, DividerSlots, DividerEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Divider: GlobalComponentConstructor<Divider>;
     }
 }

@@ -1,5 +1,14 @@
 <template>
-    <div v-if="$attrs.value && $attrs.value.length > 0" :id="id" :class="[cx('root'), $attrs.containerClass]" :style="$attrs.containerStyle" v-bind="{ ...$attrs.containerProps, ...getPTOptions('root') }" data-pc-name="galleria">
+    <div
+        v-if="$attrs.value && $attrs.value.length > 0"
+        :id="id"
+        role="region"
+        :class="[cx('root'), $attrs.containerClass]"
+        :style="$attrs.containerStyle"
+        :aria-label="$attrs.ariaLabel"
+        :aria-roledescription="$attrs.ariaRoledescription"
+        v-bind="{ ...$attrs.containerProps, ...getPTOptions('root') }"
+    >
         <button v-if="$attrs.fullScreen" v-ripple autofocus type="button" :class="cx('closeButton')" :aria-label="closeAriaLabel" @click="$emit('mask-hide')" v-bind="getPTOptions('closeButton')">
             <component :is="$attrs.templates['closeicon'] || 'TimesIcon'" :class="cx('closeIcon')" v-bind="getPTOptions('closeIcon')" />
         </button>
@@ -74,6 +83,9 @@ export default {
         };
     },
     watch: {
+        '$attrs.id': function (newValue) {
+            this.id = newValue || UniqueComponentId();
+        },
         '$attrs.value': function (newVal) {
             if (newVal && newVal.length < this.numVisible) {
                 this.numVisible = newVal.length;
@@ -88,6 +100,9 @@ export default {
         '$attrs.autoPlay': function (newVal) {
             newVal ? this.startSlideShow() : this.stopSlideShow();
         }
+    },
+    mounted() {
+        this.id = this.id || UniqueComponentId();
     },
     updated() {
         this.$emit('activeitem-change', this.activeIndex);

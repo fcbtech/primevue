@@ -1,5 +1,5 @@
 <template>
-    <div aria-live="polite" :class="cx('root')" v-bind="ptm('root')">
+    <div role="alert" aria-live="assertive" aria-atomic="true" :class="cx('root')" v-bind="ptmi('root')">
         <slot name="icon">
             <component :is="icon ? 'span' : iconComponent" :class="cx('icon')" v-bind="ptm('icon')"></component>
         </slot>
@@ -10,15 +10,16 @@
 </template>
 
 <script>
-import BaseInlineMessage from './BaseInlineMessage.vue';
 import CheckIcon from '@fcbtech/primevue/icons/check';
 import ExclamationTriangleIcon from '@fcbtech/primevue/icons/exclamationtriangle';
 import InfoCircleIcon from '@fcbtech/primevue/icons/infocircle';
 import TimesCircleIcon from '@fcbtech/primevue/icons/timescircle';
+import BaseInlineMessage from './BaseInlineMessage.vue';
 
 export default {
     name: 'InlineMessage',
     extends: BaseInlineMessage,
+    inheritAttrs: false,
     timeout: null,
     data() {
         return {

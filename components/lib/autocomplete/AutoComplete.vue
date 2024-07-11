@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" :class="cx('root')" :style="sx('root')" @click="onContainerClick" v-bind="ptm('root')" data-pc-name="autocomplete">
+    <div ref="container" :class="cx('root')" :style="sx('root')" @click="onContainerClick" v-bind="ptmi('root')">
         <input
             v-if="!multiple"
             ref="focusInput"
@@ -20,6 +20,7 @@
             :aria-expanded="overlayVisible"
             :aria-controls="id + '_list'"
             :aria-activedescendant="focused ? focusedOptionId : undefined"
+            :aria-invalid="invalid || undefined"
             @focus="onFocus"
             @blur="onBlur"
             @keydown="onKeyDown"
@@ -78,6 +79,7 @@
                     :aria-expanded="overlayVisible"
                     :aria-controls="id + '_list'"
                     :aria-activedescendant="focused ? focusedOptionId : undefined"
+                    :aria-invalid="invalid || undefined"
                     @focus="onFocus"
                     @blur="onBlur"
                     @keydown="onKeyDown"
@@ -91,19 +93,7 @@
             <i v-if="loadingIcon" :class="['pi-spin', cx('loadingIcon'), loadingIcon]" aria-hidden="true" v-bind="ptm('loadingIcon')" />
             <SpinnerIcon v-else :class="[cx('loadingIcon'), loadingIcon]" spin aria-hidden="true" v-bind="ptm('loadingIcon')" />
         </slot>
-        <Button
-            v-if="dropdown"
-            ref="dropdownButton"
-            type="button"
-            tabindex="-1"
-            :class="[cx('dropdownButton'), dropdownClass]"
-            :disabled="disabled"
-            aria-hidden="true"
-            @click="onDropdownClick"
-            :unstyled="unstyled"
-            :pt="ptm('dropdownButton')"
-            data-pc-section="dropdownbutton"
-        >
+        <Button v-if="dropdown" ref="dropdownButton" type="button" tabindex="-1" :class="[cx('dropdownButton'), dropdownClass]" :disabled="disabled" aria-hidden="true" @click="onDropdownClick" :unstyled="unstyled" :pt="ptm('dropdownButton')">
             <template #icon>
                 <slot name="dropdownicon" :class="dropdownIcon">
                     <component :is="dropdownIcon ? 'span' : 'ChevronDownIcon'" :class="dropdownIcon" v-bind="ptm('dropdownButton')['icon']" data-pc-section="dropdownicon" />
@@ -127,7 +117,7 @@
                     <slot name="header" :value="modelValue" :suggestions="visibleOptions"></slot>
                     <VirtualScroller :ref="virtualScrollerRef" v-bind="virtualScrollerOptions" :style="{ height: scrollHeight }" :items="visibleOptions" :tabindex="-1" :disabled="virtualScrollerDisabled" :pt="ptm('virtualScroller')">
                         <template v-slot:content="{ styleClass, contentRef, items, getItemOptions, contentStyle, itemSize }">
-                            <ul :ref="(el) => listRef(el, contentRef)" :id="id + '_list'" :class="[cx('list'), styleClass]" :style="contentStyle" role="listbox" v-bind="ptm('list')">
+                            <ul :ref="(el) => listRef(el, contentRef)" :id="id + '_list'" :class="[cx('list'), styleClass]" :style="contentStyle" role="listbox" :aria-label="listAriaLabel" v-bind="ptm('list')">
                                 <template v-for="(option, i) of items" :key="getOptionRenderKey(option, getOptionIndex(i, getItemOptions))">
                                     <li v-if="isOptionGroup(option)" :id="id + '_' + getOptionIndex(i, getItemOptions)" :style="{ height: itemSize ? itemSize + 'px' : undefined }" :class="cx('itemGroup')" role="option" v-bind="ptm('itemGroup')">
                                         <slot name="optiongroup" :option="option.optionGroup" :item="option.optionGroup" :index="getOptionIndex(i, getItemOptions)">{{ getOptionGroupLabel(option.optionGroup) }}</slot>
@@ -190,6 +180,7 @@ import BaseAutoComplete from './BaseAutoComplete.vue';
 export default {
     name: 'AutoComplete',
     extends: BaseAutoComplete,
+    inheritAttrs: false,
     emits: ['update:modelValue', 'change', 'focus', 'blur', 'item-select', 'item-unselect', 'dropdown-click', 'clear', 'complete', 'before-show', 'before-hide', 'show', 'hide'],
     outsideClickListener: null,
     resizeListener: null,
@@ -197,11 +188,11 @@ export default {
     overlay: null,
     virtualScroller: null,
     searchTimeout: null,
-    focusOnHover: false,
     dirty: false,
     data() {
         return {
             id: this.$attrs.id,
+            clicked: false,
             focused: false,
             focusedOptionIndex: -1,
             focusedMultipleOptionIndex: -1,
@@ -225,7 +216,6 @@ export default {
     },
     mounted() {
         this.id = this.id || UniqueComponentId();
-
         this.autoUpdateModel();
     },
     updated() {
@@ -297,6 +287,7 @@ export default {
                 this.$emit('before-hide');
                 this.dirty = isFocus;
                 this.overlayVisible = false;
+                this.clicked = false;
                 this.focusedOptionIndex = -1;
 
                 isFocus && DomHandler.focus(this.$refs.focusInput);
@@ -318,8 +309,12 @@ export default {
 
             this.dirty = true;
             this.focused = true;
-            this.focusedOptionIndex = this.focusedOptionIndex !== -1 ? this.focusedOptionIndex : this.overlayVisible && this.autoOptionFocus ? this.findFirstFocusedOptionIndex() : -1;
-            this.overlayVisible && this.scrollInView(this.focusedOptionIndex);
+
+            if (this.overlayVisible) {
+                this.focusedOptionIndex = this.focusedOptionIndex !== -1 ? this.focusedOptionIndex : this.overlayVisible && this.autoOptionFocus ? this.findFirstFocusedOptionIndex() : -1;
+                this.scrollInView(this.focusedOptionIndex);
+            }
+
             this.$emit('focus', event);
         },
         onBlur(event) {
@@ -393,6 +388,8 @@ export default {
                 default:
                     break;
             }
+
+            this.clicked = false;
         },
         onInput(event) {
             if (this.searchTimeout) {
@@ -424,7 +421,8 @@ export default {
             if (this.forceSelection) {
                 let valid = false;
 
-                if (this.visibleOptions) {
+                // when forceSelection is on, prevent called twice onOptionSelect()
+                if (this.visibleOptions && !this.multiple) {
                     const matchedValue = this.visibleOptions.find((option) => this.isOptionMatched(option, this.$refs.focusInput.value || ''));
 
                     if (matchedValue !== undefined) {
@@ -477,6 +475,8 @@ export default {
             }
         },
         onContainerClick(event) {
+            this.clicked = true;
+
             if (this.disabled || this.searching || this.loading || this.isInputClicked(event) || this.isDropdownClicked(event)) {
                 return;
             }
@@ -543,7 +543,7 @@ export default {
                 return;
             }
 
-            const optionIndex = this.focusedOptionIndex !== -1 ? this.findNextOptionIndex(this.focusedOptionIndex) : this.findFirstFocusedOptionIndex();
+            const optionIndex = this.focusedOptionIndex !== -1 ? this.findNextOptionIndex(this.focusedOptionIndex) : this.clicked ? this.findFirstOptionIndex() : this.findFirstFocusedOptionIndex();
 
             this.changeFocusedOptionIndex(event, optionIndex);
 
@@ -562,7 +562,7 @@ export default {
                 this.overlayVisible && this.hide();
                 event.preventDefault();
             } else {
-                const optionIndex = this.focusedOptionIndex !== -1 ? this.findPrevOptionIndex(this.focusedOptionIndex) : this.findLastFocusedOptionIndex();
+                const optionIndex = this.focusedOptionIndex !== -1 ? this.findPrevOptionIndex(this.focusedOptionIndex) : this.clicked ? this.findLastOptionIndex() : this.findLastFocusedOptionIndex();
 
                 this.changeFocusedOptionIndex(event, optionIndex);
 
@@ -616,6 +616,7 @@ export default {
         },
         onEnterKey(event) {
             if (!this.overlayVisible) {
+                this.focusedOptionIndex = -1; // reset
                 this.onArrowDownKey(event);
             } else {
                 if (this.focusedOptionIndex !== -1) {
@@ -624,8 +625,6 @@ export default {
 
                 this.hide();
             }
-
-            event.preventDefault();
         },
         onEscapeKey(event) {
             this.overlayVisible && this.hide(true);
@@ -762,7 +761,7 @@ export default {
             return this.$refs.dropdownButton ? event.target === this.$refs.dropdownButton || this.$refs.dropdownButton.$el.contains(event.target) : false;
         },
         isOptionMatched(option, value) {
-            return this.isValidOption(option) && this.getOptionLabel(option).toLocaleLowerCase(this.searchLocale) === value.toLocaleLowerCase(this.searchLocale);
+            return this.isValidOption(option) && this.getOptionLabel(option)?.toLocaleLowerCase(this.searchLocale) === value.toLocaleLowerCase(this.searchLocale);
         },
         isValidOption(option) {
             return ObjectUtils.isNotEmpty(option) && !(this.isOptionDisabled(option) || this.isOptionGroup(option));
@@ -770,8 +769,13 @@ export default {
         isValidSelectedOption(option) {
             return this.isValidOption(option) && this.isSelected(option);
         },
+        isEquals(value1, value2) {
+            return ObjectUtils.equals(value1, value2, this.equalityKey);
+        },
         isSelected(option) {
-            return ObjectUtils.equals(this.modelValue, this.getOptionValue(option), this.equalityKey);
+            const optionValue = this.getOptionValue(option);
+
+            return this.multiple ? (this.modelValue || []).some((value) => this.isEquals(value, optionValue)) : this.isEquals(this.modelValue, this.getOptionValue(option));
         },
         findFirstOptionIndex() {
             return this.visibleOptions.findIndex((option) => this.isValidOption(option));
@@ -836,16 +840,16 @@ export default {
             }
         },
         scrollInView(index = -1) {
-            const id = index !== -1 ? `${this.id}_${index}` : this.focusedOptionId;
-            const element = DomHandler.findSingle(this.list, `li[id="${id}"]`);
+            this.$nextTick(() => {
+                const id = index !== -1 ? `${this.id}_${index}` : this.focusedOptionId;
+                const element = DomHandler.findSingle(this.list, `li[id="${id}"]`);
 
-            if (element) {
-                element.scrollIntoView && element.scrollIntoView({ block: 'nearest', inline: 'start' });
-            } else if (!this.virtualScrollerDisabled) {
-                setTimeout(() => {
+                if (element) {
+                    element.scrollIntoView && element.scrollIntoView({ block: 'nearest', inline: 'start' });
+                } else if (!this.virtualScrollerDisabled) {
                     this.virtualScroller && this.virtualScroller.scrollToIndex(index !== -1 ? index : this.focusedOptionIndex);
-                }, 0);
-            }
+                }
+            });
         },
         autoUpdateModel() {
             if ((this.selectOnFocus || this.autoHighlight) && this.autoOptionFocus && !this.hasSelectedOption) {
@@ -919,6 +923,9 @@ export default {
         },
         selectedMessageText() {
             return this.hasSelectedOption ? this.selectionMessageText.replaceAll('{0}', this.multiple ? this.modelValue.length : '1') : this.emptySelectionMessageText;
+        },
+        listAriaLabel() {
+            return this.$primevue.config.locale.aria ? this.$primevue.config.locale.aria.listLabel : undefined;
         },
         focusedOptionId() {
             return this.focusedOptionIndex !== -1 ? `${this.id}_${this.focusedOptionIndex}` : null;

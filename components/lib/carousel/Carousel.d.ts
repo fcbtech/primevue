@@ -35,6 +35,14 @@ export interface CarouselPassThroughMethodOptions {
      */
     context: CarouselContext;
     /**
+     * Defines valid attributes.
+     */
+    attrs: any;
+    /**
+     * Defines parent options.
+     */
+    parent: any;
+    /**
      * Defines passthrough(pt) options in global config.
      */
     global: object | undefined;
@@ -338,6 +346,10 @@ export interface CarouselSlots {
      * Custom next icon template.
      */
     nexticon(): VNode[];
+    /**
+     * Custom empty template.
+     */
+    empty(): VNode[];
 }
 
 /**
@@ -365,8 +377,8 @@ export interface CarouselEmits {
  */
 declare class Carousel extends ClassComponent<CarouselProps, CarouselSlots, CarouselEmits> {}
 
-declare module '@vue/runtime-core' {
-    interface GlobalComponents {
+declare module 'vue' {
+    export interface GlobalComponents {
         Carousel: GlobalComponentConstructor<Carousel>;
     }
 }
