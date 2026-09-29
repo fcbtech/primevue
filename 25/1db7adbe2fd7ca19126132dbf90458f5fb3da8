@@ -1,0 +1,19 @@
+package.json
+  s_10ab32429faa16::t_4692a6e0b1e9de 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "251db7adbe2fd7ca19126132dbf90458f5fb3da8",
+  "prompts": {},
+  "sessions": {
+    "s_10ab32429faa16": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "edcba1e3-295d-49b7-8e90-f8144332d9db",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Faizal Mahmood <129145958+codebyfaizal@users.noreply.github.com>"
+    }
+  }
+}
