@@ -1326,31 +1326,37 @@ export default {
             this.styleElement.innerHTML = innerHTML;
         },
         bindColumnResizeEvents() {
+            // Keep the handler functions themselves (addEventListener returns undefined), so the
+            // "already bound" guard works and unbind can remove exactly these listeners.
             if (!this.documentColumnResizeListener) {
-                this.documentColumnResizeListener = document.addEventListener('mousemove', () => {
+                this.documentColumnResizeListener = (event) => {
                     if (this.columnResizing) {
                         this.onColumnResize(event);
                     }
-                });
+                };
+
+                document.addEventListener('mousemove', this.documentColumnResizeListener);
             }
 
             if (!this.documentColumnResizeEndListener) {
-                this.documentColumnResizeEndListener = document.addEventListener('mouseup', () => {
+                this.documentColumnResizeEndListener = () => {
                     if (this.columnResizing) {
                         this.columnResizing = false;
                         this.onColumnResizeEnd();
                     }
-                });
+                };
+
+                document.addEventListener('mouseup', this.documentColumnResizeEndListener);
             }
         },
         unbindColumnResizeEvents() {
             if (this.documentColumnResizeListener) {
-                document.removeEventListener('document', this.documentColumnResizeListener);
+                document.removeEventListener('mousemove', this.documentColumnResizeListener);
                 this.documentColumnResizeListener = null;
             }
 
             if (this.documentColumnResizeEndListener) {
-                document.removeEventListener('document', this.documentColumnResizeEndListener);
+                document.removeEventListener('mouseup', this.documentColumnResizeEndListener);
                 this.documentColumnResizeEndListener = null;
             }
         },
