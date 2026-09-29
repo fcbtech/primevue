@@ -863,6 +863,58 @@ describe('DataTable.vue', () => {
         expect(wrapper.findAll('.p-column-resizer').length).toBe(2);
     });
 
+    it('should remove its document listeners after a resize and on unmount', async () => {
+        const addSpy = vi.spyOn(document, 'addEventListener');
+        const removeSpy = vi.spyOn(document, 'removeEventListener');
+
+        wrapper = mount(DataTable, {
+            global: {
+                plugins: [PrimeVue],
+                components: {
+                    Column
+                }
+            },
+            props: {
+                value: smallData,
+                resizableColumns: true,
+                columnResizeMode: 'expand'
+            },
+            slots: {
+                default: `
+                    <Column field="code" header="Code"></Column>
+                    <Column field="name" header="Name"></Column>
+                `
+            }
+        });
+
+        const resizer = wrapper.findAll('.p-column-resizer')[0];
+        const bound = (type) => addSpy.mock.calls.filter(([t]) => t === type).map(([, fn]) => fn);
+        const unbound = (type) => removeSpy.mock.calls.filter(([t]) => t === type).map(([, fn]) => fn);
+
+        // Two resize starts before the mouseup must not bind twice.
+        await wrapper.vm.onColumnResizeStart({ target: resizer.element, pageX: 10 });
+        await wrapper.vm.onColumnResizeStart({ target: resizer.element, pageX: 10 });
+
+        expect(bound('mousemove')).toHaveLength(1);
+        expect(bound('mouseup')).toHaveLength(1);
+
+        wrapper.vm.unbindColumnResizeEvents();
+
+        expect(unbound('mousemove')).toEqual(bound('mousemove'));
+        expect(unbound('mouseup')).toEqual(bound('mouseup'));
+        expect(wrapper.vm.documentColumnResizeListener).toBeNull();
+        expect(wrapper.vm.documentColumnResizeEndListener).toBeNull();
+
+        await wrapper.vm.onColumnResizeStart({ target: resizer.element, pageX: 10 });
+        wrapper.unmount();
+
+        expect(unbound('mousemove')).toEqual(bound('mousemove'));
+        expect(unbound('mouseup')).toEqual(bound('mouseup'));
+
+        addSpy.mockRestore();
+        removeSpy.mockRestore();
+    });
+
     it('should fit mode resize start', async () => {
         wrapper = mount(DataTable, {
             global: {
